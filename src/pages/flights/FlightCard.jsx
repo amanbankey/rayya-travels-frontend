@@ -1,0 +1,137 @@
+import { useState } from "react";
+import { ArrowRight, ChevronDown, ChevronUp, Info } from "lucide-react";
+import { fareTiers } from "../../data/flightData";
+import {Plane} from "lucide-react"
+import Reveal from "../../components/Reveal";
+import FareTiers from "./FareTiers";
+import RouteLegs from "./RouteLegs";
+import FlightSpecs from "./FlightSpecs";
+
+const badgeStyles = {
+  accent: "bg-badge text-badgetext",
+  muted: "bg-tier text-ink",
+};
+
+const Endpoint = ({ time, airport, align }) => (
+  <div className={align === "right" ? "text-right" : "text-left"}>
+    <p className="font-serif text-3xl font-medium leading-none text-ink sm:text-[34px]">{time}</p>
+    <p className="mt-1.5 text-base font-semibold text-brown">{airport.code}</p>
+    <p className="text-xs text-muted sm:text-[13px]">{airport.terminal}</p>
+  </div>
+);
+
+const FlightCard = ({ flight, onSelect }) => {
+  const [expanded, setExpanded] = useState(flight.startOpen);
+  const [tier, setTier] = useState("flex");
+
+  const BadgeIcon = flight.badge.icon;
+  const { details } = flight;
+  const ToggleIcon = details.icon === "Info" ? Info : expanded ? ChevronUp : ChevronDown;
+
+  const renderDetails = () => {
+    if (details.type === "legs") return <RouteLegs legs={flight.legs} />;
+    if (details.type === "specs") return <FlightSpecs flight={flight} />;
+    return <FareTiers tiers={fareTiers} selected={tier} onSelect={setTier} />;
+  };
+
+  return (
+    <Reveal>
+      <article className="overflow-hidden rounded-2xl bg-white shadow-card">
+        <div className="lg:grid lg:grid-cols-[1fr_28%]">
+          <div>
+            <div className="p-5 sm:p-6">
+              <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4">
+                <div className="flex items-center gap-3">
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold ${flight.avatar}`}>
+                    {flight.code}
+                  </span>
+                  <div>
+                    <p className="flex flex-wrap items-baseline gap-x-3 text-lg font-medium text-ink">
+                      {flight.airline}
+                      <span className="text-[13px] font-medium tracking-[0.15em] text-muted">{flight.flightNo}</span>
+                    </p>
+                    <p className="text-sm text-muted">
+                      {flight.aircraft} · {flight.note}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.08em] ${badgeStyles[flight.badge.style]}`}
+                >
+                  <BadgeIcon size={13} /> {flight.badge.label}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 items-center gap-y-5 py-6 sm:grid-cols-[auto_1fr_auto] sm:gap-x-6">
+                <Endpoint time={flight.departTime} airport={flight.from} align="left" />
+
+                <div className="order-last col-span-2 text-center sm:order-none sm:col-span-1">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted">{flight.duration}</p>
+                  <div className="my-3 flex items-center">
+                    <span className="h-px flex-1 bg-line" />
+                    {flight.layover ? (
+                      <span className="mx-2 flex items-center gap-1.5 rounded-full bg-tier px-2.5 py-1 text-[11px] font-medium text-ink">
+                        <span className="h-1.5 w-1.5 rounded-full bg-brown" /> {flight.layover}
+                      </span>
+                    ) : (
+                      <span className="mx-2 flex h-7 w-7 items-center justify-center rounded-full bg-tier">
+                        <Plane size={14} className="rotate-45 text-brown" />
+                      </span>
+                    )}
+                    <span className="h-px flex-1 bg-line" />
+                  </div>
+                  <p className="text-[11px] text-muted">{flight.routeNote}</p>
+                </div>
+
+                <Endpoint time={flight.arriveTime} airport={flight.to} align="right" />
+              </div>
+
+             <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4">
+                {flight.amenities.map(({ icon: Icon, label }) => (
+                    <li key={label} className="flex items-center gap-2 text-[13px] text-ink/70">
+                    <Icon size={15} className="text-brown" /> {label}
+                    </li>
+                ))}
+                </ul>
+            </div>
+
+            <form
+              onSubmit={(event) => onSelect(event, flight, tier)}
+              className="border-l-2 border-line bg-panel p-5 text-left lg:w-[47%] lg:text-right"
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-brown">Fare Assessment</p>
+              <h3 className="mt-1 font-serif text-2xl font-medium text-ink">{flight.fare.title}</h3>
+              <p className="mt-1 text-[13px] text-muted">{flight.fare.text}</p>
+
+              <button
+                type="submit"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-dark py-3.5 text-base font-medium text-white transition-colors hover:bg-ink"
+              >
+                Select Passage <ArrowRight size={16} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setExpanded(!expanded)}
+                className={`mt-3 flex w-full items-center justify-center gap-1.5 text-xs font-medium uppercase tracking-[0.05em] text-ink/80 transition-colors hover:text-ink ${
+                  details.variant === "filled" ? "rounded-lg bg-tier py-3" : "py-1"
+                }`}
+              >
+                {expanded ? details.open : details.closed} <ToggleIcon size={14} />
+              </button>
+            </form>
+          </div>
+
+          <div className="relative hidden border-l border-dashed border-line lg:block">
+            <span className="absolute -top-3 left-0 h-6 w-6 -translate-x-1/2 rounded-full bg-page" />
+            <span className="absolute bottom-6 left-0 h-6 w-6 -translate-x-1/2 rounded-full bg-panel" />
+          </div>
+        </div>
+
+        {expanded && renderDetails()}
+      </article>
+    </Reveal>
+  );
+};
+
+export default FlightCard;
