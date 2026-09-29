@@ -111,63 +111,17 @@ const Navbar = () => {
             </button>
           )}
 
-          <div ref={profileRef} className="relative hidden sm:block">
-            <button
-              type="button"
-              onClick={() => setProfileOpen(!profileOpen)}
-              aria-label="Account menu"
-              className="flex h-10 items-center gap-1.5 rounded-full border border-line bg-soft px-2.5 text-ink transition-colors hover:bg-line"
-            >
-              <User size={17} />
-              {isLoggedIn && user && <ChevronDown size={14} />}
-            </button>
-
-            <div
-              className={`absolute right-0 top-full w-64 pt-2 transition-all duration-200 ${
-                profileOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
-              }`}
-            >
-              <div className="rounded-xl border border-line bg-white p-3 shadow-lg">
-                {isLoggedIn && user ? (
-                  <>
-                    <button
-                      onClick={() => goTo("/user-dashboard/profile")}
-                      className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-oat"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-dark text-white">
-                        <User size={18} />
-                      </span>
-                      <span className="min-w-0">
-                        {/* <span className="block truncate text-sm font-semibold text-ink">{userName}</span> */}
-                        <span className="mt-0.5 block truncate text-xs text-muted">{user.email || ""}</span>
-                      </span>
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-red-500 transition-colors hover:bg-red-50"
-                    >
-                      <LogOut size={15} /> Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => goTo("/signin")}
-                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-ink transition-colors hover:bg-oat"
-                    >
-                      <User size={15} /> Sign in
-                    </button>
-                    {/* <button
-                      onClick={() => goTo("/admin/login")}
-                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-ink transition-colors hover:bg-oat"
-                    >
-                      <ShieldCheck size={15} /> Admin Login
-                    </button> */}
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={() => goTo("/user-dashboard/profile")}
+            aria-label="Open my dashboard"
+            className="hidden h-11 items-center gap-2 rounded-full border border-line bg-soft py-1 pl-1 pr-4 text-ink transition-all hover:border-sand hover:bg-line hover:shadow-md sm:flex"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-dark text-sm font-semibold text-white">
+              {isLoggedIn && user ? userName.charAt(0).toUpperCase() : <User size={16} />}
+            </span>
+           <span className="max-w-[90px] truncate text-sm font-medium">{isLoggedIn && user ? userName : "Account"}</span>
+          </button>
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -212,6 +166,12 @@ const Navbar = () => {
           </a>
 
           <div className="mt-4 space-y-3">
+            <button
+              onClick={() => goTo("/user-dashboard/profile")}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-brown px-4 py-3 text-sm font-medium text-white"
+            >
+              <User size={15} /> My Dashboard
+            </button>
             {isLoggedIn && user ? (
               <>
                 <button
