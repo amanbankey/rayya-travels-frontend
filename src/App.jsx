@@ -12,6 +12,7 @@ import Contact from './pages/Contact'
 
 import Visa from './pages/Visa'
 import Flights from './pages/Flights'
+import Packages from './pages/Packages'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -46,12 +47,12 @@ function App() {
             element={<Visa />}
           />
 
-        {/*    <Route
-            path="traveler-details"
-            element={<TravelerDetails />}
+      <Route
+            path="packages"
+            element={<Packages />}
           />
  
-          <Route
+         {/*       <Route
             path="user-dashboard"
             element={<MyBookings />}
           >
