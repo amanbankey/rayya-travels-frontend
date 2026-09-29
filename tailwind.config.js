@@ -32,7 +32,8 @@ export default {
         ivory: "#fcf9f4",
         oat: "#f5f2ed",
         mist: "#e9e6e1",
-        peach: "#fde2bd",
+        peach: "#fde2bd",navy: "#0b1628",
+slate: "#1e2738",
       },
       boxShadow: {
         card: "0 2px 24px rgba(120, 90, 50, 0.07)",

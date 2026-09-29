@@ -12,11 +12,11 @@ import Contact from './pages/Contact'
 
 import Visa from './pages/Visa'
 import Flights from './pages/Flights'
-import DashboardLayout from './pages/user/DashboardLayout'
-import MyProfile from './pages/user/MyProfile'
-import MyBookings from './pages/user/MyBookings'
-import WalletHistory from './pages/user/WalletHistory'
-import AppliedVisaHistory from './pages/user/AppliedVisaHistory'
+import DashboardLayout from './pages/dashboard/DashboardLayout'
+import MyProfile from './pages/dashboard/MyProfile'
+import MyBookings from './pages/dashboard/MyBookings'
+import WalletHistory from './pages/dashboard/WalletHistory'
+import AppliedVisaHistory from './pages/dashboard/AppliedVisaHistory'
 
 function App() {
   const [count, setCount] = useState(0)
