@@ -60,7 +60,7 @@ const VisaHero = () => {
           itineraries with zero friction.
         </p>
 
-        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] font-medium text-white/75">
+        {/* <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] font-medium text-white/75">
           <li className="flex items-center gap-1.5">
             <CheckCircle2 size={15} className="text-brown" /> Authorized Desk
           </li>
@@ -70,7 +70,7 @@ const VisaHero = () => {
           <li className="flex items-center gap-1.5">
             <Zap size={15} className="text-brown" /> Priority Consulate Queues
           </li>
-        </ul>
+        </ul> */}
       </div>
 
       <div className="relative mx-auto -mt-2 max-w-[1150px] px-4 sm:mt-4 sm:px-8">

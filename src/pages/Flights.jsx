@@ -148,6 +148,7 @@ import FilterSidebar from "./flights/FilterSidebar";
 import FlightCard from "./flights/FlightCard";
 import ZeroResult from "./flights/ZeroResult";
 import DiagnosticStates from "./flights/DiagnosticStates";
+import FlightHero from "./flights/Hero"
 
 const getSlot = (hour) => {
   if (hour < 6) return "dawn";
@@ -226,7 +227,10 @@ const Flights = () => {
 
   return (
     <div className="min-h-screen bg-page">
+       <FlightHero />
       <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-8 lg:px-12">
+       
+
         <DateStrip dates={dates} selected={selectedDate} onSelect={setSelectedDate} />
 
         <ResultsHeader

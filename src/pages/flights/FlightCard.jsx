@@ -105,7 +105,7 @@ const FlightCard = ({ flight, onSelect }) => {
 
               <button
                 type="submit"
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-dark py-3.5 text-base font-medium text-white transition-colors hover:bg-ink"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-darkBlue py-3.5 text-base font-medium text-white transition-colors hover:bg-ink"
               >
                 Select Passage <ArrowRight size={16} />
               </button>

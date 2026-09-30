@@ -57,7 +57,7 @@ export const trunks = [
   {
     id: 1,
     image: img("photo-1570077188670-e3a8d69ac5ff"),
-    chip: "Private Island Sanctuary",
+    chip: "P",
     folio: "082",
     meta: "7 Days • 6 Nights • Private Charter",
     title: "The Cycladic Archipelagic Voyage",
@@ -73,7 +73,7 @@ export const trunks = [
   {
     id: 2,
     image: img("photo-1539020140153-e479b8c22e70"),
-    chip: "Cultural Haven",
+    chip: "",
     folio: "114",
     meta: "9 Days • 8 Nights • Private Estate",
     title: "High Atlas & Ocher Palaces",
@@ -89,7 +89,7 @@ export const trunks = [
   {
     id: 3,
     image: img("photo-1506905925346-21bda4d32df4"),
-    chip: "Signature Expedition",
+    chip: " ",
     folio: "047",
     meta: "4 Days • 3 Nights • Mountain Lodge",
     title: "Engadine Alpine Seclusion",
@@ -185,10 +185,10 @@ export const folios = [
 
 export const provenance = {
   image: img("photo-1523531294919-4bcd7c65e216"),
-  doctrine: "The Raaya Doctrine",
-  imageTitle: "Travel as Quiet Architecture",
+  doctrine: "",
+  imageTitle: "",
   imageText: "We reject high-frequency tourism in favor of slow, permanent spatial beauty and deep human provenance.",
-  eyebrow: "Architectural Provenance",
+  eyebrow: "",
   title: "Curating what cannot be booked online.",
   text: "Every itinerary begins with an empty parchment and your personal rhythm. Raaya maintains direct keys to private historic palazzos, uncharted archipelago reserves, and diplomatic consular corridors inaccessible to standard agents.",
   cards: [
@@ -205,22 +205,42 @@ export const provenance = {
   ],
 };
 
-export const testimonial = {
-  image: img("photo-1494790108377-be9c29b29330"),
-  badge: "Verified Connoisseur",
-  quote:
-    "Raaya orchestrated three weeks across Kyoto and the Seto Inland Sea without a single jarring transition. From our private tea master in Daitoku-ji to the secluded fishing boat passage, every day felt like an impeccably written poem.",
-  name: "Helena & Marcus Vance",
-  meta: "Geneva & New York • Private Clients since 2021",
-  status: "Bespoke Journey",
-};
+export const testimonial = [
+  {
+    image: img("photo-1494790108377-be9c29b29330"),
+    badge: "Verified Connoisseur",
+    quote:
+      "Raaya orchestrated three weeks across Kyoto and the Seto Inland Sea without a single jarring transition. From our private tea master in Daitoku-ji to the secluded fishing boat passage, every day felt like an impeccably written poem.",
+    name: "Helena & Marcus Vance",
+    meta: "Geneva & New York • Private Clients since 2021",
+    status: "Bespoke Journey",
+  },
+  {
+    image: img("photo-1544005313-94ddf0286df2"),
+    badge: "Verified Connoisseur",
+    quote:
+      "Every consular formality for our Alpine chalet season was resolved before we even packed. Raaya's team anticipated requirements we hadn't thought to ask about, down to the last signature.",
+    name: "Isabelle Roux",
+    meta: "Paris • Private Client since 2019",
+    status: "Diplomatic Passage",
+  },
+  {
+    image: img("photo-1531123897727-8f129e1688ce"),
+    badge: "Verified Connoisseur",
+    quote:
+      "The maritime crew rotation across three ports could have been chaos. Instead it was quietly precise, every visa, transfer, and berth confirmed days ahead of schedule.",
+    name: "Captain Rhys Adebayo",
+    meta: "Lagos & Singapore • Private Client since 2022",
+    status: "Maritime Mobility",
+  },
+];
 
 export const essays = [
   {
     id: 1,
     image: img("photo-1601581875309-fafbf2d3ed3a"),
-    category: "Essay",
-    read: "8 Min Read",
+    category: "",
+    read: "",
     title: "The Poetics of Cycladic Architecture",
     text: "Why the lime-plastered geometries of the Aegean islands continue to dictate modern notions of spatial calm.",
   },

@@ -89,7 +89,7 @@ const FilterSidebar = ({ filters, open, onChange, onReset, onSubmit, onClose }) 
                 type="button"
                 key={slot.key}
                 onClick={() => onChange("slots", toggleItem(filters.slots, slot.key))}
-                className={`rounded-xl p-3 text-left transition-colors ${active ? "bg-dark text-white" : "bg-panel text-ink hover:bg-tier"}`}
+                className={`rounded-xl p-3 text-left transition-colors ${active ? "bg-darkBlue text-white" : "bg-panel text-ink hover:bg-tier"}`}
               >
                 <Icon size={18} className={slot.iconClass} />
                 <span className="mt-3 block text-sm font-medium">{slot.label}</span>
@@ -121,7 +121,7 @@ const FilterSidebar = ({ filters, open, onChange, onReset, onSubmit, onClose }) 
 
       <Section
         title="Max Duration"
-        aside={<span className="text-sm font-medium text-brown">Up to {formatDuration(filters.maxMins)}</span>}
+        aside={<span className="text-sm font-medium text-darkBlue">Up to {formatDuration(filters.maxMins)}</span>}
       >
         <input
           type="range"
@@ -139,7 +139,7 @@ const FilterSidebar = ({ filters, open, onChange, onReset, onSubmit, onClose }) 
         <div className="space-y-3">
           {policyOptions.map((policy) => (
             <CheckRow key={policy.key} checked={filters[policy.key]} onToggle={() => onChange(policy.key, !filters[policy.key])}>
-              <span className="text-[15px] text-ink">{policy.label}</span>
+              <span className="text-[15px] text-darkBlue">{policy.label}</span>
             </CheckRow>
           ))}
         </div>

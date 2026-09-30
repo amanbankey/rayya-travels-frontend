@@ -10,7 +10,7 @@ import PackagesFaq from "./packages/PackagesFaq";
 const Packages = () => (
   <main className="bg-ivory">
     <PackagesHero />
-    <CategoryTabs />
+    {/* <CategoryTabs /> */}
     <TrendingGetaways />
     <AvailablePackages />
     <SignatureShowcase />

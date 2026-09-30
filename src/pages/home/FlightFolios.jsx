@@ -17,20 +17,18 @@ const FlightFolios = () => (
   <section className="mx-auto max-w-7xl px-4 py-12 sm:px-8 lg:px-12">
     <Reveal>
       <SectionHeader
-        eyebrow="Private Aviation & Flagship Manifests"
+        eyebrow=""
         title="Curated Flight Boarding Folios"
         text="Tailored airborne routes designed for frictionless customs transit, lie-flat private suites, and executive apron handling."
       >
-        <span className="flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-1.5 text-[9px] font-medium text-muted">
-          <span className="h-1.5 w-1.5 rounded-full bg-ink" /> Apron Transfers Included On All Departures
-        </span>
+        
       </SectionHeader>
     </Reveal>
 
     <div className="mt-8 space-y-5">
       {flights.map((flight, index) => (
         <Reveal key={flight.id} delay={index * 120}>
-          <article className="grid overflow-hidden rounded-2xl border border-line bg-paper lg:grid-cols-[1fr_280px]">
+          <article className="grid overflow-hidden rounded-2xl border border-line bg-paper lg:grid-cols-[1fr_280px] hover:shadow-md hover:shadow-darkBlue transition-all duration-150">
             <div className="p-5 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
@@ -39,7 +37,7 @@ const FlightFolios = () => (
                   </span>
                   <span className="text-[10px] text-muted">{flight.kind}</span>
                 </div>
-                <span className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted">Manifest N° {flight.manifest}</span>
+                {/* <span className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted">Manifest N° {flight.manifest}</span> */}
               </div>
 
               <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-6">
@@ -53,12 +51,12 @@ const FlightFolios = () => (
                     <span className="h-px flex-1 bg-line" />
                     <span className="h-1.5 w-1.5 rounded-full border border-muted bg-paper" />
                   </div>
-                  <p className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted">{flight.route}</p>
+                  {/* <p className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted">{flight.route}</p> */}
                 </div>
                 <Airport data={flight.to} align="right" />
               </div>
 
-              <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-dashed border-line pt-4">
+              {/* <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-dashed border-line pt-4">
                 {flight.perks.map(({ icon, label }) => {
                   const Icon = icons[icon];
                   return (
@@ -67,10 +65,10 @@ const FlightFolios = () => (
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
             </div>
 
-            <div className="flex flex-col justify-center gap-3 border-t border-dashed border-line bg-cream/50 p-5 sm:p-6 lg:border-l lg:border-t-0">
+            {/* <div className="flex flex-col justify-center gap-3 border-t border-dashed border-line bg-cream/50 p-5 sm:p-6 lg:border-l lg:border-t-0">
               <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-muted">Clearance Status</p>
               <span className="w-fit rounded-full bg-badge px-2.5 py-1 text-[8px] font-medium uppercase tracking-[0.15em] text-badgetext">
                 {flight.status}
@@ -82,7 +80,7 @@ const FlightFolios = () => (
               <button className="flex items-center gap-1 text-[8px] font-medium uppercase tracking-[0.18em] text-muted hover:text-ink">
                 Request bespoke departure <ArrowUpRight size={10} />
               </button>
-            </div>
+            </div> */}
           </article>
         </Reveal>
       ))}

@@ -98,10 +98,10 @@ const Navbar = () => {
         </ul>
 
         <div className="col-start-3 flex items-center justify-end gap-3 sm:gap-4 xl:col-start-auto">
-          <a href={`tel:${PHONE}`} className="hidden text-right leading-tight lg:block">
+          {/* <a href={`tel:${PHONE}`} className="hidden text-right leading-tight lg:block">
             <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-brown">Concierge Support</span>
             <span className="block text-[15px] font-semibold text-ink">{PHONE}</span>
-          </a>
+          </a> */}
 
           {!isLoggedIn && (
             <button
@@ -159,9 +159,9 @@ const Navbar = () => {
             href={`tel:${PHONE}`}
             className="mt-4 flex items-center gap-3 rounded-xl bg-oat px-4 py-3"
           >
-            <Phone size={18} className="text-brown" />
+            <Phone size={18} className="text-darkBlue" />
             <span className="leading-tight">
-              <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-brown">Concierge Support</span>
+              <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-darkBlue">Concierge Support</span>
               <span className="block text-[15px] font-semibold text-ink">{PHONE}</span>
             </span>
           </a>
@@ -169,7 +169,7 @@ const Navbar = () => {
           <div className="mt-4 space-y-3">
             <button
               onClick={() => goTo("/user-dashboard/profile")}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-brown px-4 py-3 text-sm font-medium text-white"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-darkBlue px-4 py-3 text-sm font-medium text-white"
             >
               <User size={15} /> My Dashboard
             </button>
@@ -198,7 +198,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => goTo("/signin")}
-                  className="w-full rounded-full bg-dark px-4 py-3 text-sm font-medium text-white"
+                  className="w-full rounded-full bg-darkBlue px-4 py-3 text-sm font-medium text-white"
                 >
                   Login / Sign Up
                 </button>
