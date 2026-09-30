@@ -1,9 +1,11 @@
-import React from 'react'
+import VisaHero from "./visa/Hero";
+import Destinations from "./visa/Destinations";
 
-const Visa = () => {
-  return (
-    <div>Visa</div>
-  )
-}
+const Visa = () => (
+  <main className="bg-ivory">
+    <VisaHero />
+    <Destinations />
+  </main>
+);
 
-export default Visa
+export default Visa;

@@ -10,7 +10,14 @@ export default {
         serif: ["Playfair Display", "serif"],
         sans: ["Inter", "sans-serif"],
       },
+
+      // starting wale 4 color h 
       colors: {
+        darkBrown: "#A13B00",
+        lightBrown: "#E26325",
+        darkBlue: "#1E2229",
+        blue: "#0D1124" ,
+
         cream: "#f6f2ea",
         paper: "#fbfaf7",
         soft: "#efe9de",
