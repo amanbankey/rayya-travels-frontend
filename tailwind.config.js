@@ -40,7 +40,18 @@ export default {
         ivory: "#fcf9f4",
         oat: "#f5f2ed",
         mist: "#e9e6e1",
-        peach: "#fde2bd",navy: "#0b1628",
+        peach: "#fde2bd",
+        // Logo palette (navy + burnt orange) used by the admin panel
+        navy: {
+          DEFAULT: "#0b1628",
+          50: "#f2f5f9", 100: "#e3e9f1", 200: "#c5d0df", 300: "#9aacc4", 400: "#6b829f",
+          500: "#45607f", 600: "#2f4866", 700: "#223651", 800: "#1a2b42", 900: "#102030", 950: "#0a1521",
+        },
+        ember: {
+          DEFAULT: "#a84000",
+          50: "#fff5ed", 100: "#ffe7d4", 200: "#fbcba3", 300: "#f4a468", 400: "#e97d34",
+          500: "#c9500e", 600: "#a84000", 700: "#8a3300", 800: "#6d2a06", 900: "#4f1f06",
+        },
 slate: "#1e2738",
       },
       boxShadow: {
