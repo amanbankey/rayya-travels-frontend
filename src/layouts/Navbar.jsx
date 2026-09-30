@@ -66,8 +66,8 @@ const Navbar = () => {
   const desktopLinkClass = ({ isActive }) =>
     `whitespace-nowrap border-b-2 pb-1 uppercase transition-all duration-200 ${
       isActive
-        ? "border-brown font-serif text-base text-brown sm:text-lg"
-        : "border-transparent text-[11px] font-medium tracking-[0.18em] text-ink/80 hover:text-brown"
+        ? "border-brown font-serif text-base text-dustyRose sm:text-lg bg-darkBrown" 
+        : "border-transparent text-[11px] font-medium tracking-[0.18em] text-ink/80 text-dustyRose "
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
@@ -76,7 +76,7 @@ const Navbar = () => {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-ivory/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-line bg-darkBlue backdrop-blur-xl">
       <nav className="mx-auto grid h-[70px] max-w-[1440px] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-8 lg:px-12">
         <NavLink to="/" className="flex items-center gap-2.5">
           <Minus size={14} className="text-sand" />
@@ -88,7 +88,7 @@ const Navbar = () => {
 
         <ul className="hidden items-center justify-center gap-6 xl:flex xl:gap-9">
           {navItems.map((item) => (
-            <li key={item.path}>
+            <li key={item.path} className="text-dustyRose">
               <NavLink to={item.path} end={item.path === "/"} className={desktopLinkClass}>
                 {item.name}
               </NavLink>

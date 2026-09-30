@@ -207,7 +207,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="max-w-7xl mx-auto relative overflow-hidden px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16">
+    <section id="home" className="max-w-7xl mx-auto relative overflow-hidden px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16 bg-darkBlue">
       <img
         src={heroImage}
         alt=""

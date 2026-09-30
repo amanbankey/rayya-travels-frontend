@@ -13,10 +13,11 @@ export default {
 
       // starting wale 4 color h 
       colors: {
-        darkBrown: "#A13B00",
+        brown: "#A13B00",
         lightBrown: "#E26325",
         darkBlue: "#1E2229",
         blue: "#0D1124" ,
+        dustyRose: "#E0C0B4",
 
         cream: "#f6f2ea",
         paper: "#fbfaf7",
@@ -33,7 +34,7 @@ export default {
         panel: "#f6f4ef",
         tier: "#efebe6",
         page: "#faf7f2",
-        brown: "#7a5832",
+      
         panel: "#f6f4ef",
         tier: "#efebe6",
         ivory: "#fcf9f4",
