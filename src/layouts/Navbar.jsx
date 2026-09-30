@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { LogOut, Menu, Phone, ShieldCheck, User, X } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  Phone,
+  ShieldCheck,
+  User,
+  X,
+} from "lucide-react";
 import Logo from "../assets/image/rayyalogo.png";
 
 const PHONE = "+91-9028849207";
@@ -101,7 +108,7 @@ const Navbar = () => {
         </ul>
 
         {/* Right side actions */}
-        <div className="col-start-3 flex items-center justify-end gap-3 sm:gap-4 xl:col-start-auto">
+        <div className="col-start-3 flex items-center justify-end gap-2 sm:gap-3 xl:col-start-auto">
           {/* Desktop contact */}
           <a
             href={`tel:${PHONE}`}
@@ -120,11 +127,21 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => goTo("/signin")}
-              className="hidden whitespace-nowrap rounded-full bg-[#AE4000] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#AE4000]/30 transition-all hover:bg-[#8C3300] hover:shadow-lg sm:block"
+              className="hidden whitespace-nowrap rounded-full bg-[#AE4000] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#AE4000]/30 transition-all hover:bg-[#8C3300] hover:shadow-lg sm:block"
             >
               Login / Sign Up
             </button>
           )}
+
+          {/* Admin Dashboard button - Desktop */}
+          <button
+            type="button"
+            onClick={() => goTo("/admin")}
+            className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-[#102030] bg-[#102030] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:border-[#AE4000] hover:bg-[#AE4000] sm:flex"
+          >
+            <ShieldCheck size={16} />
+            Admin
+          </button>
 
           {/* Account / Dashboard */}
           <button
@@ -163,7 +180,7 @@ const Navbar = () => {
       <div
         className={`overflow-hidden bg-white transition-all duration-300 ease-in-out xl:hidden ${
           mobileOpen
-            ? "max-h-[680px] border-t border-[#E5EAF0] opacity-100"
+            ? "max-h-[760px] border-t border-[#E5EAF0] opacity-100"
             : "max-h-0 opacity-0"
         }`}
       >
@@ -203,10 +220,21 @@ const Navbar = () => {
 
           {/* Mobile account actions */}
           <div className="mt-4 space-y-3">
+            {/* Admin Dashboard - Mobile */}
+            <button
+              type="button"
+              onClick={() => goTo("/admin/dashboard")}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#102030] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#AE4000]"
+            >
+              <ShieldCheck size={16} />
+              Admin Dashboard
+            </button>
+
+            {/* User Dashboard */}
             <button
               type="button"
               onClick={() => goTo("/user-dashboard/profile")}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#102030] px-4 py-3 text-sm font-semibold text-white"
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D9E1EA] bg-[#F5F8FB] px-4 py-3 text-sm font-semibold text-[#102030]"
             >
               <User size={15} />
               My Dashboard
@@ -243,24 +271,13 @@ const Navbar = () => {
                 </button>
               </>
             ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={() => goTo("/signin")}
-                  className="w-full rounded-full bg-[#AE4000] px-4 py-3 text-sm font-semibold text-white"
-                >
-                  Login / Sign Up
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => goTo("/admin/login")}
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-[#102030] px-4 py-3 text-sm font-semibold text-[#102030]"
-                >
-                  <ShieldCheck size={15} />
-                  Admin Login
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => goTo("/signin")}
+                className="w-full rounded-full bg-[#AE4000] px-4 py-3 text-sm font-semibold text-white"
+              >
+                Login / Sign Up
+              </button>
             )}
           </div>
         </div>
