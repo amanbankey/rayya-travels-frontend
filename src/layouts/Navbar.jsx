@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ChevronDown, LogOut, Menu, Minus, Phone, ShieldCheck, User, X } from "lucide-react";
-
+import Logo from "../assets/image/rayyalogo.png"
 const PHONE = "+91-9028849207";
 
 const navItems = [
@@ -64,10 +64,10 @@ const Navbar = () => {
   };
 
   const desktopLinkClass = ({ isActive }) =>
-    `whitespace-nowrap border-b-2 pb-1 uppercase transition-all duration-200 ${
+    `whitespace-nowrap border-b-2 pb-1 uppercase transition-all duration-200  ${
       isActive
-        ? "border-brown font-serif text-base text-dustyRose sm:text-lg bg-darkBrown" 
-        : "border-transparent text-[11px] font-medium tracking-[0.18em] text-ink/80 text-dustyRose "
+        ? "border-brown font-serif text-base  sm:text-lg bg-lightBrown px-2 py-1 rounded-lg text-white "
+        : "border-transparent text-[11px] font-medium tracking-[0.18em] text-darkBlue "
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
@@ -76,14 +76,15 @@ const Navbar = () => {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-darkBlue backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-line bg-white backdrop-blur-xl">
       <nav className="mx-auto grid h-[70px] max-w-[1440px] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-8 lg:px-12">
         <NavLink to="/" className="flex items-center gap-2.5">
-          <Minus size={14} className="text-sand" />
+          {/* <Minus size={14} className="text-sand" />
           <span className="leading-none">
             <span className="block font-serif text-xl font-medium tracking-wide text-ink">RAAYA</span>
             <span className="mt-1 block text-[9px] font-medium uppercase tracking-[0.35em] text-muted">Travels</span>
-          </span>
+          </span> */}
+          <img src={Logo}  className="w-20 h-10"/>
         </NavLink>
 
         <ul className="hidden items-center justify-center gap-6 xl:flex xl:gap-9">
@@ -105,7 +106,7 @@ const Navbar = () => {
           {!isLoggedIn && (
             <button
               onClick={() => goTo("/signin")}
-              className="hidden whitespace-nowrap rounded-full bg-dark px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg sm:block"
+              className="hidden whitespace-nowrap rounded-full bg-darkBlue px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg sm:block"
             >
               Login / Sign Up
             </button>
@@ -117,7 +118,7 @@ const Navbar = () => {
             aria-label="Open my dashboard"
             className="hidden h-11 items-center gap-2 rounded-full border border-line bg-soft py-1 pl-1 pr-4 text-ink transition-all hover:border-sand hover:bg-line hover:shadow-md sm:flex"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-dark text-sm font-semibold text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-darkBlue text-sm font-semibold text-white">
               {isLoggedIn && user ? userName.charAt(0).toUpperCase() : <User size={16} />}
             </span>
            <span className="max-w-[90px] truncate text-sm font-medium">{isLoggedIn && user ? userName : "Account"}</span>
