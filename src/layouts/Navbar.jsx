@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ChevronDown, LogOut, Menu, Minus, Phone, ShieldCheck, User, X } from "lucide-react";
+
+import SignInModal from "../pages/SignIn";
+import SignUpModal from "../pages/SignUp";
+
 import Logo from "../assets/image/rayyalogo.png"
 const PHONE = "+91-9028849207";
 
@@ -21,6 +25,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [authMode, setAuthMode] = useState(null);
 
   const isLoggedIn = !!localStorage.getItem("token");
   const userName = user?.fullName || user?.name || user?.username || "User";
@@ -66,7 +71,7 @@ const Navbar = () => {
   const desktopLinkClass = ({ isActive }) =>
     `whitespace-nowrap border-b-2 pb-1 uppercase transition-all duration-200  ${
       isActive
-        ? "border-brown font-serif text-base  sm:text-lg bg-lightBrown px-2 py-1 rounded-lg text-white "
+        ? "border-brown font-serif text-base  sm:text-lg bg-brown px-2 py-1 rounded-lg text-white "
         : "border-transparent text-[11px] font-medium tracking-[0.18em] text-darkBlue "
     }`;
 
@@ -105,7 +110,8 @@ const Navbar = () => {
 
           {!isLoggedIn && (
             <button
-              onClick={() => goTo("/signin")}
+              // onClick={() => goTo("/signin")}
+              onClick={() => setAuthMode("signin")}
               className="hidden whitespace-nowrap rounded-full bg-darkBlue px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg sm:block"
             >
               Login / Sign Up
@@ -161,8 +167,8 @@ const Navbar = () => {
           >
             <Phone size={18} className="text-darkBlue" />
             <span className="leading-tight">
-              <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-darkBlue">Concierge Support</span>
-              <span className="block text-[15px] font-semibold text-ink">{PHONE}</span>
+              {/* <span className="block text-[10px] font-medium uppercase tracking-[0.15em] text-darkBlue">Concierge Support</span>
+              <span className="block text-[15px] font-semibold text-ink">{PHONE}</span> */}
             </span>
           </a>
 
@@ -213,6 +219,18 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      <SignInModal
+        open={authMode === "signin"}
+        onClose={() => setAuthMode(null)}
+        onSwitchToSignUp={() => setAuthMode("signup")}
+      />
+      <SignUpModal
+        open={authMode === "signup"}
+        onClose={() => setAuthMode(null)}
+        onSwitchToSignIn={() => setAuthMode("signin")}
+      />
+
     </header>
   );
 };

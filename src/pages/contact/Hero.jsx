@@ -3,9 +3,9 @@ import { contactImages, contactInfo } from "../../data/contactData";
 import Reveal from "../../components/Reveal";
 
 const ContactHero = () => (
-  <section className="relative overflow-hidden bg-dark pb-40 pt-20 sm:pb-44 sm:pt-28 lg:pb-48">
+  <section className="relative overflow-hidden bg-darkBlue pb-40 pt-20 sm:pb-44 sm:pt-28 lg:pb-48">
     <img src={contactImages.hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
-    <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/75 to-dark/30" />
+    {/* <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/75 to-dark/30" /> */}
 
     <div className="relative mx-auto max-w-[1200px] px-4 sm:px-8 lg:px-16">
       <Reveal>

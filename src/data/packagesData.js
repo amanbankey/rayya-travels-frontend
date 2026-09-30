@@ -42,7 +42,7 @@ export const trendingDestinations = [
     country: "United Arab Emirates",
     city: "Dubai",
     text: "Modern Marvels & Desert Luxury",
-    count: "18 Curated Packages",
+    count: "",
   },
   {
     id: 2,
@@ -50,7 +50,7 @@ export const trendingDestinations = [
     country: "Indian Ocean",
     city: "Maldives",
     text: "Private Atoll & Overwater Sanctuary",
-    count: "12 Curated Packages",
+    count: "",
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ export const trendingDestinations = [
     country: "India (Domestic)",
     city: "Kashmir",
     text: "Paradise on Earth & Alpine Valleys",
-    count: "14 Curated Packages",
+    count: "",
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ export const trendingDestinations = [
     country: "Indonesia",
     city: "Bali",
     text: "Tropical Serenity & Sacred Temples",
-    count: "22 Curated Packages",
+    count: "",
   },
 ];
 
@@ -239,7 +239,7 @@ export const packages = [
 ];
 
 export const signatureShowcase = {
-  tag: "Private Atoll Retreat",
+  tag: "",
   title: "Maldives Overwater Sanctuary",
   text:
     "Unwind in an architectural haven suspended directly over crystalline lagoons. Includes private seaplane transfers, daily sunset champagne tastings, curated private sandbank picnics, and 24/7 dedicated island butler service.",

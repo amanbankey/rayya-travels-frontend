@@ -54,14 +54,14 @@ const InquiryInfo = () => (
       <div className="relative mt-8 h-[220px] overflow-hidden rounded-md bg-mist sm:h-[240px]">
         <img src={contactImages.inquiry} alt="Private travel folio curation" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent" />
-        <div className="absolute bottom-0 p-5">
+        {/* <div className="absolute bottom-0 p-5">
           <p className="font-serif text-xl italic leading-snug text-white sm:text-2xl">
             “Every journey should feel effortless before you even pack.”
           </p>
           <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-peach">
             Private Travel Folio Curation
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   </Reveal>

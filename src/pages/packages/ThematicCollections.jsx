@@ -7,7 +7,7 @@ const ThematicCollections = () => (
     <div className="mx-auto max-w-[1300px]">
       <Reveal>
         <div className="text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Thematic Collections</p>
+          {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Thematic Collections</p> */}
           <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Holidays Designed Around You</h2>
           <p className="mx-auto mt-3 max-w-[520px] text-sm text-ink/70">
             Whether celebrating romance, traveling with three generations, or escaping into untamed wilderness.
@@ -36,12 +36,12 @@ const ThematicCollections = () => (
                   ))}
                 </ul>
 
-                <a
+                {/* <a
                   href="#packages"
                   className="mt-5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-brown hover:text-ink"
                 >
                   {collection.link} <ArrowRight size={12} />
-                </a>
+                </a> */}
               </article>
             </Reveal>
           );

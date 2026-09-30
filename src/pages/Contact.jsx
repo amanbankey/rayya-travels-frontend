@@ -31,10 +31,10 @@ const Contact = () => {
       </section>
 
       <HeadOffice />
-      <HelpPathways onSelect={handlePathwaySelect} />
-            <ConnectChannels />
+      {/* <HelpPathways onSelect={handlePathwaySelect} /> */}
+            {/* <ConnectChannels /> */}
       <FaqSection />
-      <ReadyCta />
+      {/* <ReadyCta /> */}
     </main>
   );
 };

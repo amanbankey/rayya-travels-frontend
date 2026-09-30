@@ -31,7 +31,7 @@ const FlightCard = ({ flight, onSelect }) => {
   const renderDetails = () => {
     if (details.type === "legs") return <RouteLegs legs={flight.legs} />;
     if (details.type === "specs") return <FlightSpecs flight={flight} />;
-    return <FareTiers tiers={fareTiers} selected={tier} onSelect={setTier} />;
+    // return <FareTiers tiers={fareTiers} selected={tier} onSelect={setTier} />;
   };
 
   return (

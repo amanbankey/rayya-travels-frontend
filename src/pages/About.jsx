@@ -18,13 +18,13 @@ const About = () => (
     <Approach />
     <IataTicketing />
        <WhyTrust />
-    <BusinessCrew />
-    <GlobalHorizons />
+    {/* <BusinessCrew /> */}
+    {/* <GlobalHorizons /> */}
     <VisionMission />
-    <ThoughtfulPlanning />
-    <ServicesStrip />
+    {/* <ThoughtfulPlanning /> */}
+    {/* <ServicesStrip /> */}
     <VisitOffice />
-    <ExploreWorld />
+    {/* <ExploreWorld /> */}
   </main>
 );
 

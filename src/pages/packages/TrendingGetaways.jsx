@@ -16,7 +16,7 @@ const TrendingGetaways = () => {
         <Reveal>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Destinations</p>
+              {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Destinations</p> */}
               <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Trending Getaways</h2>
               <p className="mt-2 text-sm text-ink/70">Where discerning travelers are booking right now.</p>
             </div>
@@ -57,19 +57,19 @@ const TrendingGetaways = () => {
                   <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-peach">{place.country}</p>
                   <h3 className="mt-1 font-serif text-2xl font-medium text-white">{place.city}</h3>
                   <p className="mt-1 text-xs text-white/75">{place.text}</p>
-                  <div className="mt-3 flex items-center justify-between border-t border-white/20 pt-2 text-[11px] font-medium">
+                  {/* <div className="mt-3 flex items-center justify-between border-t border-white/20 pt-2 text-[11px] font-medium">
                     <span className="text-white/70">{place.count}</span>
                     <span className="flex items-center gap-1 uppercase tracking-[0.1em] text-peach">
                       Explore <ArrowRight size={11} />
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </article>
             </Reveal>
           ))}
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-medium uppercase tracking-[0.1em] text-ink/60">Also Trending:</span>
             {alsoTrending.map((item) => (
@@ -84,7 +84,7 @@ const TrendingGetaways = () => {
           >
             View all 40+ destinations <ArrowRight size={12} />
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );

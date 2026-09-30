@@ -15,8 +15,8 @@ const Packages = () => (
     <AvailablePackages />
     <SignatureShowcase />
     <ThematicCollections />
-    <CustomItineraryCta />
-    <PackagesFaq />
+    {/* <CustomItineraryCta /> */}
+    {/* <PackagesFaq /> */}
   </main>
 );
 

@@ -28,15 +28,15 @@ const HeadOffice = () => {
                   <Building2 size={20} />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-brown">Registered Legal Entity</p>
-                  <h3 className="text-lg font-medium text-ink sm:text-xl">{contactInfo.entity}</h3>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-darkBlue">Registered Legal Entity</p>
+                  <h3 className="text-lg font-medium text-darkBlue sm:text-xl">{contactInfo.entity}</h3>
                 </div>
               </div>
 
-              <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.1em] text-ink">Corporate Address</p>
-              <p className="mt-2 text-base leading-relaxed text-ink/80">{contactInfo.address}</p>
+              <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.1em] text-darkBlue">Corporate Address</p>
+              <p className="mt-2 text-base leading-relaxed text-darkBlue/80">{contactInfo.address}</p>
 
-              <ul className="mt-6 space-y-3 text-base text-ink">
+              <ul className="mt-6 space-y-3 text-base text-darkBlue">
                 <li className="flex items-center gap-3">
                   <Phone size={17} className="shrink-0 text-brown" />
                   <a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a>
@@ -89,14 +89,14 @@ const HeadOffice = () => {
 
               <div className="absolute inset-x-4 bottom-4 flex flex-col gap-3 rounded-sm bg-white px-4 py-3 shadow-md sm:left-auto sm:w-[400px] sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-brown">Sector 90 Metro Corridor</p>
-                  <p className="text-sm font-medium text-ink">Bhutani Alphathum Tower C</p>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-darkBlue">Sector 90 Metro Corridor</p>
+                  <p className="text-sm font-medium text-darkBlue">Bhutani Alphathum Tower C</p>
                 </div>
                  <a
                   href={contactInfo.mapsLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="shrink-0 rounded-sm bg-dark px-4 py-2.5 text-center text-xs font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-ink"
+                  className="shrink-0 rounded-sm bg-brown px-4 py-2.5 text-center text-xs font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-ink"
                 >
                   Open Maps
                 </a>

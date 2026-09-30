@@ -3,7 +3,7 @@ import { packagesImages, signatureShowcase } from "../../data/packagesData";
 import Reveal from "../../components/Reveal";
 
 const SignatureShowcase = () => (
-  <section className="bg-dark px-4 py-14 sm:px-8 lg:px-12 lg:py-20">
+  <section className="bg-darkBlue px-4 py-14 sm:px-8 lg:px-12 lg:py-20">
     <div className="mx-auto max-w-[1200px]">
       <Reveal>
         <div className="grid gap-8 rounded-2xl bg-slate-900/40 p-4 lg:grid-cols-2 lg:gap-10 lg:p-8">
@@ -32,7 +32,7 @@ const SignatureShowcase = () => (
               })}
             </ul>
 
-            <div className="mt-7 flex flex-col gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-7 flex flex-col gap-4 border-t border- pt-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.1em] text-white/60">All Inclusive Starting From</p>
                 <p className="mt-1 font-serif text-3xl font-medium text-white">
@@ -40,7 +40,7 @@ const SignatureShowcase = () => (
                 </p>
                 <p className="text-xs text-white/50">per person on twin sharing</p>
               </div>
-              <button className="flex items-center justify-center gap-2 rounded-lg bg-brown px-6 py-3.5 text-sm font-medium text-white transition-all hover:bg-[#8b6538] hover:shadow-lg">
+              <button className="flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-3.5 text-sm font-medium text-white transition-all   hover:shadow-lg">
                 Explore Luxury Package <ArrowRight size={15} />
               </button>
             </div>

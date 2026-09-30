@@ -44,7 +44,16 @@ export default {
         mist: "#e9e6e1",
         peach: "#fde2bd",navy: "#0b1628",
 slate: "#1e2738",
+
+        authBlue: "#0D1124",
+        authDarkBlue: "#1E2229",
+        authBrown: "#A13B00",
+        authLightBrown: "#E26325",
+        authDustyRose: "#E0C0B4",
+        authCream: "#FFDBCD",
+        authLightGray: "#EFEEEC",
       },
+      // SignIn / SignUp popup colors (brown upar override ho raha h, isliye alag)
       boxShadow: {
         card: "0 2px 24px rgba(120, 90, 50, 0.07)",
       },

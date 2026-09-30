@@ -163,7 +163,7 @@ const InquiryForm = ({ service, onServiceChange }) => {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-6 flex w-full items-center justify-center gap-2.5 rounded-sm bg-dark py-4 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg disabled:opacity-60"
+          className="mt-6 flex w-full items-center justify-center gap-2.5 rounded-sm bg-darkBlue py-4 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg disabled:opacity-60"
         >
           {status === "loading" ? "Sending..." : "Send Travel Inquiry"} <Send size={15} />
         </button>
