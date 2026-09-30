@@ -13,6 +13,7 @@ import {
   Sparkles,
   User,
   Wallet,
+  X,
 } from "lucide-react";
 
 const tabs = [
@@ -151,7 +152,9 @@ const DashboardLayout = () => {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      return toast.error("Photo must be under 2MB");
+      toast.error("Photo must be under 2MB");
+      e.target.value = "";
+      return;
     }
 
     const reader = new FileReader();
@@ -162,6 +165,17 @@ const DashboardLayout = () => {
     };
 
     reader.readAsDataURL(file);
+  };
+
+  // Remove uploaded profile photo
+  const handleRemovePhoto = () => {
+    updateProfile({ ...profile, photo: "" });
+
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+
+    toast.success("Profile photo removed");
   };
 
   const handleLogout = () => {
@@ -222,14 +236,14 @@ const DashboardLayout = () => {
           </div>
 
           {/* Sign out */}
-        <button
-  type="button"
-  onClick={handleLogout}
-  className="absolute right-3 top-1.5 z-10 flex items-center gap-1.5 rounded-full bg-dark px-3 py-1.5 text-[11px] font-medium text-white shadow-lg shadow-dark/20 transition-all hover:-translate-y-0.5 hover:bg-brown sm:text-xs"
->
-  <LogOut size={12} />
-  Sign Out
-</button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="absolute right-3 top-1.5 z-10 flex items-center gap-1.5 rounded-full bg-dark px-3 py-1.5 text-[11px] font-medium text-white shadow-lg shadow-dark/20 transition-all hover:-translate-y-0.5 hover:bg-brown sm:text-xs"
+          >
+            <LogOut size={12} />
+            Sign Out
+          </button>
 
           {/* Compact card content */}
           <div className="relative flex flex-col gap-5 px-5 pb-5 pt-16 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:pb-6 sm:pt-16">
@@ -243,7 +257,7 @@ const DashboardLayout = () => {
                   {profile.photo ? (
                     <img
                       src={profile.photo}
-                      alt=""
+                      alt="Profile"
                       className="h-full w-full object-cover"
                     />
                   ) : (
@@ -251,14 +265,29 @@ const DashboardLayout = () => {
                   )}
                 </div>
 
+                {/* Upload / Change photo */}
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
                   aria-label="Change photo"
+                  title="Change photo"
                   className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-brown text-white shadow-lg transition-transform hover:scale-110 hover:bg-dark"
                 >
                   <Camera size={14} />
                 </button>
+
+                {/* Remove photo button - visible only when a photo is uploaded */}
+                {profile.photo && (
+                  <button
+                    type="button"
+                    onClick={handleRemovePhoto}
+                    aria-label="Remove profile photo"
+                    title="Remove photo"
+                    className="absolute -right-2 -top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-brown text-white shadow-md transition-transform hover:scale-110 hover:bg-dark"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
               </div>
 
               <div className="min-w-0">
