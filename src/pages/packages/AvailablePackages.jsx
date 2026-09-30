@@ -116,6 +116,7 @@ const AvailablePackages = () => {
               </div>
             )}
 
+
             <div className="mt-8 flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-ink/65">Showing 1 – {visiblePackages.length} of 128 Handcrafted Packages</p>
               <div className="flex items-center gap-2">
