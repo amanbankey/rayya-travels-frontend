@@ -9,7 +9,7 @@ import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
-
+import Packages from './pages/Packages'
 import Visa from './pages/Visa'
 import Flights from './pages/Flights'
 import DashboardLayout from './pages/user/DashboardLayout'
@@ -50,6 +50,11 @@ function App() {
           <Route
             path="visa"
             element={<Visa />}
+          />
+          
+          <Route
+            path="packages"
+            element={<Packages />}
           />
 
           <Route path="user-dashboard" element={<DashboardLayout />}>
