@@ -18,8 +18,10 @@ export default {
         darkBlue: "#1E2229",
         blue: "#0D1124" ,
         dustyRose: "#E0C0B4",
+        cream: "#FFDBCD", 
+        lightGray:"#EFEEEC",
 
-        cream: "#f6f2ea",
+
         paper: "#fbfaf7",
         soft: "#efe9de",
         line: "#e8e1d4",

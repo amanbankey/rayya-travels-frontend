@@ -27,13 +27,13 @@ const DateStrip = ({ dates, selected, onSelect }) => {
               <button
                 key={date.id}
                 onClick={() => onSelect(date.id)}
-                className="min-w-[180px] flex-1 rounded-xl bg-dark px-3 py-5 text-center text-white shadow-lg transition-transform"
+                className="min-w-[180px] flex-1 rounded-xl bg-darkBlue px-3 py-5 text-center text-white shadow-lg transition-transform"
               >
                 <span className="flex items-center justify-center gap-1.5 text-[12px] font-medium tracking-[0.15em]">
                   <PlaneTakeoff size={15} /> {date.label}
                 </span>
                 <span className="mt-1 block text-lg font-medium">Depart Active</span>
-                <span className="mx-auto mt-2 block max-w-[140px] rounded-lg bg-brown px-3 py-2 text-[11px] font-medium uppercase leading-tight tracking-[0.12em]">
+                <span className="mx-auto mt-2 block max-w-[140px] text-darkBlue rounded-lg bg-dustyRose px-3 py-2 text-[11px] font-medium uppercase leading-tight tracking-[0.12em]">
                   Selected Departure
                 </span>
               </button>

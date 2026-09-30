@@ -11,13 +11,13 @@ const Provenance = () => (
         <div className="relative h-80 overflow-hidden rounded-2xl bg-soft sm:h-[420px] lg:h-full lg:min-h-[460px]">
           <img src={provenance.image} alt={provenance.imageTitle} className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent" />
-          <div className="absolute bottom-0 p-5 sm:p-6">
+          {/* <div className="absolute bottom-0 p-5 sm:p-6">
             <span className="rounded-full bg-paper/20 px-2.5 py-1 text-[7px] font-medium uppercase tracking-[0.2em] text-paper backdrop-blur">
               {provenance.doctrine}
             </span>
             <h3 className="mt-3 font-serif text-2xl font-medium text-paper">{provenance.imageTitle}</h3>
             <p className="mt-2 max-w-sm text-[11px] leading-relaxed text-paper/80">{provenance.imageText}</p>
-          </div>
+          </div> */}
         </div>
       </Reveal>
 

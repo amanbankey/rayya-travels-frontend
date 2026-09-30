@@ -9,9 +9,7 @@ const ContactHero = () => (
 
     <div className="relative mx-auto max-w-[1200px] px-4 sm:px-8 lg:px-16">
       <Reveal>
-        <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-peach">
-          <span className="h-px w-8 bg-peach" /> Get in Touch
-        </p>
+       
 
         <h1 className="mt-5 font-serif text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
           Let’s Plan Your <span className="italic text-peach">Journey</span>

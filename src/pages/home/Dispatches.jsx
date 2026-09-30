@@ -7,13 +7,13 @@ const Dispatches = () => (
   <section className="mx-auto max-w-7xl px-4 py-12 sm:px-8 lg:px-12">
     <Reveal>
       <SectionHeader
-        eyebrow="The Raaya Gazette"
+        eyebrow=""
         title="Dispatches & Essays"
         text="Musings on architectural romance, slow regional cuisines, and the cultural philosophy of restorative wanderlust."
       >
-        <a href="#essays" className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.18em] text-muted hover:text-ink">
+        {/* <a href="#essays" className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.18em] text-muted hover:text-ink">
           Read all essays <ArrowUpRight size={11} />
-        </a>
+        </a> */}
       </SectionHeader>
     </Reveal>
 
@@ -28,9 +28,9 @@ const Dispatches = () => (
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
-            <p className="mt-4 text-[8px] font-medium uppercase tracking-[0.2em] text-muted">
+            {/* <p className="mt-4 text-[8px] font-medium uppercase tracking-[0.2em] text-muted">
               {essay.category} • {essay.read}
-            </p>
+            </p> */}
             <h3 className="mt-2 font-serif text-lg font-medium text-ink transition-colors group-hover:text-sand">{essay.title}</h3>
             <p className="mt-2 text-[11px] leading-relaxed text-muted">{essay.text}</p>
           </article>
