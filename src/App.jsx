@@ -17,6 +17,7 @@ import MyBookings from './pages/user/MyBookings'
 import WalletHistory from './pages/user/WalletHistory'
 import AppliedVisaHistory from './pages/user/AppliedVisaHistory'
 import Packages from './pages/Packages'
+import AdminDashboard from './pages/admin/Dashboard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,6 +27,7 @@ function App() {
       <ScrollToTop />
 
       <Routes>
+        <Route path="/admin" element={<AdminDashboard />} />
  
         <Route path="/" element={<Layout />}>
 
