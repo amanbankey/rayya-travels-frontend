@@ -1,12 +1,12 @@
-export const StatCard = ({ label, value, valueClass = "text-navy-900", dark = false }) => (
+export const StatCard = ({ label, value, valueClass = "text-gray-900", dark = false }) => (
   <div
-    className={`group rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 ${
-      dark
-        ? "border-transparent bg-gradient-to-br from-navy-900 to-navy-700 shadow-lg shadow-navy-900/20"
-        : "border-stone-200 bg-white shadow-card hover:shadow-[0_18px_40px_-20px_rgba(168,64,0,0.35)]"
+    className={`rounded-xl p-4 border ${
+      dark ? "bg-[#0B1E3E] border-transparent" : "bg-white border-gray-200"
     }`}
   >
-    <p className={`mb-1 text-[11px] font-semibold uppercase tracking-wider ${dark ? "text-navy-200" : "text-stone-400"}`}>{label}</p>
-    <p className={`font-serif text-2xl font-semibold ${dark ? "text-white" : valueClass}`}>{value}</p>
+    <p className={`text-[11px] font-semibold tracking-wide mb-1 ${dark ? "text-gray-300" : "text-gray-400"}`}>
+      {label}
+    </p>
+    <p className={`text-xl font-bold ${dark ? "text-white" : valueClass}`}>{value}</p>
   </div>
 );

@@ -1,3 +1,4 @@
+import { FiCreditCard as PageIcon } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import {
   FiPlus,
@@ -24,97 +25,14 @@ import {
   TbPlaneArrival,
 } from "react-icons/tb";
 
-// ======================================================
-// DUMMY DATA (backend removed)
-// ======================================================
-
-let visaStore = [
-  {
-    _id: "v1",
-    going_from: "India",
-    going_to: "UAE",
-    description: "Dubai Visa 30 Days Single Entry",
-    about: "Tourist visa for Dubai and other emirates, valid for a 30 day stay.",
-    spec: "E-Visa",
-    entry: "Single",
-    validity: "60 Days",
-    duration: "30 Days",
-    documents: "Passport, Photo, PAN Card",
-    processing_time: "2-5 Working Days",
-    amount: "7150",
-    child_amount: "1300",
-    absconding_fees: "4000",
-    status: "Active",
-  },
-  {
-    _id: "v2",
-    going_from: "India",
-    going_to: "Singapore",
-    description: "Singapore Tourist Visa 30 Days",
-    about: "Short stay tourist visa for Singapore.",
-    spec: "E-Visa",
-    entry: "Single",
-    validity: "90 Days",
-    duration: "30 Days",
-    documents: "Passport, Photo, Bank Statement, Return Ticket",
-    processing_time: "3-5 Working Days",
-    amount: "4200",
-    child_amount: "4200",
-    absconding_fees: "0",
-    status: "Active",
-  },
-  {
-    _id: "v3",
-    going_from: "India",
-    going_to: "Thailand",
-    description: "Thailand Tourist Visa 60 Days",
-    about: "Tourist visa for Thailand with 60 days stay.",
-    spec: "Sticker",
-    entry: "Single",
-    validity: "90 Days",
-    duration: "60 Days",
-    documents: "Passport, Photo, Hotel Voucher",
-    processing_time: "4-6 Working Days",
-    amount: "2500",
-    child_amount: "2500",
-    absconding_fees: "0",
-    status: "Active",
-  },
-  {
-    _id: "v4",
-    going_from: "India",
-    going_to: "Saudi Arabia",
-    description: "KSA Tourist Visa 30 Days",
-    about: "Tourist e-visa for Saudi Arabia.",
-    spec: "E-Visa",
-    entry: "Multiple",
-    validity: "365 Days",
-    duration: "30 Days",
-    documents: "Passport, Photo",
-    processing_time: "2-4 Working Days",
-    amount: "9800",
-    child_amount: "9800",
-    absconding_fees: "1500",
-    status: "Deactive",
-  },
-  {
-    _id: "v5",
-    going_from: "United Arab Emirates",
-    going_to: "Saudi Arabia",
-    description: "30 Days Tourist Visa - KSA",
-    about: "Standard tourist e-visa valid for 30 days from entry.",
-    spec: "E-Visa",
-    entry: "Single",
-    validity: "90 Days",
-    duration: "30 Days",
-    documents: "Passport Front Page, Recent Photograph",
-    processing_time: "2-3 Working Days",
-    amount: "350",
-    child_amount: "250",
-    absconding_fees: "1500",
-    status: "Active",
-  },
-];
+import {
+  getVisas,
+  getVisaById,
+  addVisa,
+  updateVisa,
+  deleteVisa,
+  updateVisaStatus,
+} from "../../api/visaApi";
 
 
 // ======================================================
@@ -181,36 +99,43 @@ const GlobalVisaCatalog = () => {
   // FETCH VISAS
   // ======================================================
 
-  const fetchVisas = (
+  const fetchVisas = async (
     page = 1,
     currentFilters = filters
   ) => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const from = (currentFilters.going_from || "").trim().toLowerCase();
-    const to = (currentFilters.going_to || "").trim().toLowerCase();
-    const limit = 10;
+      const response = await getVisas({
+        page,
+        limit: 10,
+        going_from: currentFilters.going_from,
+        going_to: currentFilters.going_to,
+        status: currentFilters.status,
+      });
 
-    const filtered = visaStore.filter(
-      (item) =>
-        (!from || item.going_from.toLowerCase().includes(from)) &&
-        (!to || item.going_to.toLowerCase().includes(to)) &&
-        (!currentFilters.status || item.status === currentFilters.status)
-    );
+      if (response?.success) {
+        setVisas(response.visas || []);
 
-    const totalPages = Math.max(Math.ceil(filtered.length / limit), 1);
-    const safePage = Math.min(page, totalPages);
+        setPagination(
+          response.pagination || {
+            total: 0,
+            currentPage: page,
+            totalPages: 1,
+            limit: 10,
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Fetch visas error:", error);
 
-    setVisas(filtered.slice((safePage - 1) * limit, safePage * limit));
-
-    setPagination({
-      total: filtered.length,
-      currentPage: safePage,
-      totalPages,
-      limit,
-    });
-
-    setLoading(false);
+      alert(
+        error?.response?.data?.message ||
+          "Failed to load visa list"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
 
@@ -293,31 +218,47 @@ const GlobalVisaCatalog = () => {
   // EDIT MODAL
   // ======================================================
 
-  const openEditModal = (visa) => {
-    setOpenMenu(null);
+  const openEditModal = async (visa) => {
+    try {
+      setOpenMenu(null);
 
-    const data = visaStore.find((item) => item._id === visa._id) || visa;
+      const response = await getVisaById(visa._id);
 
-    setSelectedVisa(data);
+      if (response?.success) {
+        const data = response.visa;
 
-    setFormData({
-      going_from: data.going_from || "",
-      going_to: data.going_to || "",
-      description: data.description || "",
-      about: data.about || "",
-      spec: data.spec || "",
-      entry: data.entry || "",
-      validity: data.validity || "",
-      duration: data.duration || "",
-      documents: data.documents || "",
-      processing_time: data.processing_time || "",
-      amount: data.amount || "",
-      child_amount: data.child_amount || "0",
-      absconding_fees: data.absconding_fees || "",
-      status: data.status || "Active",
-    });
+        setSelectedVisa(data);
 
-    setModalType("edit");
+        setFormData({
+          going_from: data.going_from || "",
+          going_to: data.going_to || "",
+          description: data.description || "",
+          about: data.about || "",
+          spec: data.spec || "",
+          entry: data.entry || "",
+          validity: data.validity || "",
+          duration: data.duration || "",
+          documents: data.documents || "",
+          processing_time:
+            data.processing_time || "",
+          amount: data.amount || "",
+          child_amount:
+            data.child_amount || "0",
+          absconding_fees:
+            data.absconding_fees || "",
+          status: data.status || "Active",
+        });
+
+        setModalType("edit");
+      }
+    } catch (error) {
+      console.error("Get visa error:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to load visa details"
+      );
+    }
   };
 
 
@@ -325,13 +266,24 @@ const GlobalVisaCatalog = () => {
   // VIEW MODAL
   // ======================================================
 
-  const openViewModal = (visa) => {
-    setOpenMenu(null);
+  const openViewModal = async (visa) => {
+    try {
+      setOpenMenu(null);
 
-    const data = visaStore.find((item) => item._id === visa._id) || visa;
+      const response = await getVisaById(visa._id);
 
-    setSelectedVisa(data);
-    setModalType("view");
+      if (response?.success) {
+        setSelectedVisa(response.visa);
+        setModalType("view");
+      }
+    } catch (error) {
+      console.error("Get visa error:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to load visa details"
+      );
+    }
   };
 
 
@@ -350,37 +302,47 @@ const GlobalVisaCatalog = () => {
   // ADD / UPDATE
   // ======================================================
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    const isEdit = modalType === "edit";
+      let response;
 
-    if (isEdit) {
-      visaStore = visaStore.map((item) =>
-        item._id === selectedVisa._id
-          ? { ...item, ...formData }
-          : item
+      if (modalType === "edit") {
+        response = await updateVisa(
+          selectedVisa._id,
+          formData
+        );
+      } else {
+        response = await addVisa(formData);
+      }
+
+      if (response?.success) {
+        closeModal();
+
+        await fetchVisas(
+          modalType === "edit"
+            ? pagination.currentPage
+            : 1
+        );
+
+        alert(
+          response.message ||
+            "Visa saved successfully"
+        );
+      }
+    } catch (error) {
+      console.error("Save visa error:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to save visa"
       );
-    } else {
-      visaStore = [
-        { _id: `v${Date.now()}`, ...formData },
-        ...visaStore,
-      ];
+    } finally {
+      setSaving(false);
     }
-
-    closeModal();
-
-    fetchVisas(isEdit ? pagination.currentPage : 1);
-
-    setSaving(false);
-
-    alert(
-      isEdit
-        ? "Visa updated successfully"
-        : "Visa added successfully"
-    );
   };
 
 
@@ -388,7 +350,7 @@ const GlobalVisaCatalog = () => {
   // DELETE
   // ======================================================
 
-  const handleDelete = (visa) => {
+  const handleDelete = async (visa) => {
     setOpenMenu(null);
 
     const confirmed = window.confirm(
@@ -397,16 +359,37 @@ const GlobalVisaCatalog = () => {
 
     if (!confirmed) return;
 
-    visaStore = visaStore.filter((item) => item._id !== visa._id);
+    try {
+      setDeletingId(visa._id);
 
-    const nextPage =
-      visas.length === 1 && pagination.currentPage > 1
-        ? pagination.currentPage - 1
-        : pagination.currentPage;
+      const response = await deleteVisa(
+        visa._id
+      );
 
-    fetchVisas(nextPage);
+      if (response?.success) {
+        const nextPage =
+          visas.length === 1 &&
+          pagination.currentPage > 1
+            ? pagination.currentPage - 1
+            : pagination.currentPage;
 
-    alert("Visa deleted successfully");
+        await fetchVisas(nextPage);
+
+        alert(
+          response.message ||
+            "Visa deleted successfully"
+        );
+      }
+    } catch (error) {
+      console.error("Delete visa error:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to delete visa"
+      );
+    } finally {
+      setDeletingId(null);
+    }
   };
 
 
@@ -414,19 +397,46 @@ const GlobalVisaCatalog = () => {
   // STATUS
   // ======================================================
 
-  const handleStatusToggle = (visa) => {
-    const newStatus =
-      visa.status === "Active" ? "Deactive" : "Active";
+  const handleStatusToggle = async (visa) => {
+    try {
+      setStatusLoading(visa._id);
 
-    visaStore = visaStore.map((item) =>
-      item._id === visa._id ? { ...item, status: newStatus } : item
-    );
+      const newStatus =
+        visa.status === "Active"
+          ? "Deactive"
+          : "Active";
 
-    setVisas((prev) =>
-      prev.map((item) =>
-        item._id === visa._id ? { ...item, status: newStatus } : item
-      )
-    );
+      const response =
+        await updateVisaStatus(
+          visa._id,
+          newStatus
+        );
+
+      if (response?.success) {
+        setVisas((prev) =>
+          prev.map((item) =>
+            item._id === visa._id
+              ? {
+                  ...item,
+                  status: newStatus,
+                }
+              : item
+          )
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Status update error:",
+        error
+      );
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to update status"
+      );
+    } finally {
+      setStatusLoading(null);
+    }
   };
 
 
@@ -457,7 +467,7 @@ const GlobalVisaCatalog = () => {
       Only table container will scroll horizontally.
     */
 
-    <div className="h-full w-full overflow-hidden bg-page">
+    <div className="h-full w-full overflow-hidden bg-[#f6f7fb]">
 
       <div className="flex h-full min-h-0 w-full flex-col p-4 sm:p-5 lg:p-6">
 
@@ -470,7 +480,7 @@ const GlobalVisaCatalog = () => {
 
           <div>
 
-            <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-stone-400">
+            <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-navy-400">
 
               <span>Operations</span>
 
@@ -480,7 +490,7 @@ const GlobalVisaCatalog = () => {
 
               <span>›</span>
 
-              <span className="font-semibold text-ember-600">
+              <span className="font-semibold text-ember-500">
                 Visas List
               </span>
 
@@ -489,29 +499,23 @@ const GlobalVisaCatalog = () => {
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-600/10">
+              <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-500/10">
                 <FiGlobe
                   size={21}
-                  className="text-ember-600"
+                  className="text-ember-500"
                 />
               </div>
 
 
               <div>
 
-                <h1 className="font-serif text-[23px] font-semibold tracking-tight text-navy-900">
-                  Global Visa Catalog
-                </h1>
-
-                <p className="text-xs text-stone-400">
-                  Manage visa routes and visa
-                  information
-                </p>
+                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Global Visa Catalog</h1><p className="text-navy-400 mt-0.5">Manage visa routes and visa
+                  information</p></div></div>
 
               </div>
 
 
-              <span className="hidden rounded-full bg-ember-600/10 px-3 py-1.5 text-xs font-bold text-ember-600 sm:block">
+              <span className="hidden rounded-full bg-ember-500/10 px-3 py-1.5 text-xs font-bold text-ember-500 sm:block">
                 {pagination.total} Visas
               </span>
 
@@ -531,7 +535,7 @@ const GlobalVisaCatalog = () => {
               justify-center
               gap-2
               rounded-2xl
-              bg-navy-900
+              bg-[#0f172a]
               px-5
               py-3
               text-sm
@@ -540,7 +544,7 @@ const GlobalVisaCatalog = () => {
               shadow-[0_10px_25px_rgba(15,23,42,0.15)]
               transition-all
               hover:-translate-y-0.5
-              hover:bg-navy-800
+              hover:bg-[#1e293b]
             "
           >
 
@@ -568,20 +572,20 @@ const GlobalVisaCatalog = () => {
             overflow-hidden
             rounded-3xl
             border
-            border-stone-200/80
+            border-navy-100/80
             bg-white
             shadow-[0_8px_30px_rgba(15,23,42,0.04)]
           "
         >
 
-          <div className="flex items-center justify-between border-b border-stone-100 px-5 py-3.5">
+          <div className="flex items-center justify-between border-b border-navy-50 px-5 py-3.5">
 
             <div className="flex items-center gap-2.5">
 
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-ember-600/10">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-ember-500/10">
                 <FiFilter
                   size={15}
-                  className="text-ember-600"
+                  className="text-ember-500"
                 />
               </div>
 
@@ -591,7 +595,7 @@ const GlobalVisaCatalog = () => {
                   Search & Filter
                 </p>
 
-                <p className="text-[10px] text-stone-400">
+                <p className="text-[10px] text-navy-400">
                   Find visa routes
                 </p>
 
@@ -640,7 +644,7 @@ const GlobalVisaCatalog = () => {
 
             <div>
 
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-500">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-navy-500">
                 Status
               </label>
 
@@ -653,14 +657,14 @@ const GlobalVisaCatalog = () => {
                   w-full
                   rounded-2xl
                   border
-                  border-stone-200
-                  bg-stone-50/50
+                  border-navy-100
+                  bg-[#EEF3F7]
                   px-3.5
                   text-sm
-                  text-stone-700
+                  text-navy-700
                   outline-none
                   transition
-                  focus:border-ember-600/50
+                  focus:border-ember-500/50
                   focus:bg-white
                 "
               >
@@ -693,14 +697,14 @@ const GlobalVisaCatalog = () => {
                 justify-center
                 gap-2
                 rounded-2xl
-                bg-ember-600
+                bg-ember-500
                 px-5
                 text-sm
                 font-semibold
                 text-white
                 shadow-[0_7px_20px_rgba(86,101,214,0.22)]
                 transition
-                hover:bg-ember-700
+                hover:bg-[#4d5bd1]
               "
             >
 
@@ -723,14 +727,14 @@ const GlobalVisaCatalog = () => {
                 gap-2
                 rounded-2xl
                 border
-                border-stone-200
+                border-navy-100
                 bg-white
                 px-5
                 text-sm
                 font-semibold
-                text-stone-600
+                text-navy-600
                 transition
-                hover:bg-stone-50
+                hover:bg-ember-50
               "
             >
 
@@ -760,7 +764,7 @@ const GlobalVisaCatalog = () => {
             overflow-hidden
             rounded-3xl
             border
-            border-stone-200/80
+            border-navy-100/80
             bg-white
             shadow-[0_10px_35px_rgba(15,23,42,0.05)]
           "
@@ -768,7 +772,7 @@ const GlobalVisaCatalog = () => {
 
           {/* TABLE TOP */}
 
-          <div className="flex shrink-0 items-center justify-between border-b border-stone-100 px-5 py-4">
+          <div className="flex shrink-0 items-center justify-between border-b border-navy-50 px-5 py-4">
 
             <div>
 
@@ -776,14 +780,14 @@ const GlobalVisaCatalog = () => {
                 Visa Routes
               </h2>
 
-              <p className="mt-0.5 text-[11px] text-stone-400">
+              <p className="mt-0.5 text-[11px] text-navy-400">
                 All configured visa products
               </p>
 
             </div>
 
 
-            <div className="flex items-center gap-2 text-xs text-stone-400">
+            <div className="flex items-center gap-2 text-xs text-navy-400">
 
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
 
@@ -807,9 +811,9 @@ const GlobalVisaCatalog = () => {
 
             <table className="w-full min-w-[1250px]">
 
-              <thead className="sticky top-0 z-10">
+              <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100 sticky top-0 z-10">
 
-                <tr className="border-b border-stone-100 bg-page">
+                <tr className="border-b border-navy-50 bg-[#f8f9fc]">
 
                   <TableHead>
                     SL
@@ -856,7 +860,7 @@ const GlobalVisaCatalog = () => {
 
                     <tr
                       key={index}
-                      className="border-b border-stone-100"
+                      className="border-b border-navy-50"
                     >
 
                       {Array.from({
@@ -869,7 +873,7 @@ const GlobalVisaCatalog = () => {
                             className="px-5 py-5"
                           >
 
-                            <div className="h-4 w-24 animate-pulse rounded-lg bg-stone-100" />
+                            <div className="h-4 w-24 animate-pulse rounded bg-navy-50" />
 
                           </td>
 
@@ -891,18 +895,18 @@ const GlobalVisaCatalog = () => {
                       className="px-5 py-16 text-center"
                     >
 
-                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-stone-100">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-navy-50">
                         <FiGlobe
                           size={23}
-                          className="text-stone-400"
+                          className="text-navy-400"
                         />
                       </div>
 
-                      <p className="mt-4 text-sm font-bold text-stone-700">
+                      <p className="mt-4 text-sm font-bold text-navy-700">
                         No visa routes found
                       </p>
 
-                      <p className="mt-1 text-xs text-stone-400">
+                      <p className="mt-1 text-xs text-navy-400">
                         Add a new visa or change
                         your filters.
                       </p>
@@ -934,9 +938,9 @@ const GlobalVisaCatalog = () => {
                           className="
                             group
                             border-b
-                            border-stone-100
+                            border-navy-50
                             transition
-                            hover:bg-page
+                            hover:bg-[#fafbff]
                           "
                         >
 
@@ -944,7 +948,7 @@ const GlobalVisaCatalog = () => {
 
                           <td className="px-5 py-5 align-top">
 
-                            <span className="text-xs font-bold text-stone-400">
+                            <span className="text-xs font-bold text-navy-400">
                               {String(
                                 (pagination.currentPage -
                                   1) *
@@ -966,11 +970,11 @@ const GlobalVisaCatalog = () => {
 
                             <div className="flex min-w-[250px] items-start gap-3">
 
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-ember-600/10">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-ember-500/10">
 
                                 <TbPlaneDeparture
                                   size={19}
-                                  className="text-ember-600"
+                                  className="text-ember-500"
                                 />
 
                               </div>
@@ -980,16 +984,16 @@ const GlobalVisaCatalog = () => {
 
                                 <div className="mb-1.5 flex items-center gap-1.5">
 
-                                  <span className="rounded-lg bg-stone-100 px-2 py-1 text-[9px] font-bold uppercase text-stone-600">
+                                  <span className="rounded-md bg-navy-50 px-2 py-1 text-[9px] font-bold uppercase text-navy-600">
                                     {visa.going_from ||
                                       "—"}
                                   </span>
 
-                                  <span className="text-xs text-stone-300">
+                                  <span className="text-xs text-navy-300">
                                     →
                                   </span>
 
-                                  <span className="rounded-lg bg-ember-600/10 px-2 py-1 text-[9px] font-bold uppercase text-ember-600">
+                                  <span className="rounded-md bg-ember-500/10 px-2 py-1 text-[9px] font-bold uppercase text-ember-500">
                                     {visa.going_to ||
                                       "—"}
                                   </span>
@@ -1005,7 +1009,7 @@ const GlobalVisaCatalog = () => {
 
                                 {visa.description && (
 
-                                  <p className="mt-1 max-w-[280px] truncate text-[11px] text-stone-400">
+                                  <p className="mt-1 max-w-[280px] truncate text-[11px] text-navy-400">
                                     {visa.description}
                                   </p>
 
@@ -1026,7 +1030,7 @@ const GlobalVisaCatalog = () => {
 
                               <div className="flex items-center gap-2">
 
-                                <span className="rounded-xl bg-navy-50 px-2.5 py-1 text-[10px] font-bold text-navy-600">
+                                <span className="rounded-xl bg-ember-50 px-2.5 py-1 text-[10px] font-bold text-ember-600">
                                   {visa.entry ||
                                     "—"}
                                 </span>
@@ -1034,25 +1038,25 @@ const GlobalVisaCatalog = () => {
                               </div>
 
 
-                              <p className="text-xs font-semibold text-stone-700">
+                              <p className="text-xs font-semibold text-navy-700">
                                 Duration:{" "}
-                                <span className="font-medium text-stone-500">
+                                <span className="font-medium text-navy-500">
                                   {visa.duration ||
                                     "—"}
                                 </span>
                               </p>
 
 
-                              <p className="text-xs font-semibold text-stone-700">
+                              <p className="text-xs font-semibold text-navy-700">
                                 Validity:{" "}
-                                <span className="font-medium text-stone-500">
+                                <span className="font-medium text-navy-500">
                                   {visa.validity ||
                                     "—"}
                                 </span>
                               </p>
 
 
-                              <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                              <div className="flex items-center gap-1.5 text-[11px] text-navy-400">
 
                                 <FiClock
                                   size={11}
@@ -1098,13 +1102,13 @@ const GlobalVisaCatalog = () => {
                                           gap-1.5
                                           rounded-xl
                                           border
-                                          border-stone-200
+                                          border-navy-100
                                           bg-white
                                           px-2.5
                                           py-1.5
                                           text-[10px]
                                           font-medium
-                                          text-stone-600
+                                          text-navy-600
                                         "
                                       >
 
@@ -1112,7 +1116,7 @@ const GlobalVisaCatalog = () => {
                                           size={
                                             11
                                           }
-                                          className="text-stone-400"
+                                          className="text-navy-400"
                                         />
 
                                         {doc}
@@ -1124,7 +1128,7 @@ const GlobalVisaCatalog = () => {
 
                               ) : (
 
-                                <span className="text-xs text-stone-400">
+                                <span className="text-xs text-navy-400">
                                   —
                                 </span>
 
@@ -1134,7 +1138,7 @@ const GlobalVisaCatalog = () => {
                               {documents.length >
                                 4 && (
 
-                                <span className="rounded-xl bg-stone-100 px-2 py-1.5 text-[10px] font-bold text-stone-500">
+                                <span className="rounded-xl bg-navy-50 px-2 py-1.5 text-[10px] font-bold text-navy-500">
                                   +
                                   {documents.length -
                                     4}
@@ -1259,11 +1263,11 @@ const GlobalVisaCatalog = () => {
                                 rounded-xl
                                 border
                                 border-transparent
-                                text-stone-400
+                                text-navy-400
                                 transition
-                                hover:border-stone-200
+                                hover:border-navy-100
                                 hover:bg-white
-                                hover:text-stone-700
+                                hover:text-navy-700
                               "
                             >
 
@@ -1287,7 +1291,7 @@ const GlobalVisaCatalog = () => {
                                   overflow-hidden
                                   rounded-2xl
                                   border
-                                  border-stone-200
+                                  border-navy-100
                                   bg-white
                                   p-1.5
                                   shadow-[0_15px_40px_rgba(15,23,42,0.15)]
@@ -1328,7 +1332,7 @@ const GlobalVisaCatalog = () => {
                                 />
 
 
-                                <div className="my-1 border-t border-stone-100" />
+                                <div className="my-1 border-t border-navy-50" />
 
 
                                 <ActionButton
@@ -1386,13 +1390,13 @@ const GlobalVisaCatalog = () => {
           {!loading &&
             visas.length > 0 && (
 
-            <div className="flex shrink-0 items-center justify-between border-t border-stone-100 px-5 py-3.5">
+            <div className="flex shrink-0 items-center justify-between border-t border-navy-50 px-5 py-3.5">
 
-              <p className="text-[11px] text-stone-400">
+              <p className="text-[11px] text-navy-400">
 
                 Showing{" "}
 
-                <span className="font-bold text-stone-600">
+                <span className="font-bold text-navy-600">
                   {(pagination.currentPage -
                     1) *
                     pagination.limit +
@@ -1401,7 +1405,7 @@ const GlobalVisaCatalog = () => {
 
                 {" "}–{" "}
 
-                <span className="font-bold text-stone-600">
+                <span className="font-bold text-navy-600">
                   {Math.min(
                     pagination.currentPage *
                       pagination.limit,
@@ -1411,7 +1415,7 @@ const GlobalVisaCatalog = () => {
 
                 {" "}of{" "}
 
-                <span className="font-bold text-stone-600">
+                <span className="font-bold text-navy-600">
                   {pagination.total}
                 </span>
 
@@ -1439,10 +1443,10 @@ const GlobalVisaCatalog = () => {
                     justify-center
                     rounded-xl
                     border
-                    border-stone-200
-                    text-stone-500
+                    border-navy-100
+                    text-navy-500
                     transition
-                    hover:bg-stone-50
+                    hover:bg-ember-50
                     disabled:opacity-40
                   "
                 >
@@ -1454,7 +1458,7 @@ const GlobalVisaCatalog = () => {
                 </button>
 
 
-                <span className="flex h-8 min-w-8 items-center justify-center rounded-xl bg-ember-600 px-2 text-[11px] font-bold text-white">
+                <span className="flex h-8 min-w-8 items-center justify-center rounded-xl bg-ember-500 px-2 text-[11px] font-bold text-white">
                   {pagination.currentPage}
                 </span>
 
@@ -1478,10 +1482,10 @@ const GlobalVisaCatalog = () => {
                     justify-center
                     rounded-xl
                     border
-                    border-stone-200
-                    text-stone-500
+                    border-navy-100
+                    text-navy-500
                     transition
-                    hover:bg-stone-50
+                    hover:bg-ember-50
                     disabled:opacity-40
                   "
                 >
@@ -1511,21 +1515,21 @@ const GlobalVisaCatalog = () => {
       {(modalType === "add" ||
         modalType === "edit") && (
 
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-navy-950/45 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm">
 
-          <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-[28px] border border-white/60 bg-white shadow-[0_30px_100px_rgba(15,23,42,0.25)]">
+          <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/60 bg-white shadow-[0_30px_100px_rgba(15,23,42,0.25)]">
 
 
             {/* HEADER */}
 
-            <div className="flex shrink-0 items-center justify-between border-b border-stone-100 px-6 py-5">
+            <div className="flex shrink-0 items-center justify-between border-b border-navy-50 px-6 py-5">
 
               <div className="flex items-center gap-3">
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-600/10">
+                <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-500/10">
                   <FiGlobe
                     size={20}
-                    className="text-ember-600"
+                    className="text-ember-500"
                   />
                 </div>
 
@@ -1538,7 +1542,7 @@ const GlobalVisaCatalog = () => {
                       : "Add New Visa Route"}
                   </h2>
 
-                  <p className="mt-0.5 text-[11px] text-stone-400">
+                  <p className="mt-0.5 text-[11px] text-navy-400">
                     Add complete visa information
                   </p>
 
@@ -1549,7 +1553,7 @@ const GlobalVisaCatalog = () => {
 
               <button
                 onClick={closeModal}
-                className="flex h-9 w-9 items-center justify-center rounded-2xl bg-stone-100 text-stone-500 transition hover:bg-stone-200"
+                className="flex h-9 w-9 items-center justify-center rounded-2xl bg-navy-50 text-navy-500 transition hover:bg-navy-100"
               >
 
                 <FiX size={17} />
@@ -1753,7 +1757,7 @@ const GlobalVisaCatalog = () => {
                     required
                   />
 
-                  <p className="mt-1.5 text-[10px] text-stone-400">
+                  <p className="mt-1.5 text-[10px] text-navy-400">
                     Add multiple documents separated
                     by commas.
                   </p>
@@ -1882,7 +1886,7 @@ const GlobalVisaCatalog = () => {
 
               {/* FOOTER */}
 
-              <div className="sticky bottom-0 flex shrink-0 justify-end gap-3 border-t border-stone-100 bg-white/95 px-6 py-4 backdrop-blur">
+              <div className="sticky bottom-0 flex shrink-0 justify-end gap-3 border-t border-navy-50 bg-white/95 px-6 py-4 backdrop-blur">
 
                 <button
                   type="button"
@@ -1890,14 +1894,14 @@ const GlobalVisaCatalog = () => {
                   className="
                     rounded-2xl
                     border
-                    border-stone-200
+                    border-navy-100
                     px-5
                     py-2.5
                     text-sm
                     font-semibold
-                    text-stone-600
+                    text-navy-600
                     transition
-                    hover:bg-stone-50
+                    hover:bg-ember-50
                   "
                 >
                   Cancel
@@ -1909,7 +1913,7 @@ const GlobalVisaCatalog = () => {
                   disabled={saving}
                   className="
                     rounded-2xl
-                    bg-ember-600
+                    bg-ember-500
                     px-6
                     py-2.5
                     text-sm
@@ -1917,7 +1921,7 @@ const GlobalVisaCatalog = () => {
                     text-white
                     shadow-[0_8px_20px_rgba(86,101,214,0.22)]
                     transition
-                    hover:bg-ember-700
+                    hover:bg-[#4d5bd1]
                     disabled:cursor-not-allowed
                     disabled:opacity-60
                   "
@@ -1951,21 +1955,21 @@ const GlobalVisaCatalog = () => {
       {modalType === "view" &&
         selectedVisa && (
 
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-navy-950/45 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm">
 
-          <div className="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_30px_100px_rgba(15,23,42,0.25)]">
+          <div className="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-[0_30px_100px_rgba(15,23,42,0.25)]">
 
 
             {/* HEADER */}
 
-            <div className="flex shrink-0 items-center justify-between border-b border-stone-100 px-6 py-5">
+            <div className="flex shrink-0 items-center justify-between border-b border-navy-50 px-6 py-5">
 
               <div className="flex items-center gap-3">
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-600/10">
+                <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-500/10">
                   <FiGlobe
                     size={20}
-                    className="text-ember-600"
+                    className="text-ember-500"
                   />
                 </div>
 
@@ -1976,7 +1980,7 @@ const GlobalVisaCatalog = () => {
                     Visa Details
                   </h2>
 
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-navy-400">
                     {selectedVisa.going_from}{" "}
                     →{" "}
                     {selectedVisa.going_to}
@@ -1989,7 +1993,7 @@ const GlobalVisaCatalog = () => {
 
               <button
                 onClick={closeModal}
-                className="flex h-9 w-9 items-center justify-center rounded-2xl bg-stone-100 text-stone-500"
+                className="flex h-9 w-9 items-center justify-center rounded-2xl bg-navy-50 text-navy-500"
               >
                 <FiX size={17} />
               </button>
@@ -2005,7 +2009,7 @@ const GlobalVisaCatalog = () => {
 
               {/* ROUTE HERO */}
 
-              <div className="mb-5 rounded-3xl bg-gradient-to-br from-ember-600/10 via-navy-50 to-white p-5">
+              <div className="mb-5 rounded-3xl bg-gradient-to-br from-ember-500/10 via-indigo-50 to-white p-5">
 
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
@@ -2013,15 +2017,15 @@ const GlobalVisaCatalog = () => {
 
                     <div className="mb-2 flex items-center gap-2">
 
-                      <span className="rounded-xl bg-white px-2.5 py-1 text-[10px] font-bold text-stone-600 shadow-sm">
+                      <span className="rounded-xl bg-white px-2.5 py-1 text-[10px] font-bold text-navy-600 shadow-sm">
                         {selectedVisa.going_from}
                       </span>
 
-                      <span className="text-stone-400">
+                      <span className="text-navy-400">
                         →
                       </span>
 
-                      <span className="rounded-xl bg-ember-600 px-2.5 py-1 text-[10px] font-bold text-white">
+                      <span className="rounded-xl bg-ember-500 px-2.5 py-1 text-[10px] font-bold text-white">
                         {selectedVisa.going_to}
                       </span>
 
@@ -2036,7 +2040,7 @@ const GlobalVisaCatalog = () => {
 
                     {selectedVisa.description && (
 
-                      <p className="mt-1 text-xs text-stone-500">
+                      <p className="mt-1 text-xs text-navy-500">
                         {
                           selectedVisa.description
                         }
@@ -2202,7 +2206,7 @@ const GlobalVisaCatalog = () => {
                     items-center
                     gap-2
                     rounded-2xl
-                    bg-ember-600
+                    bg-ember-500
                     px-5
                     py-2.5
                     text-sm
@@ -2210,7 +2214,7 @@ const GlobalVisaCatalog = () => {
                     text-white
                     shadow-[0_8px_20px_rgba(86,101,214,0.20)]
                     transition
-                    hover:bg-ember-700
+                    hover:bg-[#4d5bd1]
                   "
                 >
 
@@ -2250,13 +2254,13 @@ const FilterInput = ({
   return (
     <div>
 
-      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-500">
+      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-navy-500">
         {label}
       </label>
 
-      <div className="group flex h-11 items-center gap-2 rounded-2xl border border-stone-200 bg-stone-50/50 px-3.5 transition focus-within:border-ember-600/50 focus-within:bg-white">
+      <div className="group flex h-11 items-center gap-2 rounded-2xl border border-navy-100 bg-[#EEF3F7] px-3.5 transition focus-within:border-ember-500/50 focus-within:bg-white">
 
-        <span className="shrink-0 text-stone-400 transition group-focus-within:text-ember-600">
+        <span className="shrink-0 text-navy-400 transition group-focus-within:text-ember-500">
           {icon}
         </span>
 
@@ -2266,7 +2270,7 @@ const FilterInput = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full bg-transparent text-sm text-stone-700 outline-none placeholder:text-stone-400"
+          className="w-full bg-transparent text-sm text-navy-700 outline-none placeholder:text-navy-400"
         />
 
         {value && (
@@ -2281,7 +2285,7 @@ const FilterInput = ({
                 },
               })
             }
-            className="text-stone-300 transition hover:text-stone-500"
+            className="text-navy-300 transition hover:text-navy-500"
           >
 
             <FiX size={14} />
@@ -2310,9 +2314,9 @@ const FormSection = ({
 
       <div className="mb-3 flex items-center gap-2">
 
-        <span className="h-1.5 w-1.5 rounded-full bg-ember-600" />
+        <span className="h-1.5 w-1.5 rounded-full bg-ember-500" />
 
-        <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-stone-700">
+        <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-navy-700">
           {title}
         </h3>
 
@@ -2341,7 +2345,7 @@ const FormInput = ({
   return (
     <div>
 
-      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-500">
+      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-navy-500">
 
         {label}
 
@@ -2354,11 +2358,11 @@ const FormInput = ({
       </label>
 
 
-      <div className="group flex h-11 items-center gap-2 rounded-2xl border border-stone-200 bg-stone-50/50 px-3.5 transition focus-within:border-ember-600/50 focus-within:bg-white">
+      <div className="group flex h-11 items-center gap-2 rounded-2xl border border-navy-100 bg-[#EEF3F7] px-3.5 transition focus-within:border-ember-500/50 focus-within:bg-white">
 
         {icon && (
 
-          <span className="shrink-0 text-stone-400 group-focus-within:text-ember-600">
+          <span className="shrink-0 text-navy-400 group-focus-within:text-ember-500">
             {React.cloneElement(icon, {
               size: 16,
             })}
@@ -2373,7 +2377,7 @@ const FormInput = ({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
-          className="w-full bg-transparent text-sm text-stone-700 outline-none placeholder:text-stone-400"
+          className="w-full bg-transparent text-sm text-navy-700 outline-none placeholder:text-navy-400"
         />
 
       </div>
@@ -2398,7 +2402,7 @@ const FormTextarea = ({
   return (
     <div>
 
-      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-500">
+      <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-navy-500">
 
         {label}
 
@@ -2423,16 +2427,16 @@ const FormTextarea = ({
           resize-none
           rounded-2xl
           border
-          border-stone-200
-          bg-stone-50/50
+          border-navy-100
+          bg-[#EEF3F7]
           px-3.5
           py-3
           text-sm
-          text-stone-700
+          text-navy-700
           outline-none
           transition
-          placeholder:text-stone-400
-          focus:border-ember-600/50
+          placeholder:text-navy-400
+          focus:border-ember-500/50
           focus:bg-white
         "
       />
@@ -2470,7 +2474,7 @@ const StatusOption = ({
             ? status === "Active"
               ? "border-emerald-200 bg-emerald-50"
               : "border-red-200 bg-red-50"
-            : "border-stone-200 bg-white hover:bg-stone-50"
+            : "border-navy-100 bg-white hover:bg-ember-50"
         }
       `}
     >
@@ -2481,13 +2485,13 @@ const StatusOption = ({
             ? status === "Active"
               ? "text-emerald-500"
               : "text-red-500"
-            : "text-stone-400"
+            : "text-navy-400"
         }
       >
         {icon}
       </span>
 
-      <span className="text-sm font-semibold text-stone-700">
+      <span className="text-sm font-semibold text-navy-700">
         {status}
       </span>
 
@@ -2506,7 +2510,7 @@ const StatusOption = ({
 
 const TableHead = ({ children }) => {
   return (
-    <th className="whitespace-nowrap px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-stone-400">
+    <th className="whitespace-nowrap px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-navy-400">
       {children}
     </th>
   );
@@ -2524,11 +2528,11 @@ const PriceRow = ({
   return (
     <div className="flex items-center justify-between gap-4">
 
-      <span className="text-[11px] text-stone-400">
+      <span className="text-[11px] text-navy-400">
         {label}
       </span>
 
-      <span className="text-[11px] font-bold text-stone-700">
+      <span className="text-[11px] font-bold text-navy-700">
         {value || "—"}
       </span>
 
@@ -2567,7 +2571,7 @@ const ActionButton = ({
         ${
           danger
             ? "text-red-500 hover:bg-red-50"
-            : "text-stone-600 hover:bg-stone-50"
+            : "text-navy-600 hover:bg-ember-50"
         }
       `}
     >
@@ -2592,18 +2596,18 @@ const DetailItem = ({
       className={`
         rounded-2xl
         border
-        border-stone-100
-        bg-stone-50/60
+        border-navy-50
+        bg-[#EEF3F7]
         p-3.5
         ${full ? "sm:col-span-2 lg:col-span-3" : ""}
       `}
     >
 
-      <p className="mb-1 text-[9px] font-bold uppercase tracking-wider text-stone-400">
+      <p className="mb-1 text-[9px] font-bold uppercase tracking-wider text-navy-400">
         {label}
       </p>
 
-      <p className="break-words text-sm font-semibold leading-5 text-stone-700">
+      <p className="break-words text-sm font-semibold leading-5 text-navy-700">
         {value || "—"}
       </p>
 

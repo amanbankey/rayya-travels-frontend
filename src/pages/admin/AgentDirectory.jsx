@@ -1,3 +1,4 @@
+import { MdSupportAgent as PageIcon } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import {
   FiPlus,
@@ -9,95 +10,12 @@ import {
   FiEdit2,
   FiCheckCircle,
   FiTrash2,
-  FiUsers,
-  FiRefreshCw,
 } from "react-icons/fi";
 
 import AgentProfileDrawer from "./AgentProfileDrawer";
 import VisaChargesManagementPopup from "./AgentView";
 
-// =====================================================
-// DUMMY DATA
-// =====================================================
-
-const DUMMY_AGENTS = [
-  {
-    _id: "665f1a2b3c4d5e6f7a8b9c01",
-    companyName: "Vivan Travels",
-    fullName: "Vivan Sharma",
-    email: "vivan@vivantravels.com",
-    mobileNumber: "9876543210",
-    city: "Bhopal",
-    state: "Madhya Pradesh",
-    country: "India",
-    address: "12, MP Nagar Zone 1, Bhopal - 462011",
-    havingGST: true,
-    gstName: "Vivan Travels Pvt Ltd",
-    identityProof: {
-      proofType: "Aadhaar Card",
-      documentName: "aadhaar_vivan.pdf",
-      documentUrl: "#",
-    },
-    officeProof: {
-      documentName: "office_rent_agreement.pdf",
-      documentUrl: "#",
-    },
-    gstDocument: {
-      documentName: "gst_certificate.pdf",
-      documentUrl: "#",
-    },
-  },
-  {
-    _id: "665f1a2b3c4d5e6f7a8b9c02",
-    companyName: "Global Tours",
-    fullName: "Anita Verma",
-    email: "anita@globaltours.in",
-    mobileNumber: "9811122233",
-    city: "Indore",
-    state: "Madhya Pradesh",
-    country: "India",
-    address: "45, Vijay Nagar, Indore - 452010",
-    havingGST: true,
-    gstName: "Global Tours & Travels",
-    identityProof: {
-      proofType: "PAN Card",
-      documentName: "pan_anita.pdf",
-      documentUrl: "#",
-    },
-    officeProof: {
-      documentName: "electricity_bill.pdf",
-      documentUrl: "#",
-    },
-    gstDocument: {
-      documentName: "gst_global_tours.pdf",
-      documentUrl: "#",
-    },
-  },
-  {
-    _id: "665f1a2b3c4d5e6f7a8b9c03",
-    companyName: "",
-    fullName: "Rajesh Kumar",
-    email: "rajesh.kumar@gmail.com",
-    mobileNumber: "9988776655",
-    city: "Delhi",
-    state: "Delhi",
-    country: "India",
-    address: "B-22, Lajpat Nagar, New Delhi - 110024",
-    havingGST: false,
-    gstName: "",
-    identityProof: {
-      proofType: "Passport",
-      documentName: "passport_rajesh.pdf",
-      documentUrl: "#",
-    },
-    officeProof: null,
-    gstDocument: null,
-  },
-];
-
-// =====================================================
-// AGENT DIRECTORY
-// =====================================================
+import api from "../../api/axios";
 
 const AgentDirectory = () => {
   const [filters, setFilters] = useState({
@@ -116,31 +34,50 @@ const AgentDirectory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =====================================================
+  // =========================
   // GET ALL AGENTS
-  // =====================================================
+  // =========================
+  const fetchAgents = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-  const fetchAgents = () => {
-    setLoading(true);
-    setError("");
+      const response = await api.get("/agents");
+      const data = response.data;
 
-    setAgents(DUMMY_AGENTS);
+      console.log("AGENTS API RESPONSE:", data);
 
-    setLoading(false);
+      if (data?.success) {
+        setAgents(data?.data || []);
+      } else {
+        setAgents([]);
+        setError(data?.message || "Failed to fetch agents");
+      }
+    } catch (error) {
+      console.error("Fetch agents failed:", error);
+
+      setAgents([]);
+
+      setError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to fetch agents"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // =====================================================
+  // =========================
   // INITIAL LOAD
-  // =====================================================
-
+  // =========================
   useEffect(() => {
     fetchAgents();
   }, []);
 
-  // =====================================================
+  // =========================
   // FILTER INPUT
-  // =====================================================
-
+  // =========================
   const handleChange = (e) => {
     setFilters((prev) => ({
       ...prev,
@@ -148,20 +85,18 @@ const AgentDirectory = () => {
     }));
   };
 
-  // =====================================================
+  // =========================
   // APPLY FILTERS
-  // =====================================================
-
+  // =========================
   const handleApplyFilters = (e) => {
     e.preventDefault();
 
     console.log("Filters selected:", filters);
   };
 
-  // =====================================================
+  // =========================
   // RESET
-  // =====================================================
-
+  // =========================
   const handleReset = () => {
     setFilters({
       companyName: "",
@@ -173,10 +108,9 @@ const AgentDirectory = () => {
     fetchAgents();
   };
 
-  // =====================================================
+  // =========================
   // INITIALS
-  // =====================================================
-
+  // =========================
   const getInitials = (name = "") => {
     const words = name.trim().split(" ").filter(Boolean);
 
@@ -189,16 +123,14 @@ const AgentDirectory = () => {
     }
 
     return (
-      words[0].charAt(0) +
-      words[words.length - 1].charAt(0)
+      words[0].charAt(0) + words[words.length - 1].charAt(0)
     ).toUpperCase();
   };
 
-  // =====================================================
+  // =========================
   // DELETE AGENT
-  // =====================================================
-
-  const handleDelete = (id) => {
+  // =========================
+  const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this agent?"
     );
@@ -207,685 +139,625 @@ const AgentDirectory = () => {
       return;
     }
 
-    setError("");
+    try {
+      setError("");
 
-    setAgents((prev) =>
-      prev.filter((agent) => agent._id !== id)
-    );
+      const response = await api.delete(`/agents/${id}`);
+      const data = response.data;
 
-    if (selectedAgent?._id === id) {
-      setSelectedAgent(null);
-    }
+      if (data?.success) {
+        setAgents((prev) =>
+          prev.filter((agent) => agent._id !== id)
+        );
 
-    if (viewAgent?._id === id) {
-      setViewAgent(null);
-    }
+        if (selectedAgent?._id === id) {
+          setSelectedAgent(null);
+        }
 
-    if (visaAgent?._id === id) {
-      setVisaAgent(null);
+        if (viewAgent?._id === id) {
+          setViewAgent(null);
+        }
+
+        if (visaAgent?._id === id) {
+          setVisaAgent(null);
+        }
+      } else {
+        setError(data?.message || "Failed to delete agent");
+      }
+    } catch (error) {
+      console.error("Delete agent failed:", error);
+
+      setError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to delete agent"
+      );
     }
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-y-auto bg-[#EEF3F7]">
+    <div className="p-4 sm:p-6 bg-[#EEF3F7] overflow-y-auto hide-scrollbar w-full min-h-screen">
 
-      {/* TOP ACCENT */}
+      {/* ================= HEADER ================= */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
 
-      <div className="sticky top-0 z-20 h-1 w-full bg-gradient-to-r from-[#AE4000] via-[#E0620F] to-[#AE4000]" />
+        <div>
+          {/*<p className="text-xs text-navy-500 mb-1">
+            Operations{" "}
+            <span className="mx-1">›</span>{" "}
+            B2B Partner Network{" "}
+            <span className="mx-1">›</span>
 
-      <div className="p-4 sm:p-6 lg:p-8">
+            <span className="text-ember-600 font-medium">
+              Agents Directory
+            </span>
+          </p>*/}
 
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
+          <div className="flex items-center gap-2 flex-wrap">
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Agent Directory</h1></div>
 
-          <div>
-            <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-medium">
+            <span className="bg-navy-50 text-navy-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+              {agents.length} Registered Partners
+            </span>
 
-              <span className="text-[#71869A]">
-                Operations
-              </span>
-
-              <span className="text-[#AE4000]">
-                /
-              </span>
-
-              <span className="text-[#71869A]">
-                B2B Partner Network
-              </span>
-
-              <span className="text-[#AE4000]">
-                /
-              </span>
-
-              <span className="font-semibold text-[#AE4000]">
-                Agents Directory
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#AE4000] to-[#E0620F] text-white shadow-lg shadow-[#AE4000]/20">
-                <FiUsers size={21} />
-              </div>
-
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight text-[#102030] sm:text-3xl">
-                  Agent Directory
-                </h1>
-
-                <p className="mt-0.5 text-sm text-[#71869A]">
-                  Manage commercial terms, verification and agent communication.
-                </p>
-              </div>
-
-              <span className="rounded-full border border-[#AE4000]/15 bg-[#FFF3EA] px-3 py-1.5 text-xs font-bold text-[#AE4000]">
-                {agents.length} Registered Partners
-              </span>
-            </div>
           </div>
+
+          <p className="text-sm text-navy-500 mt-1">
+            Manage commercial terms, credit lines, agent verification,
+            and daily communication.
+          </p>
+        </div>
+
+        {/*<button
+          type="button"
+          className="flex items-center gap-2 bg-navy-900 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl h-fit"
+        >
+          <FiPlus size={16} />
+          Onboard New Agent
+        </button>*/}
+
+      </div>
+
+      {/* ================= ERROR ================= */}
+      {error && (
+        <div className="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-2xl">
+          {error}
+        </div>
+      )}
+
+      {/* ================= STATS ================= */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-card">
+
+          <p className="text-sm text-navy-500 mb-2">
+            Total Agent Partners
+          </p>
+
+          <div className="flex items-center gap-3">
+
+            <span className="text-2xl font-bold text-navy-900">
+              {agents.length}
+            </span>
+
+            <span className="bg-ember-50 text-ember-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+              Registered
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ================= FILTER ================= */}
+      <form
+        onSubmit={handleApplyFilters}
+        className="bg-white rounded-3xl border border-navy-100 p-4 mb-4 shadow-card"
+      >
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-3">
+
+          {/* COMPANY NAME */}
+          <div>
+
+            <label className="text-xs font-medium text-navy-600 mb-1 block">
+              Company Name
+            </label>
+
+            <div className="flex items-center gap-2 border border-navy-100 rounded-xl px-3 py-2.5">
+
+              <FiHome
+                className="text-navy-400 flex-shrink-0"
+                size={15}
+              />
+
+              <input
+                type="text"
+                name="companyName"
+                value={filters.companyName}
+                onChange={handleChange}
+                placeholder="Search by name"
+                className="w-full text-sm text-navy-700 focus:outline-none"
+              />
+
+            </div>
+
+          </div>
+
+          {/* MOBILE */}
+          <div>
+
+            <label className="text-xs font-medium text-navy-600 mb-1 block">
+              Mobile Number
+            </label>
+
+            <div className="flex items-center gap-2 border border-navy-100 rounded-xl px-3 py-2.5">
+
+              <FiPhone
+                className="text-navy-400 flex-shrink-0"
+                size={15}
+              />
+
+              <input
+                type="text"
+                name="mobileNumber"
+                value={filters.mobileNumber}
+                onChange={handleChange}
+                placeholder="Search by number"
+                className="w-full text-sm text-navy-700 focus:outline-none"
+              />
+
+            </div>
+
+          </div>
+
+          {/* OWNERSHIP */}
+          <div>
+
+            <label className="text-xs font-medium text-navy-600 mb-1 block">
+              Ownership Type
+            </label>
+
+            <select
+              name="ownershipType"
+              value={filters.ownershipType}
+              onChange={handleChange}
+              className="w-full border border-navy-100 rounded-xl px-3 py-2.5 text-sm text-navy-700 focus:outline-none"
+            >
+
+              <option value="">All Types</option>
+              <option value="OPC">OPC</option>
+              <option value="PVT LTD">PVT LTD</option>
+              <option value="PARTNERSHIP">PARTNERSHIP</option>
+              <option value="PRIVATE">PRIVATE</option>
+
+            </select>
+
+          </div>
+
+          {/* STATUS */}
+          <div>
+
+            <label className="text-xs font-medium text-navy-600 mb-1 block">
+              Status
+            </label>
+
+            <select
+              name="status"
+              value={filters.status}
+              onChange={handleChange}
+              className="w-full border border-navy-100 rounded-xl px-3 py-2.5 text-sm text-navy-700 focus:outline-none"
+            >
+
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <div className="flex gap-2">
+
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-6 py-2.5 rounded-xl"
+          >
+            Apply Filters
+          </button>
 
           <button
             type="button"
-            className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#AE4000] to-[#E0620F] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#AE4000]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#AE4000]/30"
+            onClick={handleReset}
+            className="border border-navy-100 text-navy-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-ember-50"
           >
-            <FiPlus size={17} />
-            Onboard New Agent
+            Reset
           </button>
-        </div>
-
-        {/* =====================================================
-            ERROR
-        ===================================================== */}
-
-        {error && (
-          <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
-
-        {/* =====================================================
-            STATS
-        ===================================================== */}
-
-        <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
-          <div className="group relative overflow-hidden rounded-3xl border border-[#DCE4EB] bg-white p-5 shadow-[0_8px_30px_rgba(16,32,48,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_35px_rgba(16,32,48,0.10)]">
-
-            <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#AE4000]/5" />
-
-            <div className="relative flex items-center gap-4">
-
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#102030] text-[#FFB27A] shadow-md">
-                <FiUsers size={20} />
-              </div>
-
-              <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#8192A2]">
-                  Total Agent Partners
-                </p>
-
-                <div className="flex items-center gap-2">
-
-                  <span className="text-2xl font-bold text-[#102030]">
-                    {agents.length}
-                  </span>
-
-                  <span className="rounded-full border border-[#AE4000]/15 bg-[#FFF3EA] px-2.5 py-1 text-[10px] font-bold text-[#AE4000]">
-                    Registered
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
 
-        {/* =====================================================
-            FILTER CARD
-        ===================================================== */}
+      </form>
 
-        <form
-          onSubmit={handleApplyFilters}
-          className="mb-5 overflow-hidden rounded-3xl border border-[#DCE4EB] bg-white shadow-[0_8px_30px_rgba(16,32,48,0.06)]"
-        >
+      {/* ================= TABLE ================= */}
+      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden shadow-card">
 
-          <div className="flex items-center gap-3 border-b border-[#E8EDF1] bg-[#F8FAFC] px-5 py-4">
+        <div className="overflow-x-auto">
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#102030] text-[#FFB27A]">
-              <FiUsers size={16} />
-            </div>
+          <table className="w-full min-w-[1100px]">
 
-            <div>
-              <h2 className="text-sm font-bold text-[#102030]">
-                Search & Filter Agents
-              </h2>
+            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100">
 
-              <p className="text-xs text-[#8A9AAA]">
-                Filter agent partners by company, number, ownership or status.
-              </p>
-            </div>
-          </div>
+              <tr className="border-b border-navy-100">
 
-          <div className="p-5">
-
-            <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-
-              {/* COMPANY */}
-
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold text-[#536575]">
-                  Company Name
-                </label>
-
-                <div className="group flex items-center gap-2.5 rounded-2xl border border-[#DCE4EB] bg-[#F9FBFC] px-3.5 py-3 transition-all duration-200 focus-within:border-[#AE4000] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#AE4000]/5">
-
-                  <FiHome
-                    className="shrink-0 text-[#9AA9B6] group-focus-within:text-[#AE4000]"
-                    size={16}
-                  />
-
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={filters.companyName}
-                    onChange={handleChange}
-                    placeholder="Search by name"
-                    className="w-full bg-transparent text-sm text-[#102030] outline-none placeholder:text-[#9AA9B6]"
-                  />
-                </div>
-              </div>
-
-              {/* MOBILE */}
-
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold text-[#536575]">
-                  Mobile Number
-                </label>
-
-                <div className="group flex items-center gap-2.5 rounded-2xl border border-[#DCE4EB] bg-[#F9FBFC] px-3.5 py-3 transition-all duration-200 focus-within:border-[#AE4000] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#AE4000]/5">
-
-                  <FiPhone
-                    className="shrink-0 text-[#9AA9B6] group-focus-within:text-[#AE4000]"
-                    size={16}
-                  />
-
-                  <input
-                    type="text"
-                    name="mobileNumber"
-                    value={filters.mobileNumber}
-                    onChange={handleChange}
-                    placeholder="Search by number"
-                    className="w-full bg-transparent text-sm text-[#102030] outline-none placeholder:text-[#9AA9B6]"
-                  />
-                </div>
-              </div>
-
-              {/* OWNERSHIP */}
-
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold text-[#536575]">
-                  Ownership Type
-                </label>
-
-                <select
-                  name="ownershipType"
-                  value={filters.ownershipType}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-[#DCE4EB] bg-[#F9FBFC] px-3.5 py-3 text-sm text-[#536575] outline-none transition-all duration-200 focus:border-[#AE4000] focus:bg-white focus:ring-4 focus:ring-[#AE4000]/5"
+                <th
+                  colSpan={3}
+                  className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-2"
                 >
-                  <option value="">All Types</option>
-                  <option value="OPC">OPC</option>
-                  <option value="PVT LTD">PVT LTD</option>
-                  <option value="PARTNERSHIP">PARTNERSHIP</option>
-                  <option value="PRIVATE">PRIVATE</option>
-                </select>
-              </div>
+                  AGENT INFO
+                </th>
 
-              {/* STATUS */}
+                <th className="text-left text-[11px] font-bold tracking-widest text-ember-600 px-4 py-2 border-l border-navy-50">
+                  COMMISSIONS &amp; RESTRICTIONS
+                </th>
 
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold text-[#536575]">
-                  Status
-                </label>
-
-                <select
-                  name="status"
-                  value={filters.status}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-[#DCE4EB] bg-[#F9FBFC] px-3.5 py-3 text-sm text-[#536575] outline-none transition-all duration-200 focus:border-[#AE4000] focus:bg-white focus:ring-4 focus:ring-[#AE4000]/5"
+                <th
+                  colSpan={2}
+                  className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-2"
                 >
-                  <option value="">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
+                  MANAGEMENT
+                </th>
 
-            <div className="flex gap-2">
+              </tr>
 
-              <button
-                type="submit"
-                className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#AE4000] to-[#E0620F] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#AE4000]/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                <FiUsers size={15} />
-                Apply Filters
-              </button>
+              <tr className=" border-b border-navy-100">
 
-              <button
-                type="button"
-                onClick={handleReset}
-                className="flex items-center gap-2 rounded-2xl border border-[#DCE4EB] bg-white px-5 py-3 text-sm font-semibold text-[#536575] transition-all duration-200 hover:border-[#AE4000]/30 hover:bg-[#FFF7F2] hover:text-[#AE4000]"
-              >
-                <FiRefreshCw size={14} />
-                Reset
-              </button>
-            </div>
-          </div>
-        </form>
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                  ENTERPRISE
+                </th>
 
-        {/* =====================================================
-            TABLE
-        ===================================================== */}
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                  CONTACT
+                </th>
 
-        <div className="overflow-hidden rounded-3xl border border-[#DCE4EB] bg-white shadow-[0_8px_30px_rgba(16,32,48,0.06)]">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                  COMPLIANCE
+                </th>
 
-          {/* TABLE TITLE */}
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3 border-l border-navy-50">
+                  COMMERCIALS
+                </th>
 
-          <div className="flex flex-col gap-2 border-b border-[#E3E9EE] bg-gradient-to-r from-[#102030] to-[#16304A] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                  STATUS
+                </th>
 
-            <div>
-              <h2 className="text-sm font-bold text-white">
-                Agent Partners
-              </h2>
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                  ACTIONS
+                </th>
 
-              <p className="mt-0.5 text-xs text-[#AFC0CF]">
-                Manage registered B2B travel partners
-              </p>
-            </div>
+              </tr>
 
-            <div className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-[#FFB27A]">
-              {agents.length} Records
-            </div>
-          </div>
+            </thead>
 
-          <div className="overflow-x-auto">
+            <tbody>
 
-            <table className="w-full min-w-[1150px]">
+              {/* LOADING */}
+              {loading ? (
 
-              <thead>
-
-                <tr className="border-b border-[#E3E9EE] bg-[#F6F8FA]">
-
-                  <th
-                    colSpan={3}
-                    className="px-5 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]"
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-4 py-10 text-center text-sm text-navy-500"
                   >
-                    Agent Info
-                  </th>
-
-                  <th className="border-l border-[#E3E9EE] px-5 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#AE4000]">
-                    Commissions & Restrictions
-                  </th>
-
-                  <th
-                    colSpan={2}
-                    className="px-5 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]"
-                  >
-                    Management
-                  </th>
+                    Loading agents...
+                  </td>
                 </tr>
 
-                <tr className="border-b border-[#E3E9EE] bg-[#FAFBFC]">
+              ) : agents.length === 0 ? (
 
-                  <th className="px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]">
-                    Enterprise
-                  </th>
-
-                  <th className="px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]">
-                    Contact
-                  </th>
-
-                  <th className="px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]">
-                    Compliance
-                  </th>
-
-                  <th className="border-l border-[#E3E9EE] px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#AE4000]">
-                    Commercials
-                  </th>
-
-                  <th className="px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]">
-                    Status
-                  </th>
-
-                  <th className="px-5 py-3.5 text-left text-[10px] font-bold uppercase tracking-wider text-[#718394]">
-                    Actions
-                  </th>
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-4 py-10 text-center text-sm text-navy-500"
+                  >
+                    No agents found.
+                  </td>
                 </tr>
-              </thead>
 
-              <tbody>
+              ) : (
 
-                {/* LOADING */}
+                agents.map((agent) => (
 
-                {loading ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-5 py-14 text-center text-sm text-[#718394]"
-                    >
-                      Loading agents...
-                    </td>
-                  </tr>
-                ) : agents.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-5 py-14 text-center"
-                    >
-                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F2F5F7] text-[#9AA9B6]">
-                        <FiUsers size={20} />
-                      </div>
+                  <tr
+                    key={agent._id}
+                    className="border-b border-navy-50 last:border-0 align-top"
+                  >
 
-                      <p className="mt-3 text-sm font-semibold text-[#102030]">
-                        No agents found
-                      </p>
+                    {/* ENTERPRISE */}
+                    <td className="px-4 py-4">
 
-                      <p className="mt-1 text-xs text-[#8A9AAA]">
-                        Try changing your filters.
-                      </p>
-                    </td>
-                  </tr>
-                ) : (
-                  agents.map((agent) => (
-                    <tr
-                      key={agent._id}
-                      className="group border-b border-[#EDF1F4] align-top transition-colors duration-200 last:border-0 hover:bg-[#FFF9F5]"
-                    >
+                      <div className="flex items-start gap-3">
 
-                      {/* ENTERPRISE */}
+                        <span className="w-9 h-9 rounded-full bg-ember-50 text-ember-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                          {getInitials(
+                            agent.companyName || agent.fullName
+                          )}
+                        </span>
 
-                      <td className="px-5 py-5">
+                        <div>
 
-                        <div className="flex items-start gap-3">
+                          <p className="text-sm font-semibold text-navy-900">
+                            {agent.companyName ||
+                              agent.fullName ||
+                              "N/A"}
+                          </p>
 
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#102030] to-[#16304A] text-xs font-bold text-[#FFB27A] shadow-sm">
-                            {getInitials(
-                              agent.companyName || agent.fullName
-                            )}
-                          </span>
-
-                          <div>
-
-                            <p className="text-sm font-bold text-[#102030]">
-                              {agent.companyName ||
-                                agent.fullName ||
-                                "N/A"}
+                          {agent.companyName && (
+                            <p className="text-xs text-navy-500 mb-1">
+                              {agent.fullName || "N/A"}
                             </p>
+                          )}
 
-                            {agent.companyName && (
-                              <p className="mt-0.5 text-xs text-[#7D8F9E]">
-                                {agent.fullName || "N/A"}
-                              </p>
-                            )}
-
-                            {agent.havingGST && (
-                              <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#AE4000]/15 bg-[#FFF3EA] px-2 py-1 text-[10px] font-bold text-[#AE4000]">
-                                <FiCheckCircle size={10} />
-                                GST Registered
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* CONTACT */}
-
-                      <td className="px-5 py-5">
-
-                        <div className="mb-2 flex items-center gap-2 text-xs text-[#536575]">
-
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F3F6F8] text-[#7D8F9E]">
-                            <FiMail size={13} />
-                          </span>
-
-                          <span>
-                            {agent.email || "N/A"}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-xs text-[#536575]">
-
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F3F6F8] text-[#7D8F9E]">
-                            <FiPhone size={13} />
-                          </span>
-
-                          <span>
-                            {agent.mobileNumber || "N/A"}
-                          </span>
-
-                          <FiMessageSquare
-                            size={14}
-                            className="ml-1 text-[#AE4000]"
-                          />
-                        </div>
-                      </td>
-
-                      {/* COMPLIANCE */}
-
-                      <td className="px-5 py-5">
-
-                        {agent.identityProof?.proofType && (
-                          <div className="mb-2 w-fit rounded-xl border border-[#DCE4EB] bg-[#F6F8FA] px-2.5 py-1.5 text-xs font-medium text-[#536575]">
-                            {agent.identityProof.proofType}
-                          </div>
-                        )}
-
-                        <div className="flex w-fit items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1.5 text-[10px] font-bold text-emerald-600">
-                          <FiCheckCircle size={11} />
-                          Verified
-                        </div>
-                      </td>
-
-                      {/* COMMERCIALS */}
-
-                      <td className="border-l border-[#F0E2D9] bg-[#FFF9F5] px-5 py-5">
-
-                        <div className="flex flex-col gap-2">
-
-                          {agent.havingGST ? (
-                            <>
-                              {agent.gstName && (
-                                <span className="w-fit rounded-xl border border-[#AE4000]/15 bg-[#FFF3EA] px-2.5 py-1.5 text-xs font-semibold text-[#AE4000]">
-                                  GST: {agent.gstName}
-                                </span>
-                              )}
-
-                              {agent.companyName && (
-                                <span className="w-fit rounded-xl border border-[#DCE4EB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#536575]">
-                                  {agent.companyName}
-                                </span>
-                              )}
-                            </>
-                          ) : (
-                            <span className="w-fit rounded-xl border border-[#DCE4EB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#7D8F9E]">
-                              No GST
+                          {agent.havingGST && (
+                            <span className="bg-navy-50 text-navy-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                              GST
                             </span>
                           )}
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setViewAgent(null);
-                              setSelectedAgent(null);
-                              setVisaAgent(agent);
-                            }}
-                            className="mt-1 flex w-fit items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-[#AE4000] transition-all hover:bg-[#AE4000] hover:text-white"
-                          >
-                            <FiEye size={14} />
-                            View
-                          </button>
                         </div>
-                      </td>
 
-                      {/* STATUS */}
+                      </div>
 
-                      <td className="px-5 py-5">
+                    </td>
 
-                        <div className="flex items-center gap-2">
+                    {/* CONTACT */}
+                    <td className="px-4 py-4">
 
-                          <span className="relative flex h-6 w-11 items-center rounded-full bg-emerald-100">
+                      <div className="flex items-center gap-1.5 text-xs text-navy-600 mb-1.5">
 
-                            <span className="absolute left-5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white shadow-sm">
-                              <FiCheckCircle size={11} />
-                            </span>
+                        <FiMail
+                          size={12}
+                          className="text-navy-400"
+                        />
 
+                        {agent.email || "N/A"}
+
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-xs text-navy-600">
+
+                        <FiPhone
+                          size={12}
+                          className="text-navy-400"
+                        />
+
+                        {agent.mobileNumber || "N/A"}
+
+                        <FiMessageSquare
+                          size={13}
+                          className="text-emerald-500 ml-1"
+                        />
+
+                      </div>
+
+                    </td>
+
+                    {/* COMPLIANCE */}
+                    <td className="px-4 py-4">
+
+                      {agent.identityProof?.proofType && (
+                        <div className="bg-[#EEF3F7] border border-navy-100 rounded-md px-2 py-1 text-xs text-navy-600 mb-2 w-fit">
+                          {agent.identityProof.proofType}
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-1.5 text-xs font-medium w-fit px-2 py-1 rounded-full bg-emerald-50 text-emerald-600">
+
+                        <FiCheckCircle size={11} />
+
+                        Verified
+
+                      </div>
+
+                    </td>
+
+                    {/* COMMERCIALS */}
+                    <td className="px-4 py-4 border-l border-navy-50 bg-ember-50/20">
+
+                      <div className="flex flex-col gap-1.5">
+
+                        {agent.havingGST ? (
+
+                          <>
+                            {agent.gstName && (
+                              <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-ember-50 text-ember-600 border-ember-200">
+                                GST: {agent.gstName}
+                              </span>
+                            )}
+
+                            {agent.companyName && (
+                              <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-[#EEF3F7] text-navy-600 border-navy-100">
+                                {agent.companyName}
+                              </span>
+                            )}
+                          </>
+
+                        ) : (
+
+                          <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-[#EEF3F7] text-navy-600 border-navy-100">
+                            No GST
                           </span>
 
-                          <span className="text-xs font-semibold text-emerald-600">
-                            Active
-                          </span>
-                        </div>
-                      </td>
+                        )}
 
-                      {/* ACTIONS */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewAgent(null);
+                            setSelectedAgent(null);
+                            setVisaAgent(agent);
+                          }}
+                          className="text-ember-600 hover:text-ember-600 mt-1 w-fit"
+                        >
+                          <FiEye size={14} />
+                        </button>
 
-                      <td className="px-5 py-5">
+                      </div>
 
-                        <div className="flex items-center gap-2">
+                    </td>
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedAgent(null);
-                              setVisaAgent(null);
-                              setViewAgent(agent);
-                            }}
-                            className="flex h-9 w-9 items-center justify-center rounded-xl border border-transparent text-[#7E8F9D] transition-all duration-200 hover:border-[#AE4000]/15 hover:bg-[#FFF3EA] hover:text-[#AE4000]"
-                            title="View Agent"
-                          >
-                            <FiEye size={16} />
-                          </button>
+                    {/* STATUS */}
+                    <td className="px-4 py-4">
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setViewAgent(null);
-                              setVisaAgent(null);
-                              setSelectedAgent(agent);
-                            }}
-                            className="flex h-9 w-9 items-center justify-center rounded-xl border border-transparent text-[#7E8F9D] transition-all duration-200 hover:border-[#AE4000]/15 hover:bg-[#FFF3EA] hover:text-[#AE4000]"
-                            title="Agent Profile"
-                          >
-                            <FiEdit2 size={16} />
-                          </button>
+                      <span className="relative w-11 h-6 rounded-full bg-emerald-100 flex items-center">
 
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleDelete(agent._id)
-                            }
-                            className="flex h-9 w-9 items-center justify-center rounded-xl border border-transparent text-[#9A7D7D] transition-all duration-200 hover:border-red-100 hover:bg-red-50 hover:text-red-600"
-                            title="Delete Agent"
-                          >
-                            <FiTrash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                        <span className="absolute left-5 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white">
 
-          {/* FOOTER */}
+                          <FiCheckCircle size={11} />
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-[#E8EDF1] bg-[#FAFBFC] px-5 py-3.5 sm:flex-row">
+                        </span>
 
-            <p className="text-xs font-medium text-[#8192A2]">
-              Showing{" "}
-              <span className="font-bold text-[#102030]">
-                {agents.length}
-              </span>{" "}
-              Agents
-            </p>
+                      </span>
 
-            <div className="flex items-center gap-2">
+                    </td>
 
-              <button
-                type="button"
-                disabled
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DCE4EB] bg-white text-[#A1AFBA] cursor-not-allowed"
-              >
-                ‹
-              </button>
+                    {/* ACTIONS */}
+                    <td className="px-4 py-4">
 
-              <button
-                type="button"
-                className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-r from-[#AE4000] to-[#E0620F] text-xs font-bold text-white shadow-md shadow-[#AE4000]/20"
-              >
-                1
-              </button>
+                      <div className="flex items-center gap-3 text-navy-500">
 
-              <button
-                type="button"
-                disabled
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DCE4EB] bg-white text-[#A1AFBA] cursor-not-allowed"
-              >
-                ›
-              </button>
-            </div>
-          </div>
+                        {/* VIEW */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedAgent(null);
+                            setVisaAgent(null);
+                            setViewAgent(agent);
+                          }}
+                          className="hover:text-ember-600"
+                          title="View Agent"
+                        >
+                          <FiEye size={16} />
+                        </button>
+
+                        {/* EDIT / PROFILE */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewAgent(null);
+                            setVisaAgent(null);
+                            setSelectedAgent(agent);
+                          }}
+                          className="hover:text-ember-600"
+                          title="Agent Profile"
+                        >
+                          <FiEdit2 size={16} />
+                        </button>
+
+                        {/* DELETE */}
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(agent._id)}
+                          className="hover:text-red-600"
+                          title="Delete Agent"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                ))
+
+              )}
+
+            </tbody>
+
+          </table>
+
         </div>
 
-        {/* =====================================================
-            VISA VIEW
-        ===================================================== */}
+        {/* FOOTER */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-navy-50">
 
-        {visaAgent && (
-          <VisaChargesManagementPopup
-            agent={visaAgent}
-            onClose={() => setVisaAgent(null)}
-            onViewProfile={() => {
-              const agent = visaAgent;
+          <p className="text-sm text-navy-500">
+            Showing {agents.length} Agents
+          </p>
 
-              setVisaAgent(null);
-              setSelectedAgent(agent);
-            }}
-          />
-        )}
+          <div className="flex items-center gap-1.5">
 
-        {/* =====================================================
-            AGENT PROFILE
-        ===================================================== */}
+            <button
+              type="button"
+              disabled
+              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-400 rounded-xl cursor-not-allowed"
+            >
+              ‹
+            </button>
 
-        {selectedAgent && (
-          <AgentProfileDrawer
-            agent={selectedAgent}
-            onClose={() => setSelectedAgent(null)}
-          />
-        )}
+            <button
+              type="button"
+              className="w-8 h-8 text-xs font-semibold rounded-xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white"
+            >
+              1
+            </button>
 
-        {/* =====================================================
-            VIEW POPUP
-        ===================================================== */}
+            <button
+              type="button"
+              disabled
+              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-400 rounded-xl cursor-not-allowed"
+            >
+              ›
+            </button>
 
-        {viewAgent && (
-          <VisaChargesManagementPopup
-            agent={viewAgent}
-            onClose={() => setViewAgent(null)}
-            onViewProfile={() => {
-              const agent = viewAgent;
+          </div>
 
-              setViewAgent(null);
-              setSelectedAgent(agent);
-            }}
-          />
-        )}
+        </div>
+
       </div>
+
+      {/* ================= VISA VIEW ================= */}
+      {visaAgent && (
+        <VisaChargesManagementPopup
+          agent={visaAgent}
+          onClose={() => setVisaAgent(null)}
+          onViewProfile={() => {
+            const agent = visaAgent;
+
+            setVisaAgent(null);
+            setSelectedAgent(agent);
+          }}
+        />
+      )}
+
+      {/* ================= AGENT PROFILE ================= */}
+      {selectedAgent && (
+        <AgentProfileDrawer
+          agent={selectedAgent}
+          onClose={() => setSelectedAgent(null)}
+        />
+      )}
+
+      {/* ================= VIEW POPUP ================= */}
+      {viewAgent && (
+        <VisaChargesManagementPopup
+          agent={viewAgent}
+          onClose={() => setViewAgent(null)}
+          onViewProfile={() => {
+            const agent = viewAgent;
+
+            setViewAgent(null);
+            setSelectedAgent(agent);
+          }}
+        />
+      )}
+
     </div>
   );
 };

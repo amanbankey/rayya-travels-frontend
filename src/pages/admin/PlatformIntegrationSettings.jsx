@@ -1,3 +1,4 @@
+import { FiSettings as PageIcon } from "react-icons/fi";
 import React, { useState } from "react";
 import {
   FiUploadCloud,
@@ -31,10 +32,10 @@ const tabs = [
 
 const TextField = ({ label, name, value, onChange, prefix, placeholder, type = "text" }) => (
   <div>
-    <label className="block text-xs font-semibold text-stone-600 mb-1.5">{label}</label>
+    <label className="block text-xs font-semibold text-navy-600 mb-1.5">{label}</label>
     <div className="relative">
       {prefix && (
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-stone-400">{prefix}</span>
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-navy-400">{prefix}</span>
       )}
       <input
         type={type}
@@ -42,7 +43,7 @@ const TextField = ({ label, name, value, onChange, prefix, placeholder, type = "
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full border border-stone-200 rounded-xl py-2.5 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-ember-200 ${
+        className={`w-full border border-navy-100 rounded-xl py-2.5 text-sm text-navy-700 focus:outline-none focus:ring-2 focus:ring-ember-100 ${
           prefix ? "pl-7 pr-3" : "px-3"
         }`}
       />
@@ -54,7 +55,7 @@ const SecretField = ({ label, name, value, onChange, placeholder }) => {
   const [show, setShow] = useState(false);
   return (
     <div>
-      <label className="block text-xs font-semibold text-stone-600 mb-1.5">{label}</label>
+      <label className="block text-xs font-semibold text-navy-600 mb-1.5">{label}</label>
       <div className="relative">
         <input
           type={show ? "text" : "password"}
@@ -62,12 +63,12 @@ const SecretField = ({ label, name, value, onChange, placeholder }) => {
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full border border-stone-200 rounded-xl px-3 py-2.5 pr-10 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-ember-200"
+          className="w-full border border-navy-100 rounded-xl px-3 py-2.5 pr-10 text-sm text-navy-700 focus:outline-none focus:ring-2 focus:ring-ember-100"
         />
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-navy-400"
         >
           {show ? <FiEyeOff size={15} /> : <FiEye size={15} />}
         </button>
@@ -78,26 +79,26 @@ const SecretField = ({ label, name, value, onChange, placeholder }) => {
 
 const FileField = ({ label, fileName, onChange, hint }) => (
   <div>
-    <label className="block text-xs font-semibold text-stone-600 mb-1.5">{label}</label>
-    <label className="flex items-center gap-3 border border-dashed border-stone-300 rounded-xl px-3 py-2.5 cursor-pointer hover:bg-stone-50">
-      <FiUploadCloud className="text-ember-500 flex-shrink-0" size={18} />
-      <span className="text-xs text-stone-500 truncate">{fileName || "Choose file — no file chosen"}</span>
+    <label className="block text-xs font-semibold text-navy-600 mb-1.5">{label}</label>
+    <label className="flex items-center gap-3 border border-dashed border-navy-100 rounded-xl px-3 py-2.5 cursor-pointer hover:bg-ember-50">
+      <FiUploadCloud className="text-ember-600 flex-shrink-0" size={18} />
+      <span className="text-xs text-navy-500 truncate">{fileName || "Choose file — no file chosen"}</span>
       <input type="file" onChange={onChange} className="hidden" />
     </label>
-    {hint && <p className="text-[10px] text-stone-400 mt-1">{hint}</p>}
+    {hint && <p className="text-[10px] text-navy-400 mt-1">{hint}</p>}
   </div>
 );
 
 const ToggleField = ({ label, value, onChange }) => (
   <div>
-    <label className="block text-xs font-semibold text-stone-600 mb-2">{label}</label>
+    <label className="block text-xs font-semibold text-navy-600 mb-2">{label}</label>
     <div className="inline-flex items-center gap-2.5">
-      <span className={`text-xs font-semibold ${value === "UAT" ? "text-ember-600" : "text-stone-400"}`}>UAT</span>
+      <span className={`text-xs font-semibold ${value === "UAT" ? "text-ember-600" : "text-navy-400"}`}>UAT</span>
       <button
         type="button"
         onClick={() => onChange(value === "UAT" ? "PROD" : "UAT")}
         className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
-          value === "PROD" ? "bg-ember-600" : "bg-stone-200"
+          value === "PROD" ? "bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30" : "bg-navy-100"
         }`}
       >
         <span
@@ -106,13 +107,13 @@ const ToggleField = ({ label, value, onChange }) => (
           }`}
         />
       </button>
-      <span className={`text-xs font-semibold ${value === "PROD" ? "text-ember-600" : "text-stone-400"}`}>PROD</span>
+      <span className={`text-xs font-semibold ${value === "PROD" ? "text-ember-600" : "text-navy-400"}`}>PROD</span>
     </div>
   </div>
 );
 
 const SectionCard = ({ icon: Icon, title, badge, children }) => (
-  <div className="bg-white rounded-3xl border border-stone-200 p-4 sm:p-6 mb-4">
+  <div className="bg-white rounded-3xl border border-navy-100 p-4 sm:p-6 mb-4 shadow-card">
     <div className="flex items-center justify-between mb-5">
       <p className="flex items-center gap-2 text-sm sm:text-base font-bold text-navy-900">
         {Icon && <Icon className="text-ember-600" size={17} />}
@@ -133,7 +134,7 @@ const SaveButton = ({ isSaving, label = "Save Changes" }) => (
     <button
       type="submit"
       disabled={isSaving}
-      className="flex items-center gap-2 bg-ember-600 hover:bg-ember-700 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl disabled:opacity-60"
+      className="flex items-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl disabled:opacity-60"
     >
       <FiSave size={15} />
       {isSaving ? "Saving..." : label}
@@ -141,17 +142,26 @@ const SaveButton = ({ isSaving, label = "Save Changes" }) => (
   </div>
 );
 
-// DUMMY SAVE (backend removed) - settings are only kept in local component state
-const useSaveHandler = () => {
+const useSaveHandler = (endpoint) => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const save = (payload, e) => {
+  const save = async (payload, e) => {
     if (e) e.preventDefault();
     setIsSaving(true);
     setError("");
-    console.log("Settings saved (dummy):", payload);
-    setIsSaving(false);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Save failed");
+    } catch (err) {
+      setError("Could not save settings. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return { isSaving, error, save };
@@ -163,7 +173,7 @@ const useSaveHandler = () => {
 
 const CoreAgencyTab = () => {
   const [formData, setFormData] = useState({
-    adminName: "Raaya Operations",
+    adminName: "Rayya Travels Operations",
     masterOverrideKey: "",
     flightAgencyCharge: "350",
     visaAgencyCharge: "500",
@@ -172,9 +182,9 @@ const CoreAgencyTab = () => {
     insuranceBaseUAE: "19",
     etravUrlProd: "https://prod-api.etrav.in",
     etravUrlUat: "https://stg-api.codemagen.net",
-    etravUatUserName: "vivan",
+    etravUatUserName: "rayyatravels",
     etravUatPassword: "",
-    etravProdUserName: "vivantravelstourism",
+    etravProdUserName: "rayyatravelstourism",
     etravProdPassword: "",
     etravCharge: "300",
     etravEnable: "UAT",
@@ -193,7 +203,7 @@ const CoreAgencyTab = () => {
     aiToolPassword: "",
   });
   const [logoPreview, setLogoPreview] = useState(null);
-  const { isSaving, error, save } = useSaveHandler();
+  const { isSaving, error, save } = useSaveHandler("/api/admin/platform-settings/core-agency");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -214,15 +224,15 @@ const CoreAgencyTab = () => {
             <TextField label="Admin Name" name="adminName" value={formData.adminName} onChange={handleChange} />
 
             <div>
-              <label className="block text-xs font-semibold text-stone-600 mb-1.5">Brand Logo</label>
-              <label className="flex flex-col items-center justify-center gap-2 border border-dashed border-stone-300 rounded-2xl py-6 cursor-pointer hover:bg-stone-50">
+              <label className="block text-xs font-semibold text-navy-600 mb-1.5">Brand Logo</label>
+              <label className="flex flex-col items-center justify-center gap-2 border border-dashed border-navy-100 rounded-2xl py-6 cursor-pointer hover:bg-ember-50">
                 {logoPreview ? (
-                  <img src={logoPreview} alt="Brand logo preview" className="w-12 h-12 object-contain rounded-lg" />
+                  <img src={logoPreview} alt="Brand logo preview" className="w-12 h-12 object-contain rounded" />
                 ) : (
-                  <FiUploadCloud className="text-ember-500" size={22} />
+                  <FiUploadCloud className="text-ember-600" size={22} />
                 )}
                 <span className="text-xs font-semibold text-ember-600">Click to upload new</span>
-                <span className="text-[10px] text-stone-400">SVG, PNG, JPG Max 2MB</span>
+                <span className="text-[10px] text-navy-400">SVG, PNG, JPG Max 2MB</span>
                 <input type="file" accept=".svg,.png,.jpg,.jpeg" onChange={handleLogoChange} className="hidden" />
               </label>
             </div>
@@ -237,18 +247,19 @@ const CoreAgencyTab = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="border border-stone-200 rounded-2xl p-4">
-              <p className="text-[11px] font-bold tracking-wide text-stone-500 mb-3">BASE SERVICE CHARGES</p>
+            <div className="border border-navy-100 rounded-2xl p-4">
+              <p className="text-[11px] font-bold tracking-wide text-navy-500 mb-3">BASE SERVICE CHARGES</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <TextField label="Flight Agency Charge" name="flightAgencyCharge" value={formData.flightAgencyCharge} onChange={handleChange} prefix="₹" type="number" />
                 <TextField label="Visa Agency Charge" name="visaAgencyCharge" value={formData.visaAgencyCharge} onChange={handleChange} prefix="₹" type="number" />
               </div>
               <div className="mt-4">
+                <TextField label="OTB 30k To Board Charge" name="otbBoardCharge" value={formData.otbBoardCharge} onChange={handleChange} prefix="₹" type="number" />
               </div>
             </div>
 
-            <div className="border border-stone-200 rounded-2xl p-4">
-              <p className="text-[11px] font-bold tracking-wide text-stone-500 mb-3">REGIONAL SPECIFIC PRICING (UAE)</p>
+            <div className="border border-navy-100 rounded-2xl p-4">
+              <p className="text-[11px] font-bold tracking-wide text-navy-500 mb-3">REGIONAL SPECIFIC PRICING (UAE)</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <TextField label="Child Visa Price UAE" name="childVisaPriceUAE" value={formData.childVisaPriceUAE} onChange={handleChange} prefix="₹" type="number" />
                 <TextField label="Insurance Base UAE" name="insuranceBaseUAE" value={formData.insuranceBaseUAE} onChange={handleChange} prefix="₹" type="number" />
@@ -268,7 +279,7 @@ const CoreAgencyTab = () => {
           <TextField label="Etrav PROD UserName" name="etravProdUserName" value={formData.etravProdUserName} onChange={handleChange} />
           <SecretField label="Etrav PROD Password" name="etravProdPassword" value={formData.etravProdPassword} onChange={handleChange} />
         </div>
-        <div className="mt-5 pt-4 border-t border-stone-100">
+        <div className="mt-5 pt-4 border-t border-navy-50">
           <ToggleField label="Etrav Enable" value={formData.etravEnable} onChange={(v) => setFormData((p) => ({ ...p, etravEnable: v }))} />
         </div>
       </SectionCard>
@@ -283,7 +294,7 @@ const CoreAgencyTab = () => {
           <TextField label="AirIQ PROD UserName" name="airiqProdUserName" value={formData.airiqProdUserName} onChange={handleChange} />
           <SecretField label="AirIQ PROD Password" name="airiqProdPassword" value={formData.airiqProdPassword} onChange={handleChange} />
         </div>
-        <div className="mt-5 pt-4 border-t border-stone-100">
+        <div className="mt-5 pt-4 border-t border-navy-50">
           <ToggleField label="AirIQ Enable" value={formData.airiqEnable} onChange={(v) => setFormData((p) => ({ ...p, airiqEnable: v }))} />
         </div>
       </SectionCard>
@@ -304,7 +315,7 @@ const CoreAgencyTab = () => {
       </SectionCard>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs text-stone-500">
+        <div className="flex items-center gap-2 text-xs text-navy-500">
           <span className="w-2 h-2 rounded-full bg-emerald-500" />
           All Engine Gateways Connected (Latency: 42ms)
           {error && <span className="text-red-500 ml-3">{error}</span>}
@@ -325,7 +336,7 @@ const PaymentGatewayTab = () => {
     razorpayKeyProd: "rzp_live_sYbcyWNMUmSsFz",
     razorpayEnable: "UAT",
   });
-  const { isSaving, error, save } = useSaveHandler();
+  const { isSaving, error, save } = useSaveHandler("/api/admin/platform-settings/payment-gateway");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -339,7 +350,7 @@ const PaymentGatewayTab = () => {
           <SecretField label="Razorpay Key Test" name="razorpayKeyTest" value={formData.razorpayKeyTest} onChange={handleChange} />
           <SecretField label="Razorpay Key Prod" name="razorpayKeyProd" value={formData.razorpayKeyProd} onChange={handleChange} />
         </div>
-        <div className="mt-5 pt-4 border-t border-stone-100">
+        <div className="mt-5 pt-4 border-t border-navy-50">
           <ToggleField label="Razorpay Enable" value={formData.razorpayEnable} onChange={(v) => setFormData((p) => ({ ...p, razorpayEnable: v }))} />
         </div>
       </SectionCard>
@@ -356,12 +367,12 @@ const PaymentGatewayTab = () => {
 
 const AppFirebaseTab = () => {
   const [formData, setFormData] = useState({
-    appName: "Raaya Tour & Travel",
+    appName: "Rayya Travels",
     appVersion: "1.0",
   });
   const [appLogoName, setAppLogoName] = useState("");
   const [firebaseFileName, setFirebaseFileName] = useState("");
-  const { isSaving, error, save } = useSaveHandler();
+  const { isSaving, error, save } = useSaveHandler("/api/admin/platform-settings/app-firebase");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -405,12 +416,12 @@ const SupportOpsTab = () => {
   const [formData, setFormData] = useState({
     supportMobile: "+91 8764232996",
     whatsappSupport: "+918764232996",
-    address: "J.G Heights 2nd Floor Vivan Travels, Opp. K.G",
-    supportEmail: "mail@vivantravels.com",
+    address: "Rayya Tour & Travel",
+    supportEmail: "mail@rayyatravels.com",
     supportStartTime: "13:53",
     supportEndTime: "13:59",
   });
-  const { isSaving, error, save } = useSaveHandler();
+  const { isSaving, error, save } = useSaveHandler("/api/admin/platform-settings/support-ops");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -444,24 +455,21 @@ const PlatformIntegrationSettings = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   return (
-    <main className="flex-1 min-w-0 min-h-screen bg-stone-50 overflow-y-auto">
+    <main className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] overflow-y-auto">
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="mb-6">
-          <h1 className="font-serif text-xl sm:text-2xl font-semibold text-navy-900">Platform & Integration Settings</h1>
-          <p className="text-sm text-stone-500 mt-1 max-w-xl">
-            Manage global agency fees, third-party flight engine APIs, payment gateways, mobile app
-            parameters, and support channels.
-          </p>
+          <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Platform & Integration Settings</h1><p className="text-navy-400 mt-0.5">Manage global agency fees, third-party flight engine APIs, payment gateways, mobile app
+            parameters, and support channels.</p></div></div>
         </div>
 
-        <div className="flex items-center gap-6 border-b border-stone-200 mb-6 overflow-x-auto">
+        <div className="flex items-center gap-6 border-b border-navy-100 mb-6 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
               className={`pb-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors
-              ${activeTab === tab ? "text-ember-600 border-ember-600" : "text-stone-400 border-transparent hover:text-stone-600"}`}
+              ${activeTab === tab ? "text-ember-600 border-blue-600" : "text-navy-400 border-transparent hover:text-navy-600"}`}
             >
               {tab}
             </button>

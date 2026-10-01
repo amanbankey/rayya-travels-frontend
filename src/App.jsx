@@ -16,8 +16,12 @@ import MyProfile from './pages/user/MyProfile'
 import MyBookings from './pages/user/MyBookings'
 import WalletHistory from './pages/user/WalletHistory'
 import AppliedVisaHistory from './pages/user/AppliedVisaHistory'
+import AppliedPackages from './pages/user/AppliedPackages'
 import Packages from './pages/Packages'
 import AdminDashboard from './pages/admin/Dashboard'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminSignup from './pages/admin/AdminSignup'
+import AdminRoute from './components/auth/AdminRoute'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,7 +31,16 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/signup" element={<AdminSignup />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
  
         <Route path="/" element={<Layout />}>
 
@@ -64,6 +77,7 @@ function App() {
             <Route path="bookings" element={<MyBookings />} />
             <Route path="wallet" element={<WalletHistory />} />
             <Route path="visa-history" element={<AppliedVisaHistory />} />
+            <Route path="package" element={<AppliedPackages />} />
           </Route>
 
         {/*    <Route

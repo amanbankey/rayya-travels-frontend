@@ -1,104 +1,11 @@
+import { FiFileText as PageIcon } from "react-icons/fi";
+
 import React, { useEffect, useState } from "react";
 
-// ===== DUMMY DATA (backend removed) =====
-const DUMMY_APPLICATIONS = [
-  {
-    _id: "va1",
-    referenceNumber: "VIS-8921",
-    applicant: { name: "Vivan Travels", email: "vivan@vivantravels.com", phone: "9876543210", role: "agent" },
-    goingFrom: "India",
-    goingTo: "UAE",
-    travelDate: "2026-10-15",
-    returnDate: "2026-11-14",
-    visaTotal: 7150,
-    insurance: false,
-    insuranceTotal: 0,
-    totalAmount: 7150,
-    paymentStatus: "Paid",
-    status: "Pending",
-    adminNote: "",
-    createdAt: "2026-09-26T11:30:00.000Z",
-    travelers: [
-      {
-        _id: "tr1",
-        firstName: "Amit",
-        lastName: "Sharma",
-        gender: "Male",
-        passportNumber: "N1234567",
-        files: {
-          passport: { url: "#", originalName: "passport_amit.pdf" },
-          photo: { url: "#", originalName: "photo_amit.jpg" },
-        },
-      },
-    ],
-  },
-  {
-    _id: "va2",
-    referenceNumber: "VIS-8922",
-    applicant: { name: "Rahul Mehta", email: "rahul.mehta@gmail.com", phone: "9876501234", role: "user" },
-    goingFrom: "India",
-    goingTo: "Singapore",
-    travelDate: "2026-11-02",
-    returnDate: "2026-11-09",
-    visaTotal: 4200,
-    insurance: true,
-    insuranceTotal: 450,
-    totalAmount: 4650,
-    paymentStatus: "Paid",
-    status: "In Process",
-    adminNote: "Documents verified.",
-    createdAt: "2026-09-27T09:10:00.000Z",
-    travelers: [
-      {
-        _id: "tr2",
-        firstName: "Rahul",
-        lastName: "Mehta",
-        gender: "Male",
-        passportNumber: "P7654321",
-        files: {
-          passport: { url: "#", originalName: "passport_rahul.pdf" },
-        },
-      },
-      {
-        _id: "tr3",
-        firstName: "Neha",
-        lastName: "Mehta",
-        gender: "Female",
-        passportNumber: "P7654322",
-        files: {
-          passport: { url: "#", originalName: "passport_neha.pdf" },
-        },
-      },
-    ],
-  },
-  {
-    _id: "va3",
-    referenceNumber: "VIS-8923",
-    applicant: { name: "Global Tours", email: "anita@globaltours.in", phone: "9811122233", role: "agent" },
-    goingFrom: "India",
-    goingTo: "Thailand",
-    travelDate: "2026-10-28",
-    returnDate: "2026-11-04",
-    visaTotal: 2500,
-    insurance: false,
-    insuranceTotal: 0,
-    totalAmount: 2500,
-    paymentStatus: "Pending",
-    status: "Approved",
-    adminNote: "",
-    createdAt: "2026-09-28T15:45:00.000Z",
-    travelers: [
-      {
-        _id: "tr4",
-        firstName: "Sunil",
-        lastName: "Verma",
-        gender: "Male",
-        passportNumber: "K9988776",
-        files: {},
-      },
-    ],
-  },
-];
+import {
+  getAdminVisaApplications,
+  updateAdminVisaApplication,
+} from "../../api/visaApplicationApi";
 
 const STATUS_OPTIONS = [
   "Pending",
@@ -116,13 +23,24 @@ const AppliedVisas = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const loadApplications = () => {
-    setLoading(true);
-    setError("");
-    setApplications((prev) =>
-      prev.length ? prev : DUMMY_APPLICATIONS
-    );
-    setLoading(false);
+  const loadApplications = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await getAdminVisaApplications();
+
+      setApplications(response.applications || []);
+    } catch (err) {
+      console.error("Applied Visa Error:", err);
+
+      setError(
+        err?.response?.data?.message ||
+        "Unable to load visa applications."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -151,37 +69,64 @@ const AppliedVisas = () => {
     );
   });
 
-  const handleStatusChange = (id, status) => {
-    setSaving(true);
+  const handleStatusChange = async (id, status) => {
+    try {
+      setSaving(true);
 
-    const target = applications.find((item) => item._id === id);
-    const updated = { ...target, status };
+      const response = await updateAdminVisaApplication(
+        id,
+        { status }
+      );
 
-    setApplications((previous) =>
-      previous.map((item) => (item._id === id ? updated : item))
-    );
+      const updated = response.application;
 
-    setSelected(updated);
-    setSaving(false);
+      setApplications((previous) =>
+        previous.map((item) =>
+          item._id === id ? updated : item
+        )
+      );
+
+      setSelected(updated);
+    } catch (err) {
+      alert(
+        err?.response?.data?.message ||
+        "Unable to update application status."
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleNoteSave = () => {
+  const handleNoteSave = async () => {
     if (!selected?._id) return;
 
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    const updated = { ...selected, adminNote: selected.adminNote || "" };
+      const response = await updateAdminVisaApplication(
+        selected._id,
+        { adminNote: selected.adminNote || "" }
+      );
 
-    setApplications((previous) =>
-      previous.map((item) =>
-        item._id === updated._id ? updated : item
-      )
-    );
+      const updated = response.application;
 
-    setSelected(updated);
-    setSaving(false);
+      setApplications((previous) =>
+        previous.map((item) =>
+          item._id === updated._id ? updated : item
+        )
+      );
 
-    alert("Admin note saved successfully.");
+      setSelected(updated);
+
+      alert("Admin note saved successfully.");
+    } catch (err) {
+      alert(
+        err?.response?.data?.message ||
+        "Unable to save admin note."
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const pendingCount = applications.filter(
@@ -199,30 +144,26 @@ const AppliedVisas = () => {
   const getDocumentUrl = (url) => {
     if (!url) return "#";
 
-    return url;
-  };
+    if (url.startsWith("http")) return url;
 
+    return `https://rayya-travels-backend.onrender.com${url.startsWith("/") ? url : `/${url}`}`;
+  };
+//http://localhost:5000
   return (
-    <main className="flex-1 min-w-0 overflow-y-auto bg-stone-50 p-4 sm:p-6">
+    <main className="flex-1 min-w-0 overflow-y-auto bg-[#EEF3F7] p-4 sm:p-6">
       {/* HEADER */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-serif text-2xl font-semibold text-navy-900">
-            Applied Visas
-          </h1>
-
-          <p className="mt-1 text-sm text-stone-500">
-            Manage visa applications submitted by users and agents.
-          </p>
+          <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Applied Visas</h1><p className="text-navy-400 mt-0.5">Manage visa applications submitted by users and agents.</p></div></div>
         </div>
 
-        <button
+        {/*<button
           onClick={loadApplications}
           disabled={loading}
-          className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-50"
+          className="rounded-xl border border-navy-100 bg-white px-4 py-2.5 text-sm font-medium text-navy-700 hover:bg-ember-50 disabled:opacity-50"
         >
           {loading ? "Refreshing..." : "Refresh"}
-        </button>
+        </button>*/}
       </div>
 
       {/* STATS */}
@@ -253,13 +194,13 @@ const AppliedVisas = () => {
       </div>
 
       {/* SEARCH */}
-      <div className="mb-5 rounded-2xl border border-stone-200 bg-white p-4">
+      <div className="mb-5 rounded-2xl border border-navy-100 bg-white p-4">
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search reference, applicant, email, phone or destination..."
-          className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-ember-500 focus:ring-2 focus:ring-ember-100"
+          className="w-full rounded-xl border border-navy-100 px-4 py-3 text-sm outline-none transition focus:border-ember-400 focus:ring-2 focus:ring-ember-100"
         />
       </div>
 
@@ -271,10 +212,10 @@ const AppliedVisas = () => {
       )}
 
       {/* TABLE */}
-      <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white">
+      <div className="overflow-hidden rounded-2xl border border-navy-100 bg-white">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[950px] text-left text-sm">
-            <thead className="border-b bg-stone-50 text-xs uppercase tracking-wide text-stone-500">
+            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100 border-b bg-[#EEF3F7] text-xs uppercase tracking-wide text-navy-500">
               <tr>
                 <th className="px-4 py-4">Reference</th>
                 <th className="px-4 py-4">Applicant</th>
@@ -288,12 +229,12 @@ const AppliedVisas = () => {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-stone-100">
+            <tbody className="divide-y divide-navy-50">
               {loading ? (
                 <tr>
                   <td
                     colSpan="9"
-                    className="px-4 py-12 text-center text-stone-500"
+                    className="px-4 py-12 text-center text-navy-500"
                   >
                     Loading visa applications...
                   </td>
@@ -302,7 +243,7 @@ const AppliedVisas = () => {
                 <tr>
                   <td
                     colSpan="9"
-                    className="px-4 py-12 text-center text-stone-500"
+                    className="px-4 py-12 text-center text-navy-500"
                   >
                     No visa applications found.
                   </td>
@@ -311,9 +252,9 @@ const AppliedVisas = () => {
                 filteredApplications.map((app) => (
                   <tr
                     key={app._id}
-                    className="transition hover:bg-stone-50"
+                    className="transition hover:bg-ember-50"
                   >
-                    <td className="px-4 py-4 font-semibold text-ember-700">
+                    <td className="px-4 py-4 font-semibold text-ember-600">
                       {app.referenceNumber || "-"}
                     </td>
 
@@ -322,24 +263,24 @@ const AppliedVisas = () => {
                         {app.applicant?.name || "-"}
                       </p>
 
-                      <p className="mt-1 text-xs text-stone-500">
+                      <p className="mt-1 text-xs text-navy-500">
                         {app.applicant?.email || "-"}
                       </p>
                     </td>
 
                     <td className="px-4 py-4">
-                      <span className="rounded-full bg-ember-50 px-3 py-1 text-xs font-medium capitalize text-ember-700">
+                      <span className="rounded-full bg-ember-50 px-3 py-1 text-xs font-medium capitalize text-ember-600">
                         {app.applicant?.role || "User"}
                       </span>
                     </td>
 
-                    <td className="px-4 py-4 text-stone-700">
+                    <td className="px-4 py-4 text-navy-700">
                       {app.goingTo ||
                         app.visa?.going_to ||
                         "-"}
                     </td>
 
-                    <td className="px-4 py-4 text-stone-600">
+                    <td className="px-4 py-4 text-navy-600">
                       {app.travelDate || "-"}
                     </td>
 
@@ -348,7 +289,7 @@ const AppliedVisas = () => {
                     </td>
 
                     <td className="px-4 py-4">
-                      <span className="text-xs font-medium text-stone-600">
+                      <span className="text-xs font-medium text-navy-600">
                         {app.paymentStatus || "Pending"}
                       </span>
                     </td>
@@ -362,7 +303,7 @@ const AppliedVisas = () => {
                     <td className="px-4 py-4">
                       <button
                         onClick={() => setSelected(app)}
-                        className="rounded-xl bg-ember-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-ember-700"
+                        className="rounded-xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 px-3 py-2 text-xs font-semibold text-white transition hover:brightness-110"
                       >
                         View Details
                       </button>
@@ -385,14 +326,14 @@ const AppliedVisas = () => {
                   Visa Application Details
                 </h2>
 
-                <p className="mt-1 text-xs text-stone-500">
+                <p className="mt-1 text-xs text-navy-500">
                   {selected.referenceNumber}
                 </p>
               </div>
 
               <button
                 onClick={() => setSelected(null)}
-                className="rounded-xl border px-3 py-2 text-sm hover:bg-stone-50"
+                className="rounded-xl border px-3 py-2 text-sm hover:bg-ember-50"
               >
                 Close
               </button>
@@ -485,7 +426,7 @@ const AppliedVisas = () => {
                 {(selected.travelers || []).map((traveler, index) => (
                   <div
                     key={traveler._id || index}
-                    className="mb-4 rounded-2xl border border-stone-200 p-4"
+                    className="mb-4 rounded-2xl border border-navy-100 p-4"
                   >
                     <h4 className="mb-3 font-semibold text-navy-800">
                       Traveler {index + 1}
@@ -513,7 +454,7 @@ const AppliedVisas = () => {
                     {traveler.files &&
                       Object.entries(traveler.files).length > 0 && (
                         <div className="mt-4">
-                          <h5 className="mb-2 text-sm font-semibold text-stone-700">
+                          <h5 className="mb-2 text-sm font-semibold text-navy-700">
                             Uploaded Documents
                           </h5>
 
@@ -525,7 +466,7 @@ const AppliedVisas = () => {
                                   href={getDocumentUrl(file?.url)}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="rounded-xl border border-ember-200 bg-ember-50 px-3 py-2 text-xs font-medium text-ember-700 hover:bg-ember-100"
+                                  className="rounded-xl border border-ember-200 bg-ember-50 px-3 py-2 text-xs font-medium text-ember-600 hover:bg-ember-100"
                                 >
                                   View {file?.originalName || key}
                                 </a>
@@ -539,12 +480,12 @@ const AppliedVisas = () => {
               </section>
 
               {/* ADMIN STATUS */}
-              <section className="rounded-2xl border border-stone-200 p-4">
+              <section className="rounded-2xl border border-navy-100 p-4">
                 <h3 className="mb-3 font-semibold text-navy-800">
                   Admin Management
                 </h3>
 
-                <label className="mb-2 block text-sm font-medium text-stone-700">
+                <label className="mb-2 block text-sm font-medium text-navy-700">
                   Application Status
                 </label>
 
@@ -557,7 +498,7 @@ const AppliedVisas = () => {
                       e.target.value
                     )
                   }
-                  className="w-full rounded-xl border border-stone-300 px-3 py-2.5 text-sm outline-none focus:border-ember-500 sm:max-w-xs"
+                  className="w-full rounded-xl border border-navy-100 px-3 py-2.5 text-sm outline-none focus:border-ember-400 sm:max-w-xs"
                 >
                   {STATUS_OPTIONS.map((status) => (
                     <option key={status} value={status}>
@@ -566,7 +507,7 @@ const AppliedVisas = () => {
                   ))}
                 </select>
 
-                <label className="mb-2 mt-4 block text-sm font-medium text-stone-700">
+                <label className="mb-2 mt-4 block text-sm font-medium text-navy-700">
                   Admin Note
                 </label>
 
@@ -580,13 +521,13 @@ const AppliedVisas = () => {
                     }))
                   }
                   placeholder="Add internal note..."
-                  className="w-full rounded-xl border border-stone-300 px-3 py-3 text-sm outline-none focus:border-ember-500"
+                  className="w-full rounded-xl border border-navy-100 px-3 py-3 text-sm outline-none focus:border-ember-400"
                 />
 
                 <button
                   onClick={handleNoteSave}
                   disabled={saving}
-                  className="mt-3 rounded-xl bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ember-700 disabled:opacity-50"
+                  className="mt-3 rounded-xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Save Note"}
                 </button>
@@ -601,9 +542,9 @@ const AppliedVisas = () => {
 
 const StatCard = ({ title, value, color }) => {
   const colors = {
-    blue: "border-ember-100 bg-ember-50 text-ember-700",
+    blue: "border-ember-200 bg-ember-50 text-ember-600",
     amber: "border-amber-100 bg-amber-50 text-amber-700",
-    indigo: "border-navy-100 bg-navy-50 text-navy-700",
+    indigo: "border-ember-200 bg-ember-50 text-ember-600",
     emerald: "border-emerald-100 bg-emerald-50 text-emerald-700",
   };
 
@@ -616,8 +557,8 @@ const StatCard = ({ title, value, color }) => {
 };
 
 const Detail = ({ label, value }) => (
-  <div className="rounded-xl bg-stone-50 p-3">
-    <p className="text-xs capitalize text-stone-500">
+  <div className="rounded-xl bg-[#EEF3F7] p-3">
+    <p className="text-xs capitalize text-navy-500">
       {label.replace(/([A-Z])/g, " $1")}
     </p>
 

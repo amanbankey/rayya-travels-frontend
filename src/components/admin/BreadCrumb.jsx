@@ -1,20 +1,19 @@
-import { FiChevronRight } from "react-icons/fi";
-
-export const Breadcrumb = ({ items = [], badge }) => (
-  <div className="flex flex-wrap items-center gap-1.5 text-sm">
-    {items.map((item, i) => {
-      const last = i === items.length - 1;
-      return (
-        <span key={item + i} className="flex items-center gap-1.5">
-          <span className={last ? "font-serif text-lg font-semibold text-navy-900" : "text-stone-400"}>{item}</span>
-          {!last && <FiChevronRight className="text-ember-400" size={14} />}
-        </span>
-      );
-    })}
+import React, { useState } from "react";
+import {
+  X,
+  ChevronRight,
+ 
+} from "lucide-react";
+export const Breadcrumb = ({ items, badge }) => (
+  <div className="flex items-center gap-2 text-sm">
+    {items.map((item, idx) => (
+      <React.Fragment key={item}>
+        {idx > 0 && <ChevronRight size={13} className="text-gray-300" />}
+        <span className={idx === items.length - 1 ? "text-gray-900 font-semibold" : "text-gray-400"}>{item}</span>
+      </React.Fragment>
+    ))}
     {badge && (
-      <span className="ml-2 rounded-full bg-ember-50 px-3 py-1 text-xs font-semibold text-ember-700 ring-1 ring-inset ring-ember-200">{badge}</span>
+      <span className="ml-2 bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-0.5 rounded-full">{badge}</span>
     )}
   </div>
 );
-
-export default Breadcrumb;

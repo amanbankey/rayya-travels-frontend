@@ -1,200 +1,81 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
-  FiGrid,
-  FiUsers,
-  FiCreditCard,
-  FiGlobe,
-  FiHelpCircle,
-  FiSettings,
-  FiLogOut,
-  FiX,
-  FiPackage,
+  FiGrid, FiUsers, FiGlobe, FiHelpCircle, FiSettings, FiX, FiCreditCard, FiPackage,
 } from "react-icons/fi";
-import {
-  MdSupportAgent,
-  MdOutlineConfirmationNumber,
-  MdOutlineLocalAirport,
-} from "react-icons/md";
+import { MdSupportAgent, MdOutlineConfirmationNumber, MdOutlineLocalAirport } from "react-icons/md";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { BsWallet2 } from "react-icons/bs";
-import logo from "../../assets/image/rayyalogo.png";
+import Logo from "../../assets/image/rayyalogo.png";
 
 const groups = [
-  {
-    title: "Operations",
-    items: [
-      { label: "Users", icon: FiUsers },
-      { label: "Agents", icon: MdSupportAgent },
-      { label: "Applied Visas", icon: FiCreditCard },
-      { label: "Applied Tickets", icon: MdOutlineConfirmationNumber },
-      { label: "Applied Packages", icon: FiPackage },
-    ],
-  },
-  {
-    title: "Master Data",
-    items: [
-      { label: "Airports", icon: MdOutlineLocalAirport },
-      { label: "Countries", icon: FiGlobe },
-      { label: "Airlines", icon: TbPlaneDeparture },
-    ],
-  },
-  {
-    title: "Finance",
-    items: [{ label: "Wallet History", icon: BsWallet2 }],
-  },
-  {
-    title: "System",
-    items: [
-      { label: "Support", icon: FiHelpCircle },
-      { label: "Settings", icon: FiSettings },
-    ],
-  },
+  { title: "OPERATIONS", items: [
+    { label: "Users", icon: FiUsers },
+    { label: "Agents", icon: MdSupportAgent },
+    { label: "Applied Visas", icon: FiCreditCard },
+    { label: "Applied Tickets", icon: MdOutlineConfirmationNumber },
+    { label: "Applied Packages", icon: FiPackage },
+  ]},
+  { title: "MASTER DATA", items: [
+    { label: "Airports", icon: MdOutlineLocalAirport },
+    { label: "Countries", icon: FiGlobe },
+    { label: "Airlines", icon: TbPlaneDeparture },
+  ]},
+  { title: "FINANCE", items: [{ label: "Wallet History", icon: BsWallet2 }] },
+  { title: "SYSTEM", items: [
+    { label: "Support", icon: FiHelpCircle },
+    { label: "Settings", icon: FiSettings },
+  ]},
 ];
 
-const Tile = ({ icon: Icon, active }) => (
-  <span
-    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[14px] transition-colors ${
-      active
-        ? "bg-white/25 text-white"
-        : "bg-white/10 text-[#FFB27A] group-hover:bg-white/20"
-    }`}
-  >
-    <Icon />
-  </span>
-);
+const Sidebar = ({ activeItem, onNavigate, sidebarOpen, setSidebarOpen }) => {
+  const go = (label) => { onNavigate(label); setSidebarOpen(false); };
 
-const SectionTitle = ({ children }) => (
-  <p className="mb-1 flex items-center gap-2 px-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#8FA6BD]">
-    <span className="h-px w-3 bg-[#AE4000]" />
-    {children}
-  </p>
-);
-
-const Sidebar = ({
-  activeItem,
-  onNavigate,
-  sidebarOpen,
-  setSidebarOpen,
-}) => {
-  const navigate = useNavigate();
-
-  const go = (label) => {
-    onNavigate(label);
-    setSidebarOpen && setSidebarOpen(false);
+  const Item = ({ label, icon: Icon }) => {
+    const active = activeItem === label;
+    return (
+      <button
+        onClick={() => go(label)}
+        className={`w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl text-[13px] font-medium mb-0.5 transition-all ${
+          active
+            ? "bg-gradient-to-r from-ember-600 to-ember-400 text-white shadow-lg shadow-ember-500/30"
+            : "text-navy-100 hover:bg-white/5 hover:text-white"
+        }`}
+      >
+        <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${active ? "bg-white/25 text-white" : "bg-white/10 text-ember-300"}`}>
+          <Icon size={14} />
+        </span>
+        {label}
+      </button>
+    );
   };
-
-  const rowCls = (active) =>
-    `group relative flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left text-[13px] font-medium transition-all duration-200 ${
-      active
-        ? "bg-gradient-to-r from-[#AE4000] to-[#E0620F] text-white shadow-lg shadow-[#AE4000]/40"
-        : "text-[#DCE6F0] hover:bg-white/10 hover:text-white"
-    }`;
 
   return (
     <>
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-30 bg-[#0B1724]/70 backdrop-blur-sm lg:hidden"
-        />
-      )}
-
+      {sidebarOpen && <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-30 lg:hidden" />}
       <aside
-        className={`fixed left-0 top-0 z-40 h-screen w-[272px] shrink-0 p-2.5 transition-transform duration-300 ease-in-out lg:sticky ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
+        className={`fixed lg:sticky top-0 left-0 z-40 h-screen p-3 w-[270px] flex-shrink-0 font-sans transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
-        <div className="relative flex h-full min-h-0 flex-col overflow-hidden rounded-[26px] bg-gradient-to-b from-[#0B1724] via-[#102030] to-[#16304A] shadow-[0_25px_60px_-20px_rgba(11,23,36,0.9)]">
-          
-          <div className="pointer-events-none absolute -right-14 top-28 h-44 w-44 rounded-full bg-[#AE4000]/30 blur-3xl" />
-
-          <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-[#E0620F]/15 blur-3xl" />
-
-          <div className="h-1 w-full shrink-0 bg-gradient-to-r from-[#AE4000] via-[#E0620F] to-[#AE4000]" />
-
-          <div className="relative shrink-0 px-3.5 pb-2 pt-3">
-            <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-1.5 shadow-inner">
-              <img
-                src={logo}
-                alt="Raaya Tour & Travel"
-                className="h-12 w-auto object-contain"
-              />
-
-              <button
-                onClick={() =>
-                  setSidebarOpen && setSidebarOpen(false)
-                }
-                aria-label="Close menu"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#102030] text-white lg:hidden"
-              >
-                <FiX />
-              </button>
+        <div className="h-full flex flex-col rounded-[26px] overflow-hidden bg-gradient-to-b from-navy-950 via-navy-900 to-navy-800 border-t-4 border-ember-500 shadow-2xl">
+          <div className="p-3 relative">
+            <div className="bg-white rounded-2xl py-2 flex items-center justify-center shadow-lg">
+              <img src={Logo} alt="Rayya Tour & Travel" className="h-12 w-auto object-contain" />
             </div>
-
-            
-          </div>
-
-          <nav className="no-scrollbar relative min-h-0 flex-1 space-y-2.5 overflow-y-auto px-3 pb-2 pt-1">
-            
-            <button
-              onClick={() => go("Dashboard")}
-              className={rowCls(activeItem === "Dashboard")}
-            >
-              <Tile
-                icon={FiGrid}
-                active={activeItem === "Dashboard"}
-              />
-              Dashboard
+            <button onClick={() => setSidebarOpen(false)} className="lg:hidden absolute top-5 right-5 text-navy-700 bg-navy-100 rounded-full p-1">
+              <FiX size={13} />
             </button>
-
-            {groups.map((group) => (
-              <div key={group.title}>
-                <SectionTitle>{group.title}</SectionTitle>
-
-                <div className="space-y-0.5">
-                  {group.items.map(({ label, icon }) => (
-                    <button
-                      key={label}
-                      onClick={() => go(label)}
-                      className={rowCls(activeItem === label)}
-                    >
-                      <Tile
-                        icon={icon}
-                        active={activeItem === label}
-                      />
-                      {label}
-                    </button>
-                  ))}
-                </div>
+          </div>
+          <nav className="flex-1 px-2.5 pb-3 overflow-y-auto no-scrollbar">
+            <Item label="Dashboard" icon={FiGrid} />
+            {groups.map((g) => (
+              <div key={g.title}>
+                <p className="flex items-center gap-2 px-2 text-[9px] font-semibold tracking-[0.25em] text-navy-300 mt-3 mb-1.5">
+                  <span className="w-3 h-px bg-ember-500" /> {g.title}
+                </p>
+                {g.items.map((it) => <Item key={it.label} {...it} />)}
               </div>
             ))}
           </nav>
-
-          {/*<div className="relative m-2.5 mt-1 flex shrink-0 items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.08] p-2.5 backdrop-blur">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#E0620F] to-[#AE4000] font-serif font-semibold text-white">
-              A
-            </span>
-
-            <div className="min-w-0 flex-1 leading-tight">
-              <p className="truncate text-sm font-semibold text-white">
-                Admin
-              </p>
-
-              <p className="truncate text-[11px] text-[#B9C8D8]">
-                admin@raaya.com
-              </p>
-            </div>
-
-            <button
-              onClick={() => navigate("/")}
-              title="Back to website"
-              aria-label="Sign out"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-[#DCE6F0] transition-colors hover:bg-[#AE4000] hover:text-white"
-            >
-              <FiLogOut />
-            </button>
-          </div>*/}
         </div>
       </aside>
     </>

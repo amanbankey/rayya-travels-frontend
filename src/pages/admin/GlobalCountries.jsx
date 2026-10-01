@@ -1,3 +1,4 @@
+import { FiGlobe as PageIcon } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import {
   FiPlus,
@@ -14,6 +15,11 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import {
+  getCountries,
+  addCountry,
+  updateCountry,
+} from "../../api/countryApi";
 
 // =====================================================
 // YES / NO OPTIONS
@@ -258,47 +264,6 @@ const yesNoFields = [
 // =====================================================
 
 // =====================================================
-// DUMMY DATA (backend removed)
-// =====================================================
-
-const makeCountry = (id, countryName, code, currency, allowForVisa, allowForOtb, status = "Active") => {
-  const rules = {};
-  yesNoFields.forEach((section) =>
-    section.fields.forEach((field) => {
-      rules[field.key] = field.key.endsWith("Required") ? "No" : "Yes";
-    })
-  );
-
-  return {
-    _id: id,
-    countryName,
-    code,
-    currency,
-    status,
-    ...rules,
-    allowForAdditionalFolder: "No",
-    allowForAdditionalFolderLabel: "",
-    allowForVisa,
-    allowForOtb,
-  };
-};
-
-let countryStore = [
-  makeCountry("c1", "India", "IN", "INR", "No", "No"),
-  makeCountry("c2", "United Arab Emirates", "AE", "AED", "Yes", "No"),
-  makeCountry("c3", "Singapore", "SG", "SGD", "Yes", "No"),
-  makeCountry("c4", "Thailand", "TH", "THB", "Yes", "No"),
-  makeCountry("c5", "Saudi Arabia", "SA", "SAR", "Yes", "Yes"),
-  makeCountry("c6", "United Kingdom", "GB", "GBP", "Yes", "No"),
-  makeCountry("c7", "United States", "US", "USD", "Yes", "No"),
-  makeCountry("c8", "France", "FR", "EUR", "Yes", "No"),
-  makeCountry("c9", "Australia", "AU", "AUD", "No", "No", "Inactive"),
-  makeCountry("c10", "Malaysia", "MY", "MYR", "Yes", "No"),
-  makeCountry("c11", "Sri Lanka", "LK", "LKR", "Yes", "No"),
-  makeCountry("c12", "Vietnam", "VN", "VND", "Yes", "No"),
-];
-
-// =====================================================
 // PREMIUM YES / NO TOGGLE
 // =====================================================
 
@@ -309,20 +274,20 @@ const PremiumToggle = ({ value, onChange, label }) => {
     <div
       className={`group flex items-center justify-between gap-4 p-4 rounded-3xl border transition-all duration-200 ${
         enabled
-          ? "bg-ember-50/60 border-ember-100"
-          : "bg-white border-stone-200 hover:border-stone-300"
+          ? "bg-ember-50/60 border-ember-200"
+          : "bg-white border-navy-100 hover:border-navy-100"
       }`}
     >
       <div className="min-w-0">
         <p
           className={`text-sm font-semibold transition-colors ${
-            enabled ? "text-navy-900" : "text-stone-600"
+            enabled ? "text-navy-900" : "text-navy-600"
           }`}
         >
           {label}
         </p>
 
-        <p className="text-[10px] text-stone-400 mt-1">
+        <p className="text-[10px] text-navy-400 mt-1">
           {enabled
             ? "Enabled for this country"
             : "Disabled for this country"}
@@ -336,8 +301,8 @@ const PremiumToggle = ({ value, onChange, label }) => {
         onClick={() => onChange(enabled ? "No" : "Yes")}
         className={`relative flex-shrink-0 w-[52px] h-[28px] rounded-full p-1 transition-all duration-300 focus:outline-none focus:ring-4 ${
           enabled
-            ? "bg-ember-600 focus:ring-ember-100"
-            : "bg-stone-200 focus:ring-stone-100"
+            ? "bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 focus:ring-ember-100"
+            : "bg-navy-100 focus:ring-gray-100"
         }`}
       >
         <span
@@ -375,34 +340,44 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    const updated = { ...country, ...form };
+      const response = await updateCountry(country._id, form);
 
-    countryStore = countryStore.map((item) =>
-      item._id === country._id ? updated : item
-    );
+      if (response?.success) {
+        toast.success("Country validation updated successfully");
 
-    toast.success("Country validation updated successfully");
+        onSaved?.(response.data);
 
-    onSaved?.(updated);
+        setTimeout(() => {
+          onClose();
+        }, 500);
+      } else {
+        toast.error(response?.message || "Failed to update country");
+      }
+    } catch (error) {
+      console.error("Update Country Error:", error);
 
-    setTimeout(() => {
-      onClose();
-    }, 500);
-
-    setSaving(false);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to update country"
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-navy-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-6xl max-h-[92vh] rounded-[28px] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-6xl max-h-[92vh] rounded-3xl shadow-2xl overflow-hidden">
 
         {/* HEADER */}
-        <div className="px-6 sm:px-8 py-5 border-b border-stone-100 flex items-center justify-between">
+        <div className="px-6 sm:px-8 py-5 border-b border-navy-50 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
@@ -414,7 +389,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
                   Update VISA Validation
                 </h2>
 
-                <p className="text-xs text-stone-500 mt-0.5">
+                <p className="text-xs text-navy-500 mt-0.5">
                   Configure application fields and document requirements.
                 </p>
               </div>
@@ -422,7 +397,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-stone-50 border border-stone-100">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#EEF3F7] border border-navy-50">
               <span className="text-sm">🌐</span>
 
               <div>
@@ -430,7 +405,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
                   {country?.countryName}
                 </p>
 
-                <p className="text-[10px] text-stone-400">
+                <p className="text-[10px] text-navy-400">
                   {country?.code}
                 </p>
               </div>
@@ -439,7 +414,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
             <button
               type="button"
               onClick={onClose}
-              className="w-9 h-9 rounded-2xl hover:bg-stone-100 flex items-center justify-center text-stone-500 transition"
+              className="w-9 h-9 rounded-2xl hover:bg-navy-50 flex items-center justify-center text-navy-500 transition"
             >
               <FiX size={18} />
             </button>
@@ -459,7 +434,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
                   General Application Rules
                 </h3>
 
-                <p className="text-xs text-stone-400 mt-1">
+                <p className="text-xs text-navy-400 mt-1">
                   Control whether each field is available and required.
                 </p>
               </div>
@@ -488,14 +463,14 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
           {yesNoFields.map((section) => (
             <div key={section.section} className="mb-7">
              <div className="flex items-center gap-3 mb-4">
-  <div className="w-1 h-6 rounded-full bg-ember-600" />
+  <div className="w-1 h-6 rounded-full bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30" />
 
   <div>
     <h3 className="text-sm font-bold text-navy-900">
       {section.section}
     </h3>
 
-    <p className="text-[11px] text-stone-400 mt-0.5">
+    <p className="text-[11px] text-navy-400 mt-0.5">
       Configure field availability and requirement settings
     </p>
   </div>
@@ -517,7 +492,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
 
           {/* FOLDER LABEL */}
           <div className="mb-7">
-            <label className="block text-xs font-medium text-stone-500 mb-2">
+            <label className="block text-xs font-medium text-navy-500 mb-2">
               Additional Folder Custom Label
             </label>
 
@@ -531,16 +506,16 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
                 )
               }
               placeholder="e.g. Additional Documents"
-              className="w-full border border-stone-200 rounded-2xl px-4 py-3 text-sm text-stone-700 outline-none focus:border-ember-500 focus:ring-2 focus:ring-ember-100"
+              className="w-full border border-navy-100 rounded-2xl px-4 py-3 text-sm text-navy-700 outline-none focus:border-ember-400 focus:ring-2 focus:ring-ember-100"
             />
           </div>
 
           {/* FOOTER */}
-          <div className="flex justify-end gap-3 pt-5 border-t border-stone-100">
+          <div className="flex justify-end gap-3 pt-5 border-t border-navy-50">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-3 rounded-2xl border border-stone-200 text-sm font-semibold text-stone-600 hover:bg-stone-50"
+              className="px-5 py-3 rounded-2xl border border-navy-100 text-sm font-semibold text-navy-600 hover:bg-ember-50"
             >
               Cancel
             </button>
@@ -548,7 +523,7 @@ const VisaRulesModal = ({ country, onClose, onSaved }) => {
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-ember-600 hover:bg-ember-700 disabled:opacity-60 text-white text-sm font-semibold shadow-sm"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 disabled:opacity-60 text-white text-sm font-semibold shadow-sm"
             >
               <FiSave size={16} />
 
@@ -584,7 +559,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.countryName || !form.code || !form.currency) {
@@ -592,37 +567,46 @@ const AddCountryModal = ({ onClose, onAdded }) => {
       return;
     }
 
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    const newCountry = makeCountry(
-      `c${Date.now()}`,
-      form.countryName.trim(),
-      form.code.trim().toUpperCase(),
-      form.currency.trim().toUpperCase(),
-      "No",
-      "No",
-      form.status
-    );
+      const response = await addCountry({
+        countryName: form.countryName.trim(),
+        code: form.code.trim().toUpperCase(),
+        currency: form.currency.trim().toUpperCase(),
+        status: form.status,
+      });
 
-    countryStore = [newCountry, ...countryStore];
+      if (response?.success) {
+        toast.success("Country added successfully");
 
-    toast.success("Country added successfully");
+        onAdded?.(response.data);
 
-    onAdded?.(newCountry);
+        setTimeout(() => {
+          onClose();
+        }, 500);
+      } else {
+        toast.error(response?.message || "Failed to add country");
+      }
+    } catch (error) {
+      console.error("Add Country Error:", error);
 
-    setTimeout(() => {
-      onClose();
-    }, 500);
-
-    setSaving(false);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to add country"
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-navy-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-lg rounded-[28px] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
 
         {/* HEADER */}
-        <div className="px-6 py-5 border-b border-stone-100 flex items-center justify-between">
+        <div className="px-6 py-5 border-b border-navy-50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
               <FiGlobe size={19} />
@@ -633,7 +617,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
                 Add Country
               </h2>
 
-              <p className="text-xs text-stone-400 mt-1">
+              <p className="text-xs text-navy-400 mt-1">
                 Add a new country to the master directory.
               </p>
             </div>
@@ -641,7 +625,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-2xl hover:bg-stone-100 flex items-center justify-center text-stone-500"
+            className="w-9 h-9 rounded-2xl hover:bg-navy-50 flex items-center justify-center text-navy-500"
           >
             <FiX size={18} />
           </button>
@@ -651,7 +635,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
 
           <div>
-            <label className="block text-xs font-semibold text-stone-500 mb-2">
+            <label className="block text-xs font-semibold text-navy-500 mb-2">
               Country Name
             </label>
 
@@ -660,13 +644,13 @@ const AddCountryModal = ({ onClose, onAdded }) => {
               value={form.countryName}
               onChange={handleChange}
               placeholder="e.g. India"
-              className="w-full border border-stone-200 rounded-2xl px-4 py-3 text-sm outline-none focus:border-ember-500 focus:ring-2 focus:ring-ember-100"
+              className="w-full border border-navy-100 rounded-2xl px-4 py-3 text-sm outline-none focus:border-ember-400 focus:ring-2 focus:ring-ember-100"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-stone-500 mb-2">
+              <label className="block text-xs font-semibold text-navy-500 mb-2">
                 ISO Code
               </label>
 
@@ -676,12 +660,12 @@ const AddCountryModal = ({ onClose, onAdded }) => {
                 value={form.code}
                 onChange={handleChange}
                 placeholder="IN"
-                className="w-full border border-stone-200 rounded-2xl px-4 py-3 text-sm uppercase outline-none focus:border-ember-500 focus:ring-2 focus:ring-ember-100"
+                className="w-full border border-navy-100 rounded-2xl px-4 py-3 text-sm uppercase outline-none focus:border-ember-400 focus:ring-2 focus:ring-ember-100"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-500 mb-2">
+              <label className="block text-xs font-semibold text-navy-500 mb-2">
                 Currency
               </label>
 
@@ -690,13 +674,13 @@ const AddCountryModal = ({ onClose, onAdded }) => {
                 value={form.currency}
                 onChange={handleChange}
                 placeholder="INR"
-                className="w-full border border-stone-200 rounded-2xl px-4 py-3 text-sm uppercase outline-none focus:border-ember-500 focus:ring-2 focus:ring-ember-100"
+                className="w-full border border-navy-100 rounded-2xl px-4 py-3 text-sm uppercase outline-none focus:border-ember-400 focus:ring-2 focus:ring-ember-100"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-stone-500 mb-2">
+            <label className="block text-xs font-semibold text-navy-500 mb-2">
               Status
             </label>
 
@@ -705,7 +689,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="appearance-none w-full border border-stone-200 rounded-2xl px-4 py-3 pr-10 text-sm outline-none focus:border-ember-500"
+                className="appearance-none w-full border border-navy-100 rounded-2xl px-4 py-3 pr-10 text-sm outline-none focus:border-ember-400"
               >
                 <option value="Active">Active</option>
                 <option value="Deactive">Deactive</option>
@@ -713,16 +697,16 @@ const AddCountryModal = ({ onClose, onAdded }) => {
 
               <FiChevronDown
                 size={15}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-navy-400 pointer-events-none"
               />
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-stone-100">
+          <div className="flex justify-end gap-3 pt-4 border-t border-navy-50">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-3 rounded-2xl border border-stone-200 text-sm font-semibold text-stone-600"
+              className="px-5 py-3 rounded-2xl border border-navy-100 text-sm font-semibold text-navy-600"
             >
               Cancel
             </button>
@@ -730,7 +714,7 @@ const AddCountryModal = ({ onClose, onAdded }) => {
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-ember-600 hover:bg-ember-700 disabled:opacity-60 text-white text-sm font-semibold"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 disabled:opacity-60 text-white text-sm font-semibold"
             >
               <FiPlus size={16} />
 
@@ -773,40 +757,43 @@ const CountriesDirectory = () => {
   // LOAD COUNTRIES
   // =====================================================
 
-  const loadCountries = (page = 1, customFilters = filters) => {
-    setLoading(true);
+  const loadCountries = async (page = 1, customFilters = filters) => {
+    try {
+      setLoading(true);
 
-    const q = (
-      customFilters.country || customFilters.isoCode || ""
-    )
-      .trim()
-      .toLowerCase();
-    const limit = 10;
+      const search =
+        customFilters.country || customFilters.isoCode || "";
 
-    const filtered = countryStore.filter(
-      (item) =>
-        (!q ||
-          item.countryName.toLowerCase().includes(q) ||
-          item.code.toLowerCase().includes(q)) &&
-        (!customFilters.visaStatus ||
-          item.allowForVisa === customFilters.visaStatus) &&
-        (!customFilters.otbStatus ||
-          item.allowForOtb === customFilters.otbStatus)
-    );
+      const response = await getCountries({
+        page,
+        limit: 10,
+        search,
+        visaStatus: customFilters.visaStatus,
+        otbStatus: customFilters.otbStatus,
+      });
 
-    const totalPages = Math.max(Math.ceil(filtered.length / limit), 1);
-    const safePage = Math.min(page, totalPages);
+      if (response?.success) {
+        setCountries(response.data || []);
+        setPagination(
+          response.pagination || {
+            total: 0,
+            currentPage: 1,
+            totalPages: 1,
+            pageSize: 10,
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Get Countries Error:", error);
 
-    setCountries(filtered.slice((safePage - 1) * limit, safePage * limit));
-
-    setPagination({
-      total: filtered.length,
-      currentPage: safePage,
-      totalPages,
-      pageSize: limit,
-    });
-
-    setLoading(false);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to load countries"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -855,40 +842,70 @@ const CountriesDirectory = () => {
   // INLINE VISA / OTB UPDATE
   // =====================================================
 
-  const applyInlineUpdate = (country, changes, message) => {
-    countryStore = countryStore.map((item) =>
-      item._id === country._id ? { ...item, ...changes } : item
-    );
+  const toggleVisaOtb = async (country) => {
+    try {
+      const newVisaValue =
+        country.allowForVisa === "Yes" ? "No" : "Yes";
 
-    setCountries((prev) =>
-      prev.map((item) =>
-        item._id === country._id ? { ...item, ...changes } : item
-      )
-    );
+      const response = await updateCountry(country._id, {
+        allowForVisa: newVisaValue,
+      });
 
-    toast.success(message);
+      if (response?.success) {
+        setCountries((prev) =>
+          prev.map((item) =>
+            item._id === country._id
+              ? {
+                  ...item,
+                  allowForVisa: newVisaValue,
+                }
+              : item
+          )
+        );
+
+        toast.success("Visa status updated successfully");
+      }
+    } catch (error) {
+      console.error("Visa update error:", error);
+
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to update visa status"
+      );
+    }
   };
 
-  const toggleVisaOtb = (country) => {
-    const newVisaValue =
-      country.allowForVisa === "Yes" ? "No" : "Yes";
+  const toggleOtb = async (country) => {
+    try {
+      const newOtbValue =
+        country.allowForOtb === "Yes" ? "No" : "Yes";
 
-    applyInlineUpdate(
-      country,
-      { allowForVisa: newVisaValue },
-      "Visa status updated successfully"
-    );
-  };
+      const response = await updateCountry(country._id, {
+        allowForOtb: newOtbValue,
+      });
 
-  const toggleOtb = (country) => {
-    const newOtbValue =
-      country.allowForOtb === "Yes" ? "No" : "Yes";
+      if (response?.success) {
+        setCountries((prev) =>
+          prev.map((item) =>
+            item._id === country._id
+              ? {
+                  ...item,
+                  allowForOtb: newOtbValue,
+                }
+              : item
+          )
+        );
 
-    applyInlineUpdate(
-      country,
-      { allowForOtb: newOtbValue },
-      "OTB status updated successfully"
-    );
+        toast.success("OTB status updated successfully");
+      }
+    } catch (error) {
+      console.error("OTB update error:", error);
+
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to update OTB status"
+      );
+    }
   };
 
   // =====================================================
@@ -957,7 +974,7 @@ const CountriesDirectory = () => {
   ).size;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-stone-50 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
       <ToastContainer
         position="top-right"
@@ -971,32 +988,30 @@ const CountriesDirectory = () => {
 
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-5">
         <div>
-          <p className="text-xs text-stone-500 mb-1">
+          {/*<p className="text-xs text-navy-500 mb-1">
             Master Data
             <span className="mx-1">›</span>
             <span className="text-ember-600 font-medium">
               Countries
             </span>
-          </p>
+          </p>*/}
 
           <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="font-serif text-2xl font-semibold text-navy-900">
-              Global Countries Directory
-            </h1>
+            <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Global Countries Directory</h1></div>
 
             <span className="bg-ember-50 text-ember-600 text-[10px] font-semibold px-2.5 py-1 rounded-full">
               {totalCountries} Countries
             </span>
           </div>
 
-          <p className="text-sm text-stone-500 mt-1">
+          <p className="text-sm text-navy-500 mt-1">
             Manage global geographic and administrative parameters.
           </p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center justify-center gap-2 bg-ember-600 hover:bg-ember-700 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-sm transition"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-sm transition"
         >
           <FiPlus size={16} />
           Add Country
@@ -1009,13 +1024,13 @@ const CountriesDirectory = () => {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
 
-        <div className="bg-white rounded-3xl border border-stone-200 p-4 shadow-sm">
-          <p className="text-[10px] font-semibold text-stone-400 tracking-wide">
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-sm">
+          <p className="text-[10px] font-semibold text-navy-400 tracking-wide">
             TOTAL COUNTRIES
           </p>
 
           <div className="flex items-center gap-2 mt-2">
-            <FiGlobe className="text-ember-500" size={18} />
+            <FiGlobe className="text-ember-600" size={18} />
 
             <span className="text-xl font-bold text-navy-900">
               {totalCountries}
@@ -1023,8 +1038,8 @@ const CountriesDirectory = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border border-stone-200 p-4 shadow-sm">
-          <p className="text-[10px] font-semibold text-stone-400 tracking-wide">
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-sm">
+          <p className="text-[10px] font-semibold text-navy-400 tracking-wide">
             VISA ENABLED
           </p>
 
@@ -1033,30 +1048,30 @@ const CountriesDirectory = () => {
               {visaEnabled}
             </span>
 
-            <span className="text-[10px] text-stone-400">
+            <span className="text-[10px] text-navy-400">
               current page
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border border-stone-200 p-4 shadow-sm">
-          <p className="text-[10px] font-semibold text-stone-400 tracking-wide">
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-sm">
+          <p className="text-[10px] font-semibold text-navy-400 tracking-wide">
             OTB ENABLED
           </p>
 
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-xl font-bold text-ember-500">
+            <span className="text-xl font-bold text-orange-500">
               {otbEnabled}
             </span>
 
-            <span className="text-[10px] text-stone-400">
+            <span className="text-[10px] text-navy-400">
               current page
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border border-stone-200 p-4 shadow-sm">
-          <p className="text-[10px] font-semibold text-stone-400 tracking-wide">
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-sm">
+          <p className="text-[10px] font-semibold text-navy-400 tracking-wide">
             CURRENCIES
           </p>
 
@@ -1065,7 +1080,7 @@ const CountriesDirectory = () => {
               {currencies}
             </span>
 
-            <span className="text-[10px] text-stone-400">
+            <span className="text-[10px] text-navy-400">
               current page
             </span>
           </div>
@@ -1078,13 +1093,13 @@ const CountriesDirectory = () => {
 
       <form
         onSubmit={handleSearch}
-        className="bg-white rounded-3xl border border-stone-200 p-4 mb-5 shadow-sm"
+        className="bg-white rounded-3xl border border-navy-100 p-4 mb-5 shadow-sm"
       >
         <div className="flex flex-col lg:flex-row gap-3">
 
-          <div className="flex-1 flex items-center gap-2 border border-stone-200 rounded-2xl px-3 py-2.5 focus-within:border-ember-500 focus-within:ring-2 focus-within:ring-ember-50">
+          <div className="flex-1 flex items-center gap-2 border border-navy-100 rounded-2xl px-3 py-2.5 focus-within:border-ember-400 focus-within:ring-2 focus-within:ring-ember-100">
             <FiSearch
-              className="text-stone-400 flex-shrink-0"
+              className="text-navy-400 flex-shrink-0"
               size={16}
             />
 
@@ -1094,7 +1109,7 @@ const CountriesDirectory = () => {
               value={filters.country}
               onChange={handleChange}
               placeholder="Search country"
-              className="w-full text-sm text-stone-700 focus:outline-none"
+              className="w-full text-sm text-navy-700 focus:outline-none"
             />
           </div>
 
@@ -1104,7 +1119,7 @@ const CountriesDirectory = () => {
             value={filters.isoCode}
             onChange={handleChange}
             placeholder="ISO Code"
-            className="lg:w-36 border border-stone-200 rounded-2xl px-3 py-2.5 text-sm text-stone-700 focus:outline-none focus:border-ember-500"
+            className="lg:w-36 border border-navy-100 rounded-2xl px-3 py-2.5 text-sm text-navy-700 focus:outline-none focus:border-ember-400"
           />
 
           <div className="relative lg:w-40">
@@ -1112,7 +1127,7 @@ const CountriesDirectory = () => {
               name="visaStatus"
               value={filters.visaStatus}
               onChange={handleChange}
-              className="appearance-none w-full border border-stone-200 rounded-2xl px-3 py-2.5 pr-9 text-sm text-stone-700 outline-none focus:border-ember-500 bg-white"
+              className="appearance-none w-full border border-navy-100 rounded-2xl px-3 py-2.5 pr-9 text-sm text-navy-700 outline-none focus:border-ember-400 bg-white"
             >
               <option value="">Visa Status</option>
               <option value="Yes">Yes</option>
@@ -1121,7 +1136,7 @@ const CountriesDirectory = () => {
 
             <FiChevronDown
               size={14}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-navy-400 pointer-events-none"
             />
           </div>
 
@@ -1130,7 +1145,7 @@ const CountriesDirectory = () => {
               name="otbStatus"
               value={filters.otbStatus}
               onChange={handleChange}
-              className="appearance-none w-full border border-stone-200 rounded-2xl px-3 py-2.5 pr-9 text-sm text-stone-700 outline-none focus:border-ember-500 bg-white"
+              className="appearance-none w-full border border-navy-100 rounded-2xl px-3 py-2.5 pr-9 text-sm text-navy-700 outline-none focus:border-ember-400 bg-white"
             >
               <option value="">OTB Status</option>
               <option value="Yes">Yes</option>
@@ -1139,7 +1154,7 @@ const CountriesDirectory = () => {
 
             <FiChevronDown
               size={14}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-navy-400 pointer-events-none"
             />
           </div>
 
@@ -1147,7 +1162,7 @@ const CountriesDirectory = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-ember-600 hover:bg-ember-700 disabled:opacity-60 text-white text-sm font-semibold px-6 py-2.5 rounded-2xl"
+              className="bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 disabled:opacity-60 text-white text-sm font-semibold px-6 py-2.5 rounded-2xl"
             >
               Search
             </button>
@@ -1155,7 +1170,7 @@ const CountriesDirectory = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="border border-stone-200 hover:bg-stone-50 text-stone-700 text-sm font-semibold px-5 py-2.5 rounded-2xl"
+              className="border border-navy-100 hover:bg-ember-50 text-navy-700 text-sm font-semibold px-5 py-2.5 rounded-2xl"
             >
               Reset
             </button>
@@ -1167,44 +1182,44 @@ const CountriesDirectory = () => {
           TABLE
       ===================================================== */}
 
-      <div className="bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden shadow-sm">
 
         <div className="overflow-x-auto">
 
           <table className="w-full min-w-[950px]">
 
-            <thead>
-              <tr className="bg-stone-50 border-b border-stone-200">
+            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100">
+              <tr className=" border-b border-navy-100">
 
-                <th className="text-left text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   SL
                 </th>
 
-                <th className="text-left text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   COUNTRY
                 </th>
 
-                <th className="text-left text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   ISO CODE
                 </th>
 
-                <th className="text-left text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   CURRENCY
                 </th>
 
-                <th className="text-center text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-center text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   ALLOW FOR VISA
                 </th>
 
-                <th className="text-center text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-center text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   ALLOW FOR OTB
                 </th>
 
-                <th className="text-left text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   STATUS
                 </th>
 
-                <th className="text-center text-xs font-semibold text-stone-500 px-5 py-4">
+                <th className="text-center text-[11px] font-bold tracking-widest text-navy-100 px-5 py-4">
                   ACTION
                 </th>
               </tr>
@@ -1216,7 +1231,7 @@ const CountriesDirectory = () => {
                 <tr>
                   <td
                     colSpan="8"
-                    className="text-center py-14 text-sm text-stone-400"
+                    className="text-center py-14 text-sm text-navy-400"
                   >
                     Loading countries...
                   </td>
@@ -1230,14 +1245,14 @@ const CountriesDirectory = () => {
                     <div className="flex flex-col items-center">
                       <FiGlobe
                         size={30}
-                        className="text-stone-300 mb-3"
+                        className="text-navy-300 mb-3"
                       />
 
-                      <p className="text-sm font-semibold text-stone-500">
+                      <p className="text-sm font-semibold text-navy-500">
                         No countries found
                       </p>
 
-                      <p className="text-xs text-stone-400 mt-1">
+                      <p className="text-xs text-navy-400 mt-1">
                         Try changing your search filters.
                       </p>
                     </div>
@@ -1247,10 +1262,10 @@ const CountriesDirectory = () => {
                 countries.map((country, index) => (
                   <tr
                     key={country._id}
-                    className="border-b border-stone-100 last:border-0 hover:bg-ember-50/30 transition"
+                    className="border-b border-navy-50 last:border-0 hover:bg-ember-50/30 transition"
                   >
 
-                    <td className="px-5 py-4 text-sm text-stone-500">
+                    <td className="px-5 py-4 text-sm text-navy-500">
                       {String(
                         (pagination.currentPage - 1) *
                           pagination.pageSize +
@@ -1270,7 +1285,7 @@ const CountriesDirectory = () => {
                             {country.countryName}
                           </p>
 
-                          <p className="text-[10px] text-stone-400">
+                          <p className="text-[10px] text-navy-400">
                             Global Country
                           </p>
                         </div>
@@ -1278,13 +1293,13 @@ const CountriesDirectory = () => {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="bg-stone-100 text-stone-700 text-xs font-semibold px-2.5 py-1.5 rounded-xl">
+                      <span className="bg-navy-50 text-navy-700 text-xs font-semibold px-2.5 py-1.5 rounded-xl">
                         {country.code}
                       </span>
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="text-sm font-medium text-stone-700">
+                      <span className="text-sm font-medium text-navy-700">
                         {country.currency}
                       </span>
                     </td>
@@ -1365,7 +1380,7 @@ const CountriesDirectory = () => {
                       <button
                         type="button"
                         onClick={() => openRulesModal(country)}
-                        className="w-9 h-9 inline-flex items-center justify-center rounded-2xl border border-stone-200 text-stone-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 transition"
+                        className="w-9 h-9 inline-flex items-center justify-center rounded-2xl border border-navy-100 text-navy-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 transition"
                         title="Edit validation rules"
                       >
                         <FiEdit3 size={15} />
@@ -1384,9 +1399,9 @@ const CountriesDirectory = () => {
             PAGINATION
         ===================================================== */}
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-stone-100">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-navy-50">
 
-          <p className="text-xs text-stone-500">
+          <p className="text-xs text-navy-500">
             Showing{" "}
             {countries.length > 0
               ? (pagination.currentPage - 1) *
@@ -1408,7 +1423,7 @@ const CountriesDirectory = () => {
               onClick={() =>
                 changePage(pagination.currentPage - 1)
               }
-              className="w-9 h-9 flex items-center justify-center border border-stone-200 text-stone-500 rounded-xl disabled:opacity-40 hover:bg-stone-50"
+              className="w-9 h-9 flex items-center justify-center border border-navy-100 text-navy-500 rounded-xl disabled:opacity-40 hover:bg-ember-50"
             >
               <FiChevronLeft size={14} />
             </button>
@@ -1425,8 +1440,8 @@ const CountriesDirectory = () => {
                 onClick={() => changePage(page)}
                 className={`w-9 h-9 text-xs font-semibold rounded-xl ${
                   page === pagination.currentPage
-                    ? "bg-ember-600 text-white"
-                    : "border border-stone-200 text-stone-600 hover:bg-stone-50"
+                    ? "bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white"
+                    : "border border-navy-100 text-navy-600 hover:bg-ember-50"
                 }`}
               >
                 {page}
@@ -1442,7 +1457,7 @@ const CountriesDirectory = () => {
               onClick={() =>
                 changePage(pagination.currentPage + 1)
               }
-              className="w-9 h-9 flex items-center justify-center border border-stone-200 text-stone-500 rounded-xl disabled:opacity-40 hover:bg-stone-50"
+              className="w-9 h-9 flex items-center justify-center border border-navy-100 text-navy-500 rounded-xl disabled:opacity-40 hover:bg-ember-50"
             >
               <FiChevronRight size={14} />
             </button>

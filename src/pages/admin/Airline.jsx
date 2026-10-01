@@ -1,3 +1,4 @@
+import { TbPlaneDeparture as PageIcon } from "react-icons/tb";
 import React, { useEffect, useState } from "react";
 import {
   FiPlus,
@@ -15,21 +16,27 @@ import {
 } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 
-// ===== DUMMY DATA (backend removed) =====
-let airlineStore = [
-  { _id: "al1", name: "Air India", code: "AI", logo: "", status: "Active" },
-  { _id: "al2", name: "IndiGo", code: "6E", logo: "", status: "Active" },
-  { _id: "al3", name: "Emirates", code: "EK", logo: "", status: "Active" },
-  { _id: "al4", name: "Singapore Airlines", code: "SQ", logo: "", status: "Active" },
-  { _id: "al5", name: "British Airways", code: "BA", logo: "", status: "Deactive" },
-  { _id: "al6", name: "Air France", code: "AF", logo: "", status: "Active" },
-  { _id: "al7", name: "Qatar Airways", code: "QR", logo: "", status: "Active" },
-  { _id: "al8", name: "SpiceJet", code: "SG", logo: "", status: "Deactive" },
-];
+import {
+  getAirlines,
+  addAirline,
+  updateAirline,
+  updateAirlineStatus,
+} from "../../api/airlineApi";
 
+const SERVER_URL = "https://rayya-travels-backend.onrender.com";
+//http://localhost:5000
 const getLogoUrl = (logo) => {
   if (!logo) return "";
-  return logo;
+
+  if (
+    logo.startsWith("http://") ||
+    logo.startsWith("https://") ||
+    logo.startsWith("data:")
+  ) {
+    return logo;
+  }
+
+  return `${SERVER_URL}${logo.startsWith("/") ? "" : "/"}${logo}`;
 };
 
 // =====================================================
@@ -102,7 +109,7 @@ const AirlineFormModal = ({
   // SUBMIT
   // ===================================================
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -120,50 +127,68 @@ const AirlineFormModal = ({
       return;
     }
 
-    setSaving(true);
-    setError("");
+    try {
+      setSaving(true);
+      setError("");
 
-    const code = formData.code.trim().toUpperCase();
-    const name = formData.name.trim();
+      const payload = new FormData();
 
-    const logo = formData.logo
-      ? URL.createObjectURL(formData.logo)
-      : airline?.logo || "";
-
-    if (isEdit) {
-      airlineStore = airlineStore.map((item) =>
-        item._id === airline._id
-          ? { ...item, name, code, logo, status: formData.status }
-          : item
+      payload.append("name", formData.name.trim());
+      payload.append(
+        "code",
+        formData.code.trim().toUpperCase()
       );
-    } else {
-      airlineStore = [
-        {
-          _id: `al${Date.now()}`,
-          name,
-          code,
-          logo,
-          status: formData.status,
-        },
-        ...airlineStore,
-      ];
-    }
+      payload.append("status", formData.status);
 
-    setSaving(false);
-    onSuccess();
-    onClose();
+      if (formData.logo) {
+        payload.append("logo", formData.logo);
+      }
+
+      let response;
+
+      if (isEdit) {
+        response = await updateAirline(
+          airline._id,
+          payload
+        );
+      } else {
+        response = await addAirline(payload);
+      }
+
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            `Failed to ${
+              isEdit ? "update" : "add"
+            } airline`
+        );
+      }
+
+      onSuccess();
+      onClose();
+    } catch (err) {
+      console.error("Airline save error:", err);
+
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Something went wrong while saving airline."
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-4">
 
-      <div className="w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white rounded-[28px] shadow-2xl border border-stone-200">
+      <div className="w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-navy-100">
 
         {/* =================================================
             HEADER
         ================================================= */}
 
-        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-stone-100 px-6 py-5">
+        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-navy-50 px-6 py-5">
 
           <div className="flex items-start justify-between gap-4">
 
@@ -192,7 +217,7 @@ const AirlineFormModal = ({
 
                 </div>
 
-                <p className="text-xs text-stone-500 mt-1">
+                <p className="text-xs text-navy-500 mt-1">
                   {isEdit
                     ? "Update airline master information and official branding."
                     : "Add a new airline to the global airline registry."}
@@ -206,7 +231,7 @@ const AirlineFormModal = ({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="w-9 h-9 rounded-2xl flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition disabled:opacity-50"
+              className="w-9 h-9 rounded-2xl flex items-center justify-center text-navy-400 hover:text-navy-700 hover:bg-navy-50 transition disabled:opacity-50"
             >
               <FiX size={18} />
             </button>
@@ -250,7 +275,7 @@ const AirlineFormModal = ({
                   Airline Information
                 </p>
 
-                <p className="text-[11px] text-stone-400">
+                <p className="text-[11px] text-navy-400">
                   Basic airline identification details
                 </p>
 
@@ -264,18 +289,18 @@ const AirlineFormModal = ({
 
               <div>
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   Airline Name
                   <span className="text-red-500 ml-1">
                     *
                   </span>
                 </label>
 
-                <div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+                <div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
                   <TbPlaneDeparture
                     size={17}
-                    className="text-stone-400"
+                    className="text-navy-400"
                   />
 
                   <input
@@ -284,7 +309,7 @@ const AirlineFormModal = ({
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter airline name"
-                    className="flex-1 outline-none text-sm text-stone-700 placeholder:text-stone-300"
+                    className="flex-1 outline-none text-sm text-navy-700 placeholder:text-navy-300"
                   />
 
                 </div>
@@ -295,7 +320,7 @@ const AirlineFormModal = ({
 
               <div>
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   IATA Code
                   <span className="text-red-500 ml-1">
                     *
@@ -309,10 +334,10 @@ const AirlineFormModal = ({
                   maxLength={2}
                   onChange={handleChange}
                   placeholder="e.g. AI"
-                  className="w-full border border-stone-200 rounded-2xl px-3.5 py-3 text-sm text-stone-700 uppercase outline-none focus:border-ember-400 focus:ring-4 focus:ring-ember-50 transition"
+                  className="w-full border border-navy-100 rounded-2xl px-3.5 py-3 text-sm text-navy-700 uppercase outline-none focus:border-ember-400 focus:ring-4 focus:ring-ember-100 transition"
                 />
 
-                <p className="text-[10px] text-stone-400 mt-1.5">
+                <p className="text-[10px] text-navy-400 mt-1.5">
                   2-letter airline identification code
                 </p>
 
@@ -330,7 +355,7 @@ const AirlineFormModal = ({
 
             <div className="flex items-center gap-2 mb-4">
 
-              <div className="w-7 h-7 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-xl bg-ember-50 text-ember-600 flex items-center justify-center">
                 <FiImage size={14} />
               </div>
 
@@ -340,7 +365,7 @@ const AirlineFormModal = ({
                   Official Logo
                 </p>
 
-                <p className="text-[11px] text-stone-400">
+                <p className="text-[11px] text-navy-400">
                   Upload the official airline logo
                 </p>
 
@@ -348,7 +373,7 @@ const AirlineFormModal = ({
 
             </div>
 
-            <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">
               Airline Logo
             </label>
 
@@ -362,7 +387,7 @@ const AirlineFormModal = ({
               onDragOver={(e) =>
                 e.preventDefault()
               }
-              className="relative border-2 border-dashed border-stone-200 hover:border-ember-300 rounded-3xl flex flex-col items-center justify-center py-9 text-center bg-stone-50/50 hover:bg-ember-50/30 transition"
+              className="relative border-2 border-dashed border-navy-100 hover:border-ember-200 rounded-3xl flex flex-col items-center justify-center py-9 text-center bg-[#EEF3F7] hover:bg-ember-50/30 transition"
             >
 
               <input
@@ -382,15 +407,15 @@ const AirlineFormModal = ({
                 className="flex flex-col items-center cursor-pointer w-full"
               >
 
-                <div className="w-12 h-12 rounded-3xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-ember-500 mb-3">
+                <div className="w-12 h-12 rounded-3xl bg-white border border-navy-100 shadow-sm flex items-center justify-center text-ember-600 mb-3">
                   <FiUploadCloud size={23} />
                 </div>
 
-                <p className="text-xs font-semibold text-stone-600">
+                <p className="text-xs font-semibold text-navy-600">
                   Click to upload or drag & drop
                 </p>
 
-                <p className="text-[10px] text-stone-400 mt-1.5">
+                <p className="text-[10px] text-navy-400 mt-1.5">
                   SVG, PNG, JPG or WEBP
                 </p>
 
@@ -401,7 +426,7 @@ const AirlineFormModal = ({
             {/* SELECTED FILE */}
 
             {formData.logo && (
-              <div className="mt-3 flex items-center justify-between gap-3 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white">
+              <div className="mt-3 flex items-center justify-between gap-3 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white">
 
                 <div className="flex items-center gap-3 min-w-0">
 
@@ -411,11 +436,11 @@ const AirlineFormModal = ({
 
                   <div className="min-w-0">
 
-                    <p className="text-xs font-semibold text-stone-700 truncate">
+                    <p className="text-xs font-semibold text-navy-700 truncate">
                       {formData.logo.name}
                     </p>
 
-                    <p className="text-[10px] text-stone-400 mt-0.5">
+                    <p className="text-[10px] text-navy-400 mt-0.5">
                       {Math.round(
                         formData.logo.size / 1024
                       )}{" "}
@@ -428,7 +453,7 @@ const AirlineFormModal = ({
 
                 <label
                   htmlFor="airline-logo"
-                  className="text-[11px] font-semibold text-ember-600 cursor-pointer hover:text-ember-700 whitespace-nowrap"
+                  className="text-[11px] font-semibold text-ember-600 cursor-pointer hover:text-ember-600 whitespace-nowrap"
                 >
                   Replace
                 </label>
@@ -440,9 +465,9 @@ const AirlineFormModal = ({
 
             {!formData.logo &&
               airline?.logo && (
-                <div className="mt-3 flex items-center gap-3 border border-stone-200 rounded-2xl px-3.5 py-3">
+                <div className="mt-3 flex items-center gap-3 border border-navy-100 rounded-2xl px-3.5 py-3">
 
-                  <div className="w-10 h-10 rounded-xl bg-stone-50 border border-stone-100 flex items-center justify-center overflow-hidden">
+                  <div className="w-10 h-10 rounded-xl bg-[#EEF3F7] border border-navy-50 flex items-center justify-center overflow-hidden">
 
                     <img
                       src={getLogoUrl(airline.logo)}
@@ -458,11 +483,11 @@ const AirlineFormModal = ({
 
                   <div>
 
-                    <p className="text-xs font-semibold text-stone-700">
+                    <p className="text-xs font-semibold text-navy-700">
                       Current Logo
                     </p>
 
-                    <p className="text-[10px] text-stone-400 mt-0.5">
+                    <p className="text-[10px] text-navy-400 mt-0.5">
                       Upload a new file to replace it
                     </p>
 
@@ -491,7 +516,7 @@ const AirlineFormModal = ({
                   Operational Status
                 </p>
 
-                <p className="text-[11px] text-stone-400">
+                <p className="text-[11px] text-navy-400">
                   Control airline availability
                 </p>
 
@@ -514,7 +539,7 @@ const AirlineFormModal = ({
                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-semibold border transition ${
                   formData.status === "Active"
                     ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                    : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
+                    : "bg-white text-navy-500 border-navy-100 hover:bg-ember-50"
                 }`}
               >
 
@@ -522,7 +547,7 @@ const AirlineFormModal = ({
                   className={`w-2 h-2 rounded-full ${
                     formData.status === "Active"
                       ? "bg-emerald-500"
-                      : "bg-stone-300"
+                      : "bg-navy-200"
                   }`}
                 />
 
@@ -543,7 +568,7 @@ const AirlineFormModal = ({
                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-semibold border transition ${
                   formData.status === "Deactive"
                     ? "bg-red-50 text-red-600 border-red-200"
-                    : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
+                    : "bg-white text-navy-500 border-navy-100 hover:bg-ember-50"
                 }`}
               >
 
@@ -551,7 +576,7 @@ const AirlineFormModal = ({
                   className={`w-2 h-2 rounded-full ${
                     formData.status === "Deactive"
                       ? "bg-red-500"
-                      : "bg-stone-300"
+                      : "bg-navy-200"
                   }`}
                 />
 
@@ -567,13 +592,13 @@ const AirlineFormModal = ({
               FOOTER
           ================================================= */}
 
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-5 border-t border-stone-100">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-5 border-t border-navy-50">
 
             <button
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-2xl border border-stone-200 text-xs font-semibold text-stone-600 hover:bg-stone-50 transition disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-2xl border border-navy-100 text-xs font-semibold text-navy-600 hover:bg-ember-50 transition disabled:opacity-50"
             >
               Cancel
             </button>
@@ -581,7 +606,7 @@ const AirlineFormModal = ({
             <button
               type="submit"
               disabled={saving}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-ember-600 hover:bg-ember-700 text-white text-xs font-semibold shadow-sm shadow-ember-200 transition disabled:opacity-60"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-xs font-semibold shadow-sm shadow-blue-200 transition disabled:opacity-60"
             >
 
               {saving ? (
@@ -647,37 +672,52 @@ const AirlineDirectory = () => {
   // FETCH AIRLINES
   // ===================================================
 
-  const fetchAirlines = (page = 1, override) => {
-    setLoading(true);
-    setError("");
+  const fetchAirlines = async (page = 1) => {
+    try {
+      setLoading(true);
+      setError("");
 
-    const f = override || filters;
-    const q = f.search.trim().toLowerCase();
-    const limit = 10;
+      const response = await getAirlines({
+        page,
+        limit: 10,
+        search: filters.search.trim(),
+        status: filters.status,
+      });
 
-    const filtered = airlineStore.filter(
-      (item) =>
-        (!q ||
-          item.name.toLowerCase().includes(q) ||
-          item.code.toLowerCase().includes(q)) &&
-        (!f.status || item.status === f.status)
-    );
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            "Failed to fetch airlines"
+        );
+      }
 
-    const totalPages = Math.max(Math.ceil(filtered.length / limit), 1);
-    const safePage = Math.min(page, totalPages);
+      setAirlines(response.data || []);
 
-    setAirlines(
-      filtered.slice((safePage - 1) * limit, safePage * limit)
-    );
+      setPagination(
+        response.pagination || {
+          total: 0,
+          currentPage: page,
+          totalPages: 1,
+          pageSize: 10,
+        }
+      );
 
-    setPagination({
-      total: filtered.length,
-      currentPage: safePage,
-      totalPages,
-      pageSize: limit,
-    });
+    } catch (err) {
+      console.error(
+        "Fetch airlines error:",
+        err
+      );
 
-    setLoading(false);
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Unable to load airlines."
+      );
+
+      setAirlines([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ===================================================
@@ -723,7 +763,9 @@ const AirlineDirectory = () => {
 
     setFilters(resetFilters);
 
-    fetchAirlines(1, resetFilters);
+    setTimeout(() => {
+      fetchAirlines(1);
+    }, 0);
   };
 
   // ===================================================
@@ -748,23 +790,48 @@ const AirlineDirectory = () => {
   // STATUS TOGGLE
   // ===================================================
 
-  const handleStatusToggle = (airline) => {
-    const newStatus =
-      airline.status === "Active" ? "Deactive" : "Active";
+  const handleStatusToggle = async (airline) => {
+    try {
+      const newStatus =
+        airline.status === "Active"
+          ? "Deactive"
+          : "Active";
 
-    airlineStore = airlineStore.map((item) =>
-      item._id === airline._id
-        ? { ...item, status: newStatus }
-        : item
-    );
+      const response =
+        await updateAirlineStatus(
+          airline._id,
+          newStatus
+        );
 
-    setAirlines((prev) =>
-      prev.map((item) =>
-        item._id === airline._id
-          ? { ...item, status: newStatus }
-          : item
-      )
-    );
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            "Failed to update status"
+        );
+      }
+
+      setAirlines((prev) =>
+        prev.map((item) =>
+          item._id === airline._id
+            ? {
+                ...item,
+                status: newStatus,
+              }
+            : item
+        )
+      );
+    } catch (err) {
+      console.error(
+        "Status update error:",
+        err
+      );
+
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to update airline status."
+      );
+    }
   };
 
   // ===================================================
@@ -785,7 +852,7 @@ const AirlineDirectory = () => {
   ).length;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-stone-50 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
       {/* =================================================
           PAGE HEADER
@@ -795,7 +862,7 @@ const AirlineDirectory = () => {
 
         <div>
 
-          <p className="text-xs text-stone-400 mb-1.5">
+          {/*<p className="text-xs text-navy-400 mb-1.5">
 
             Master Data
 
@@ -813,31 +880,25 @@ const AirlineDirectory = () => {
               Airlines Registry
             </span>
 
-          </p>
+          </p>*/}
 
           <div className="flex items-center gap-3 flex-wrap">
 
             <div className="flex items-center gap-2">
 
-              <div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
+              {/*<div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
                 <TbPlaneDeparture size={21} />
-              </div>
+              </div>*/}
 
               <div>
 
-                <h1 className="font-serif text-2xl font-semibold text-navy-900">
-                  Airlines Master Directory
-                </h1>
-
-                <p className="text-xs text-stone-400 mt-0.5">
-                  Manage global airline master data
-                </p>
+                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airlines Master Directory</h1><p className="text-navy-400 mt-0.5">Manage global airline master data</p></div></div>
 
               </div>
 
             </div>
 
-            <span className="bg-ember-50 border border-ember-100 text-ember-600 text-xs font-bold px-3 py-1.5 rounded-full">
+            <span className="bg-ember-50 border border-ember-200 text-ember-600 text-xs font-bold px-3 py-1.5 rounded-full">
               {totalAirlines} Airlines
             </span>
 
@@ -847,7 +908,7 @@ const AirlineDirectory = () => {
 
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 bg-ember-600 hover:bg-ember-700 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-ember-200 transition"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-sm shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
         >
           <FiPlus size={16} />
           Add New Airline
@@ -863,7 +924,7 @@ const AirlineDirectory = () => {
 
         {/* TOTAL */}
 
-        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-4 flex items-center gap-3">
+        <div className="bg-white rounded-3xl border border-navy-100 shadow-sm p-4 flex items-center gap-3">
 
           <div className="w-11 h-11 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
             <TbPlaneDeparture size={20} />
@@ -871,7 +932,7 @@ const AirlineDirectory = () => {
 
           <div>
 
-            <p className="text-xs font-medium text-stone-400">
+            <p className="text-xs font-medium text-navy-400">
               Total Airlines
             </p>
 
@@ -885,7 +946,7 @@ const AirlineDirectory = () => {
 
         {/* ACTIVE */}
 
-        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-4 flex items-center gap-3">
+        <div className="bg-white rounded-3xl border border-navy-100 shadow-sm p-4 flex items-center gap-3">
 
           <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <FiCheckCircle size={19} />
@@ -893,7 +954,7 @@ const AirlineDirectory = () => {
 
           <div>
 
-            <p className="text-xs font-medium text-stone-400">
+            <p className="text-xs font-medium text-navy-400">
               Active Airlines
             </p>
 
@@ -919,17 +980,17 @@ const AirlineDirectory = () => {
 
       <form
         onSubmit={handleSearch}
-        className="bg-white rounded-3xl border border-stone-200 shadow-sm p-4 mb-5"
+        className="bg-white rounded-3xl border border-navy-100 shadow-sm p-4 mb-5"
       >
 
         <div className="flex flex-col lg:flex-row gap-3">
 
           {/* SEARCH */}
 
-          <div className="flex-1 flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-2.5 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+          <div className="flex-1 flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-2.5 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
             <FiSearch
-              className="text-stone-400 flex-shrink-0"
+              className="text-navy-400 flex-shrink-0"
               size={17}
             />
 
@@ -939,20 +1000,20 @@ const AirlineDirectory = () => {
               value={filters.search}
               onChange={handleFilterChange}
               placeholder="Search by airline name or IATA code..."
-              className="w-full text-sm text-stone-700 placeholder:text-stone-300 focus:outline-none"
+              className="w-full text-sm text-navy-700 placeholder:text-navy-300 focus:outline-none"
             />
 
           </div>
 
           {/* STATUS */}
 
-          <div className="relative flex items-center border border-stone-200 rounded-2xl px-3.5 py-2.5 min-w-[170px]">
+          <div className="relative flex items-center border border-navy-100 rounded-2xl px-3.5 py-2.5 min-w-[170px]">
 
             <select
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="appearance-none bg-transparent outline-none text-sm text-stone-600 w-full pr-6 cursor-pointer"
+              className="appearance-none bg-transparent outline-none text-sm text-navy-600 w-full pr-6 cursor-pointer"
             >
 
               <option value="">
@@ -971,7 +1032,7 @@ const AirlineDirectory = () => {
 
             <FiChevronDown
               size={15}
-              className="absolute right-3.5 text-stone-400 pointer-events-none"
+              className="absolute right-3.5 text-navy-400 pointer-events-none"
             />
 
           </div>
@@ -981,7 +1042,7 @@ const AirlineDirectory = () => {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl transition disabled:opacity-60"
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl transition disabled:opacity-60"
           >
 
             <FiSearch size={15} />
@@ -995,7 +1056,7 @@ const AirlineDirectory = () => {
           <button
             type="button"
             onClick={handleReset}
-            className="flex items-center justify-center gap-2 border border-stone-200 bg-white hover:bg-stone-50 text-stone-600 text-sm font-semibold px-5 py-2.5 rounded-2xl transition"
+            className="flex items-center justify-center gap-2 border border-navy-100 bg-white hover:bg-ember-50 text-navy-600 text-sm font-semibold px-5 py-2.5 rounded-2xl transition"
           >
 
             <FiRefreshCw size={14} />
@@ -1035,11 +1096,11 @@ const AirlineDirectory = () => {
           TABLE CARD
       ================================================= */}
 
-      <div className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-navy-100 shadow-sm overflow-hidden">
 
         {/* TABLE HEADER */}
 
-        <div className="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-navy-50">
 
           <div>
 
@@ -1047,7 +1108,7 @@ const AirlineDirectory = () => {
               Airlines Registry
             </p>
 
-            <p className="text-[11px] text-stone-400 mt-0.5">
+            <p className="text-[11px] text-navy-400 mt-0.5">
               Live data from airline master database
             </p>
 
@@ -1058,7 +1119,7 @@ const AirlineDirectory = () => {
               fetchAirlines(currentPage)
             }
             disabled={loading}
-            className="w-9 h-9 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-400 hover:text-ember-600 hover:bg-ember-50 transition disabled:opacity-50"
+            className="w-9 h-9 rounded-2xl border border-navy-100 flex items-center justify-center text-navy-400 hover:text-ember-600 hover:bg-ember-50 transition disabled:opacity-50"
             title="Refresh"
           >
 
@@ -1083,37 +1144,37 @@ const AirlineDirectory = () => {
 
           <table className="w-full min-w-[720px]">
 
-            <thead>
+            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100">
 
-              <tr className="bg-stone-50/80 border-b border-stone-200">
+              <tr className=" border-b border-navy-100">
 
                 {/* SL */}
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5 w-[90px]">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5 w-[90px]">
                   SL
                 </th>
 
                 {/* NAME */}
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Name
                 </th>
 
                 {/* CODE */}
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5 w-[160px]">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5 w-[160px]">
                   Code
                 </th>
 
                 {/* LOGO */}
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5 w-[180px]">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5 w-[180px]">
                   Logo
                 </th>
 
                 {/* ACTION */}
 
-                <th className="text-right text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5 w-[120px]">
+                <th className="text-right text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5 w-[120px]">
                   Action
                 </th>
 
@@ -1141,11 +1202,11 @@ const AirlineDirectory = () => {
                         className="text-ember-600 animate-spin mb-3"
                       />
 
-                      <p className="text-sm font-semibold text-stone-600">
+                      <p className="text-sm font-semibold text-navy-600">
                         Loading airlines...
                       </p>
 
-                      <p className="text-xs text-stone-400 mt-1">
+                      <p className="text-xs text-navy-400 mt-1">
                         Fetching latest airline data
                       </p>
 
@@ -1168,15 +1229,15 @@ const AirlineDirectory = () => {
 
                     <div className="flex flex-col items-center">
 
-                      <div className="w-12 h-12 rounded-3xl bg-stone-100 text-stone-400 flex items-center justify-center mb-3">
+                      <div className="w-12 h-12 rounded-3xl bg-navy-50 text-navy-400 flex items-center justify-center mb-3">
                         <TbPlaneDeparture size={22} />
                       </div>
 
-                      <p className="text-sm font-semibold text-stone-700">
+                      <p className="text-sm font-semibold text-navy-700">
                         No airlines found
                       </p>
 
-                      <p className="text-xs text-stone-400 mt-1">
+                      <p className="text-xs text-navy-400 mt-1">
                         Try changing your search or filters.
                       </p>
 
@@ -1201,14 +1262,14 @@ const AirlineDirectory = () => {
                   return (
                     <tr
                       key={airline._id}
-                      className="border-b border-stone-100 last:border-0 hover:bg-stone-50/70 transition"
+                      className="border-b border-navy-50 last:border-0 hover:bg-ember-50/70 transition"
                     >
 
                       {/* SL */}
 
                       <td className="px-5 py-4">
 
-                        <span className="text-xs font-semibold text-stone-400">
+                        <span className="text-xs font-semibold text-navy-400">
                           {serialNumber}
                         </span>
 
@@ -1246,7 +1307,7 @@ const AirlineDirectory = () => {
                               {airline.name}
                             </p>
 
-                            <p className="text-[11px] text-stone-400 mt-0.5">
+                            <p className="text-[11px] text-navy-400 mt-0.5">
                               Airline Partner
                             </p>
 
@@ -1260,7 +1321,7 @@ const AirlineDirectory = () => {
 
                       <td className="px-5 py-4">
 
-                        <span className="inline-flex items-center bg-stone-100 border border-stone-200 text-stone-700 text-xs font-bold px-2.5 py-1.5 rounded-xl uppercase">
+                        <span className="inline-flex items-center bg-navy-50 border border-navy-100 text-navy-700 text-xs font-bold px-2.5 py-1.5 rounded-xl uppercase">
                           {airline.code}
                         </span>
 
@@ -1270,7 +1331,7 @@ const AirlineDirectory = () => {
 
                       <td className="px-5 py-4">
 
-                        <div className="w-16 h-10 rounded-2xl border border-stone-200 bg-white flex items-center justify-center overflow-hidden">
+                        <div className="w-16 h-10 rounded-2xl border border-navy-100 bg-white flex items-center justify-center overflow-hidden">
 
                           {airline.logo ? (
 
@@ -1286,7 +1347,7 @@ const AirlineDirectory = () => {
 
                           ) : (
 
-                            <span className="text-[10px] text-stone-400">
+                            <span className="text-[10px] text-navy-400">
                               No Logo
                             </span>
 
@@ -1342,7 +1403,7 @@ const AirlineDirectory = () => {
                                 airline
                               )
                             }
-                            className="w-9 h-9 rounded-2xl border border-stone-200 text-stone-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 flex items-center justify-center transition"
+                            className="w-9 h-9 rounded-2xl border border-navy-100 text-navy-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 flex items-center justify-center transition"
                             title="Edit airline"
                           >
 
@@ -1372,9 +1433,9 @@ const AirlineDirectory = () => {
             PAGINATION
         ================================================= */}
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-stone-100">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-navy-50">
 
-          <p className="text-xs text-stone-400">
+          <p className="text-xs text-navy-400">
 
             {pagination.total > 0
               ? `Showing ${
@@ -1407,7 +1468,7 @@ const AirlineDirectory = () => {
                   currentPage - 1
                 )
               }
-              className="flex items-center gap-1.5 border border-stone-200 text-stone-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-stone-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 border border-navy-100 text-navy-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-ember-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
 
               <FiChevronLeft size={14} />
@@ -1418,7 +1479,7 @@ const AirlineDirectory = () => {
 
             {/* CURRENT PAGE */}
 
-            <div className="min-w-[38px] h-8 rounded-2xl bg-ember-600 text-white flex items-center justify-center text-xs font-bold">
+            <div className="min-w-[38px] h-8 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white flex items-center justify-center text-xs font-bold">
               {currentPage}
             </div>
 
@@ -1436,7 +1497,7 @@ const AirlineDirectory = () => {
                   currentPage + 1
                 )
               }
-              className="flex items-center gap-1.5 border border-stone-200 text-stone-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-stone-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 border border-navy-100 text-navy-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-ember-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
 
               Next
