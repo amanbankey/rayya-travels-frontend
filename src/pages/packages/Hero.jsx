@@ -35,7 +35,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-darkBlue pb-56 pt-16 sm:pb-64 sm:pt-20 lg:pb-72">
+    <section className="relative overflow-hidden bg-darkBlue pb-16 py-10">
       <img src={packagesImages.hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-35" />
       {/* <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/70 to-dark" /> */}
 
@@ -56,7 +56,7 @@ const Hero = () => {
         </Reveal>
       </div>
 
-      <div className="relative mx-auto -mt-4 max-w-[1150px] px-4 sm:-mt-6 sm:px-8">
+      <div className="relative mx-auto max-w-[1150px] px-4 sm:-mt-6 sm:px-8 pt-20">
         <Reveal delay={150}>
           <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-4 shadow-2xl sm:p-6">
             <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
@@ -107,7 +107,6 @@ const Hero = () => {
                     className="w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
                   />
                 </span>
-                {/* <span className="mt-0.5 block text-xs text-darkBlue">Flexible dates active</span> */}
               </label>
 
               <label className="rounded-lg bg-white px-4 py-3">
@@ -136,7 +135,6 @@ const Hero = () => {
                     <option>3 Rooms</option>
                   </select>
                 </span>
-                {/* <span className="mt-0.5 block text-xs text-darkBlue">Couples / Solo</span> */}
               </label>
 
               <button
@@ -148,19 +146,6 @@ const Hero = () => {
               </button>
             </div>
 
-            {/* <div className="mt-4 flex flex-col gap-2 border-t border-line pt-4 text-xs text-ink/70 sm:flex-row sm:items-center sm:justify-between">
-              <p>
-                Default Budget Bracket: <span className="font-medium text-ink">₹50,000 – ₹1,50,000 / person</span>
-              </p>
-              <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Instant Confirmation
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brown" /> 100% Custom Tailored
-                </span>
-              </p>
-            </div> */}
 
             {status === "success" && (
               <p className="mt-3 rounded-lg bg-badge px-4 py-2.5 text-center text-sm font-medium text-badgetext">
