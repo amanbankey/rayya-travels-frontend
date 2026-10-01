@@ -1,22 +1,23 @@
-const tone = (status = "") => {
-  const s = String(status).toLowerCase();
-  if (/(ticketed|success|complete|approved|credit|paid|active|issued|confirmed|live)/.test(s))
-    return { cls: "bg-emerald-50 text-emerald-700 ring-emerald-200", dot: "bg-emerald-500" };
-  if (/(fail|action|cancel|reject|debit|blocked|refund|inactive|error)/.test(s))
-    return { cls: "bg-red-50 text-red-600 ring-red-200", dot: "bg-red-500" };
-  if (/(process|pending|review|hold|await|progress|open)/.test(s))
-    return { cls: "bg-ember-50 text-ember-700 ring-ember-200", dot: "bg-ember-500" };
-  return { cls: "bg-navy-50 text-navy-700 ring-navy-200", dot: "bg-navy-400" };
-};
-
 export const StatusBadge = ({ status }) => {
-  const t = tone(status);
+  const styles = {
+    Approved: "bg-emerald-50 text-emerald-600",
+    Rejected: "bg-red-50 text-red-500",
+    Pending: "bg-amber-50 text-amber-600",
+    Ticketed: "bg-emerald-50 text-emerald-600",
+    Processing: "bg-amber-50 text-amber-600",
+    "Action Req.": "bg-red-50 text-red-500",
+  };
+  const dots = {
+    Approved: "bg-emerald-500",
+    Rejected: "bg-red-500",
+    Pending: "bg-amber-500",
+    Ticketed: "bg-emerald-500",
+    Processing: "bg-amber-500",
+    "Action Req.": "bg-red-500",
+  };
   return (
-    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${t.cls}`}>
-      <span className={`h-1.5 w-1.5 rounded-full ${t.dot}`} />
-      {status}
+    <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${styles[status] || "bg-gray-100 text-gray-600"}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${dots[status] || "bg-gray-400"}`} /> {status}
     </span>
   );
 };
-
-export default StatusBadge;

@@ -1,3 +1,4 @@
+import { MdOutlineLocalAirport as PageIcon } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import {
   FiPlus,
@@ -15,29 +16,13 @@ import {
 } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 
-// ===== DUMMY DATA (backend removed) =====
-const DUMMY_COUNTRIES = [
-  { _id: "c1", countryName: "India", code: "IN" },
-  { _id: "c2", countryName: "United Arab Emirates", code: "AE" },
-  { _id: "c3", countryName: "United Kingdom", code: "GB" },
-  { _id: "c4", countryName: "United States", code: "US" },
-  { _id: "c5", countryName: "Singapore", code: "SG" },
-  { _id: "c6", countryName: "France", code: "FR" },
-  { _id: "c7", countryName: "Thailand", code: "TH" },
-  { _id: "c8", countryName: "Saudi Arabia", code: "SA" },
-  { _id: "c9", countryName: "Australia", code: "AU" },
-];
-
-let airportStore = [
-  { _id: "ap1", airportName: "Indira Gandhi International Airport", airportCode: "DEL", countryName: "India", countryCode: "IN", cityName: "New Delhi", latitude: "28.5562", longitude: "77.1000", status: "Active" },
-  { _id: "ap2", airportName: "Chhatrapati Shivaji Maharaj International Airport", airportCode: "BOM", countryName: "India", countryCode: "IN", cityName: "Mumbai", latitude: "19.0896", longitude: "72.8656", status: "Active" },
-  { _id: "ap3", airportName: "Raja Bhoj Airport", airportCode: "BHO", countryName: "India", countryCode: "IN", cityName: "Bhopal", latitude: "23.2875", longitude: "77.3374", status: "Active" },
-  { _id: "ap4", airportName: "Dubai International Airport", airportCode: "DXB", countryName: "United Arab Emirates", countryCode: "AE", cityName: "Dubai", latitude: "25.2532", longitude: "55.3657", status: "Active" },
-  { _id: "ap5", airportName: "Heathrow Airport", airportCode: "LHR", countryName: "United Kingdom", countryCode: "GB", cityName: "London", latitude: "51.4700", longitude: "-0.4543", status: "Active" },
-  { _id: "ap6", airportName: "John F. Kennedy International Airport", airportCode: "JFK", countryName: "United States", countryCode: "US", cityName: "New York", latitude: "40.6413", longitude: "-73.7781", status: "Deactive" },
-  { _id: "ap7", airportName: "Singapore Changi Airport", airportCode: "SIN", countryName: "Singapore", countryCode: "SG", cityName: "Singapore", latitude: "1.3644", longitude: "103.9915", status: "Active" },
-  { _id: "ap8", airportName: "Charles de Gaulle Airport", airportCode: "CDG", countryName: "France", countryCode: "FR", cityName: "Paris", latitude: "49.0097", longitude: "2.5479", status: "Active" },
-];
+import {
+  getAirports,
+  addAirport,
+  updateAirport,
+  updateAirportStatus,
+} from "../../api/airportApi";
+import { getCountries } from "../../api/countryApi";
 
 // =====================================================
 // AIRPORT FORM MODAL
@@ -76,9 +61,38 @@ const AirportFormModal = ({
   // ===================================================
 
   useEffect(() => {
-    setCountriesLoading(true);
-    setCountries(DUMMY_COUNTRIES);
-    setCountriesLoading(false);
+    const fetchCountries = async () => {
+      try {
+        setCountriesLoading(true);
+
+        const response = await getCountries({
+          page: 1,
+          limit: 500,
+        });
+
+        if (!response?.success) {
+          throw new Error(
+            response?.message || "Failed to fetch countries"
+          );
+        }
+
+        setCountries(response.data || []);
+      } catch (err) {
+        console.error("Fetch countries error:", err);
+
+        setError(
+          err?.response?.data?.message ||
+            err?.message ||
+            "Unable to load countries."
+        );
+
+        setCountries([]);
+      } finally {
+        setCountriesLoading(false);
+      }
+    };
+
+    fetchCountries();
   }, []);
 
   // ===================================================
@@ -118,7 +132,7 @@ const AirportFormModal = ({
   // SUBMIT
   // ===================================================
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -133,48 +147,80 @@ const AirportFormModal = ({
       return;
     }
 
-    setSaving(true);
-    setError("");
+    try {
+      setSaving(true);
+      setError("");
 
-    const payload = {
-      airportName: formData.airportName.trim(),
-      airportCode: formData.airportCode.trim().toUpperCase(),
-      countryName: formData.countryName.trim(),
-      countryCode: formData.countryCode
-        ? formData.countryCode.trim().toUpperCase()
-        : "",
-      cityName: formData.cityName.trim(),
-      latitude: formData.latitude ? String(formData.latitude).trim() : "",
-      longitude: formData.longitude ? String(formData.longitude).trim() : "",
-      status: formData.status,
-    };
+      const payload = {
+        airportName: formData.airportName.trim(),
 
-    if (isEdit) {
-      airportStore = airportStore.map((item) =>
-        item._id === airport._id ? { ...item, ...payload } : item
+        airportCode: formData.airportCode
+          .trim()
+          .toUpperCase(),
+
+        countryName: formData.countryName.trim(),
+
+        countryCode: formData.countryCode
+          ? formData.countryCode.trim().toUpperCase()
+          : "",
+
+        cityName: formData.cityName.trim(),
+
+        latitude: formData.latitude
+          ? formData.latitude.trim()
+          : "",
+
+        longitude: formData.longitude
+          ? formData.longitude.trim()
+          : "",
+
+        status: formData.status,
+      };
+
+      let response;
+
+      if (isEdit) {
+        response = await updateAirport(
+          airport._id,
+          payload
+        );
+      } else {
+        response = await addAirport(payload);
+      }
+
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            `Failed to ${isEdit ? "update" : "add"} airport`
+        );
+      }
+
+      onSuccess();
+      onClose();
+
+    } catch (err) {
+      console.error("Airport save error:", err);
+
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Something went wrong while saving airport."
       );
-    } else {
-      airportStore = [
-        { _id: `ap${Date.now()}`, ...payload },
-        ...airportStore,
-      ];
+    } finally {
+      setSaving(false);
     }
-
-    setSaving(false);
-    onSuccess();
-    onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-4">
 
-      <div className="w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white rounded-[28px] shadow-2xl border border-stone-200">
+      <div className="w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-navy-100">
 
         {/* =================================================
             HEADER
         ================================================= */}
 
-        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-stone-100 px-6 py-5">
+        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-navy-50 px-6 py-5">
 
           <div className="flex items-start justify-between gap-4">
 
@@ -192,7 +238,7 @@ const AirportFormModal = ({
                     : "Add New Airport"}
                 </h2>
 
-                <p className="text-xs text-stone-500 mt-1">
+                <p className="text-xs text-navy-500 mt-1">
                   {isEdit
                     ? "Update airport master information."
                     : "Add airport details to the global registry."}
@@ -206,7 +252,7 @@ const AirportFormModal = ({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="w-9 h-9 rounded-2xl flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition disabled:opacity-50"
+              className="w-9 h-9 rounded-2xl flex items-center justify-center text-navy-400 hover:text-navy-700 hover:bg-navy-50 transition disabled:opacity-50"
             >
               <FiX size={18} />
             </button>
@@ -258,7 +304,7 @@ const AirportFormModal = ({
                   Airport Information
                 </p>
 
-                <p className="text-[11px] text-stone-400">
+                <p className="text-[11px] text-navy-400">
                   Basic airport identification details
                 </p>
 
@@ -272,18 +318,18 @@ const AirportFormModal = ({
 
               <div className="md:col-span-2">
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   Name
                   <span className="text-red-500 ml-1">
                     *
                   </span>
                 </label>
 
-                <div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+                <div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
                   <TbPlaneDeparture
                     size={17}
-                    className="text-stone-400 flex-shrink-0"
+                    className="text-navy-400 flex-shrink-0"
                   />
 
                   <input
@@ -292,7 +338,7 @@ const AirportFormModal = ({
                     value={formData.airportName}
                     onChange={handleChange}
                     placeholder="Enter airport name"
-                    className="flex-1 outline-none text-sm text-stone-700 placeholder:text-stone-300"
+                    className="flex-1 outline-none text-sm text-navy-700 placeholder:text-navy-300"
                   />
 
                 </div>
@@ -303,7 +349,7 @@ const AirportFormModal = ({
 
               <div>
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   Country Name
                   <span className="text-red-500 ml-1">
                     *
@@ -312,11 +358,11 @@ const AirportFormModal = ({
 
                 <div className="relative">
 
-                  <div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+                  <div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
                     <FiFlag
                       size={16}
-                      className="text-stone-400 flex-shrink-0"
+                      className="text-navy-400 flex-shrink-0"
                     />
 
                     <select
@@ -324,7 +370,7 @@ const AirportFormModal = ({
                       value={formData.countryName}
                       onChange={handleCountryChange}
                       disabled={countriesLoading}
-                      className="flex-1 appearance-none bg-transparent outline-none text-sm text-stone-700 cursor-pointer disabled:text-stone-400 disabled:cursor-not-allowed pr-6"
+                      className="flex-1 appearance-none bg-transparent outline-none text-sm text-navy-700 cursor-pointer disabled:text-navy-400 disabled:cursor-not-allowed pr-6"
                     >
 
                       <option value="">
@@ -349,7 +395,7 @@ const AirportFormModal = ({
 
                     <FiChevronDown
                       size={15}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-navy-400 pointer-events-none"
                     />
 
                   </div>
@@ -364,7 +410,7 @@ const AirportFormModal = ({
 
 <div>
 
-<label className="block text-xs font-semibold text-stone-600 mb-1.5">
+<label className="block text-xs font-semibold text-navy-600 mb-1.5">
   Short Name 1
   <span className="text-red-500 ml-1">
     *
@@ -378,10 +424,10 @@ const AirportFormModal = ({
   onChange={handleChange}
   placeholder="e.g. DEL"
   maxLength={10}
-  className="w-full border border-stone-200 rounded-2xl px-3.5 py-3 text-sm text-stone-700 uppercase outline-none bg-white focus:border-ember-400 focus:ring-4 focus:ring-ember-50 transition"
+  className="w-full border border-navy-100 rounded-2xl px-3.5 py-3 text-sm text-navy-700 uppercase outline-none bg-white focus:border-ember-400 focus:ring-4 focus:ring-ember-100 transition"
 />
 
-<p className="text-[10px] text-stone-400 mt-1.5">
+<p className="text-[10px] text-navy-400 mt-1.5">
   Airport identification code
 </p>
 
@@ -393,18 +439,18 @@ const AirportFormModal = ({
 
 <div>
 
-<label className="block text-xs font-semibold text-stone-600 mb-1.5">
+<label className="block text-xs font-semibold text-navy-600 mb-1.5">
   Short Name 2
   <span className="text-red-500 ml-1">
     *
   </span>
 </label>
 
-<div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+<div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
   <FiMapPin
     size={16}
-    className="text-stone-400 flex-shrink-0"
+    className="text-navy-400 flex-shrink-0"
   />
 
   <input
@@ -413,12 +459,12 @@ const AirportFormModal = ({
     value={formData.cityName}
     onChange={handleChange}
     placeholder="Enter short name 2"
-    className="flex-1 outline-none text-sm text-stone-700 placeholder:text-stone-300"
+    className="flex-1 outline-none text-sm text-navy-700 placeholder:text-navy-300"
   />
 
 </div>
 
-<p className="text-[10px] text-stone-400 mt-1.5">
+<p className="text-[10px] text-navy-400 mt-1.5">
   City / location short name
 </p>
 
@@ -446,7 +492,7 @@ const AirportFormModal = ({
                   Location
                 </p>
 
-                <p className="text-[11px] text-stone-400">
+                <p className="text-[11px] text-navy-400">
                   Geographic coordinates of the airport
                 </p>
 
@@ -460,15 +506,15 @@ const AirportFormModal = ({
 
               <div>
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   Latitude
                 </label>
 
-                <div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+                <div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
                   <FiMapPin
                     size={16}
-                    className="text-stone-400"
+                    className="text-navy-400"
                   />
 
                   <input
@@ -477,7 +523,7 @@ const AirportFormModal = ({
                     value={formData.latitude}
                     onChange={handleChange}
                     placeholder="e.g. 28.5562"
-                    className="flex-1 outline-none text-sm text-stone-700 placeholder:text-stone-300"
+                    className="flex-1 outline-none text-sm text-navy-700 placeholder:text-navy-300"
                   />
 
                 </div>
@@ -488,15 +534,15 @@ const AirportFormModal = ({
 
               <div>
 
-                <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                <label className="block text-xs font-semibold text-navy-600 mb-1.5">
                   Longitude
                 </label>
 
-                <div className="flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+                <div className="flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-3 bg-white focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
                   <FiMapPin
                     size={16}
-                    className="text-stone-400"
+                    className="text-navy-400"
                   />
 
                   <input
@@ -505,7 +551,7 @@ const AirportFormModal = ({
                     value={formData.longitude}
                     onChange={handleChange}
                     placeholder="e.g. 77.1000"
-                    className="flex-1 outline-none text-sm text-stone-700 placeholder:text-stone-300"
+                    className="flex-1 outline-none text-sm text-navy-700 placeholder:text-navy-300"
                   />
 
                 </div>
@@ -522,7 +568,7 @@ const AirportFormModal = ({
 
           <div>
 
-            <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">
               Status
             </label>
 
@@ -532,7 +578,7 @@ const AirportFormModal = ({
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="appearance-none w-full border border-stone-200 rounded-2xl px-3.5 py-3 pr-10 text-sm text-stone-700 bg-white outline-none focus:border-ember-400 focus:ring-4 focus:ring-ember-50 transition cursor-pointer"
+                className="appearance-none w-full border border-navy-100 rounded-2xl px-3.5 py-3 pr-10 text-sm text-navy-700 bg-white outline-none focus:border-ember-400 focus:ring-4 focus:ring-ember-100 transition cursor-pointer"
               >
 
                 <option value="Active">
@@ -547,7 +593,7 @@ const AirportFormModal = ({
 
               <FiChevronDown
                 size={15}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-navy-400 pointer-events-none"
               />
 
             </div>
@@ -558,13 +604,13 @@ const AirportFormModal = ({
               FOOTER
           ================================================= */}
 
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-5 border-t border-stone-100">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-5 border-t border-navy-50">
 
             <button
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-2xl border border-stone-200 bg-white text-xs font-semibold text-stone-600 hover:bg-stone-50 transition disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-2xl border border-navy-100 bg-white text-xs font-semibold text-navy-600 hover:bg-ember-50 transition disabled:opacity-50"
             >
               Cancel
             </button>
@@ -572,7 +618,7 @@ const AirportFormModal = ({
             <button
               type="submit"
               disabled={saving || countriesLoading}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl bg-ember-600 hover:bg-ember-700 text-white text-xs font-semibold shadow-sm shadow-ember-200 transition disabled:opacity-60"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-xs font-semibold shadow-sm shadow-blue-200 transition disabled:opacity-60"
             >
 
               {saving ? (
@@ -642,37 +688,54 @@ const AirportDirectory = () => {
   // FETCH AIRPORTS
   // ===================================================
 
-  const fetchAirports = (page = 1, override) => {
-    setLoading(true);
-    setError("");
+  const fetchAirports = async (page = 1) => {
+    try {
+      setLoading(true);
+      setError("");
 
-    const f = override || filters;
-    const q = f.search.trim().toLowerCase();
-    const limit = 10;
+      const response = await getAirports({
+        page,
+        limit: 10,
+        search: filters.search.trim(),
+        status: filters.status,
+      });
 
-    const filtered = airportStore.filter(
-      (item) =>
-        (!q ||
-          item.airportName.toLowerCase().includes(q) ||
-          item.airportCode.toLowerCase().includes(q) ||
-          item.cityName.toLowerCase().includes(q) ||
-          item.countryName.toLowerCase().includes(q)) &&
-        (!f.status || item.status === f.status)
-    );
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            "Failed to fetch airports"
+        );
+      }
 
-    const totalPages = Math.max(Math.ceil(filtered.length / limit), 1);
-    const safePage = Math.min(page, totalPages);
+      setAirports(response.data || []);
 
-    setAirports(filtered.slice((safePage - 1) * limit, safePage * limit));
+      setPagination(
+        response.pagination || {
+          total: 0,
+          currentPage: page,
+          totalPages: 1,
+          pageSize: 10,
+        }
+      );
 
-    setPagination({
-      total: filtered.length,
-      currentPage: safePage,
-      totalPages,
-      pageSize: limit,
-    });
+    } catch (err) {
 
-    setLoading(false);
+      console.error(
+        "Fetch airports error:",
+        err
+      );
+
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Unable to load airports."
+      );
+
+      setAirports([]);
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ===================================================
@@ -719,7 +782,9 @@ const AirportDirectory = () => {
 
     setFilters(resetFilters);
 
-    fetchAirports(1, resetFilters);
+    setTimeout(() => {
+      fetchAirports(1);
+    }, 0);
   };
 
   // ===================================================
@@ -744,19 +809,52 @@ const AirportDirectory = () => {
   // STATUS TOGGLE
   // ===================================================
 
-  const handleStatusToggle = (airport) => {
-    const newStatus =
-      airport.status === "Active" ? "Deactive" : "Active";
+  const handleStatusToggle = async (airport) => {
 
-    airportStore = airportStore.map((item) =>
-      item._id === airport._id ? { ...item, status: newStatus } : item
-    );
+    try {
 
-    setAirports((prev) =>
-      prev.map((item) =>
-        item._id === airport._id ? { ...item, status: newStatus } : item
-      )
-    );
+      const newStatus =
+        airport.status === "Active"
+          ? "Deactive"
+          : "Active";
+
+      const response =
+        await updateAirportStatus(
+          airport._id,
+          newStatus
+        );
+
+      if (!response?.success) {
+        throw new Error(
+          response?.message ||
+            "Failed to update status"
+        );
+      }
+
+      setAirports((prev) =>
+        prev.map((item) =>
+          item._id === airport._id
+            ? {
+                ...item,
+                status: newStatus,
+              }
+            : item
+        )
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Status update error:",
+        err
+      );
+
+      alert(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to update airport status."
+      );
+    }
   };
 
   // ===================================================
@@ -770,7 +868,7 @@ const AirportDirectory = () => {
     pagination.totalPages || 1;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-stone-50 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
       {/* =================================================
           PAGE HEADER
@@ -780,7 +878,7 @@ const AirportDirectory = () => {
 
         <div>
 
-          <p className="text-xs text-stone-400 mb-1.5">
+          {/*<p className="text-xs text-navy-400 mb-1.5">
             Master Data
             <span className="mx-2">›</span>
             Global Aviation
@@ -789,29 +887,23 @@ const AirportDirectory = () => {
             <span className="text-ember-600 font-semibold">
               Airport Registry
             </span>
-          </p>
+          </p>*/}
 
           <div className="flex items-center gap-3 flex-wrap">
 
             <div className="flex items-center gap-2">
 
-              <div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
+              {/*<div className="w-10 h-10 rounded-2xl bg-ember-50 text-ember-600 flex items-center justify-center">
                 <TbPlaneDeparture size={21} />
-              </div>
+              </div>*/}
 
               <div>
-                <h1 className="font-serif text-2xl font-semibold text-navy-900">
-                  Airport Directory
-                </h1>
-
-                <p className="text-xs text-stone-400 mt-0.5">
-                  Manage global airport master data
-                </p>
+                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airport Directory</h1><p className="text-navy-400 mt-0.5">Manage global airport master data</p></div></div>
               </div>
 
             </div>
 
-            <span className="bg-ember-50 border border-ember-100 text-ember-600 text-xs font-bold px-3 py-1.5 rounded-full">
+            <span className="bg-ember-50 border border-ember-200 text-ember-600 text-xs font-bold px-3 py-1.5 rounded-full">
               {pagination.total || 0} Airports
             </span>
 
@@ -821,7 +913,7 @@ const AirportDirectory = () => {
 
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 bg-ember-600 hover:bg-ember-700 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-ember-200 transition"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
         >
           <FiPlus size={16} />
           Add New Airport
@@ -835,17 +927,17 @@ const AirportDirectory = () => {
 
       <form
         onSubmit={handleSearch}
-        className="bg-white rounded-3xl border border-stone-200 shadow-sm p-4 mb-5"
+        className="bg-white rounded-3xl border border-navy-100 shadow-sm p-4 mb-5"
       >
 
         <div className="flex flex-col lg:flex-row gap-3">
 
           {/* SEARCH */}
 
-          <div className="flex-1 flex items-center gap-2 border border-stone-200 rounded-2xl px-3.5 py-2.5 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-50 transition">
+          <div className="flex-1 flex items-center gap-2 border border-navy-100 rounded-2xl px-3.5 py-2.5 focus-within:border-ember-400 focus-within:ring-4 focus-within:ring-ember-100 transition">
 
             <FiSearch
-              className="text-stone-400 flex-shrink-0"
+              className="text-navy-400 flex-shrink-0"
               size={17}
             />
 
@@ -855,20 +947,20 @@ const AirportDirectory = () => {
               value={filters.search}
               onChange={handleFilterChange}
               placeholder="Search by airport, code, city or country..."
-              className="w-full text-sm text-stone-700 placeholder:text-stone-300 focus:outline-none"
+              className="w-full text-sm text-navy-700 placeholder:text-navy-300 focus:outline-none"
             />
 
           </div>
 
           {/* STATUS */}
 
-          <div className="relative flex items-center border border-stone-200 rounded-2xl px-3.5 py-2.5 min-w-[170px]">
+          <div className="relative flex items-center border border-navy-100 rounded-2xl px-3.5 py-2.5 min-w-[170px]">
 
             <select
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="appearance-none bg-transparent outline-none text-sm text-stone-600 w-full pr-6 cursor-pointer"
+              className="appearance-none bg-transparent outline-none text-sm text-navy-600 w-full pr-6 cursor-pointer"
             >
               <option value="">
                 All Status
@@ -885,7 +977,7 @@ const AirportDirectory = () => {
 
             <FiChevronDown
               size={15}
-              className="absolute right-3.5 text-stone-400 pointer-events-none"
+              className="absolute right-3.5 text-navy-400 pointer-events-none"
             />
 
           </div>
@@ -895,7 +987,7 @@ const AirportDirectory = () => {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl transition disabled:opacity-60"
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl transition disabled:opacity-60"
           >
             <FiSearch size={15} />
             Search
@@ -906,7 +998,7 @@ const AirportDirectory = () => {
           <button
             type="button"
             onClick={handleReset}
-            className="flex items-center justify-center gap-2 border border-stone-200 bg-white hover:bg-stone-50 text-stone-600 text-sm font-semibold px-5 py-2.5 rounded-2xl transition"
+            className="flex items-center justify-center gap-2 border border-navy-100 bg-white hover:bg-ember-50 text-navy-600 text-sm font-semibold px-5 py-2.5 rounded-2xl transition"
           >
             <FiRefreshCw size={14} />
             Reset
@@ -943,11 +1035,11 @@ const AirportDirectory = () => {
           TABLE CARD
       ================================================= */}
 
-      <div className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-navy-100 shadow-sm overflow-hidden">
 
         {/* TABLE HEADER */}
 
-        <div className="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-navy-50">
 
           <div>
 
@@ -955,7 +1047,7 @@ const AirportDirectory = () => {
               Airport Registry
             </p>
 
-            <p className="text-[11px] text-stone-400 mt-0.5">
+            <p className="text-[11px] text-navy-400 mt-0.5">
               Live data from airport master database
             </p>
 
@@ -966,7 +1058,7 @@ const AirportDirectory = () => {
               fetchAirports(currentPage)
             }
             disabled={loading}
-            className="w-9 h-9 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-400 hover:text-ember-600 hover:bg-ember-50 transition disabled:opacity-50"
+            className="w-9 h-9 rounded-2xl border border-navy-100 flex items-center justify-center text-navy-400 hover:text-ember-600 hover:bg-ember-50 transition disabled:opacity-50"
           >
             <FiRefreshCw
               size={15}
@@ -988,35 +1080,35 @@ const AirportDirectory = () => {
 
           <table className="w-full min-w-[900px]">
 
-            <thead>
+            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100">
 
-              <tr className="bg-stone-50/80 border-b border-stone-200">
+              <tr className=" border-b border-navy-100">
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Airport
                 </th>
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Country
                 </th>
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                 Short Name 1
                 </th>
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
       Short Name 2
     </th>
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Coordinates
                 </th>
 
-                <th className="text-left text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-left text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Status
                 </th>
 
-                <th className="text-right text-[11px] font-bold text-stone-500 uppercase tracking-wide px-5 py-3.5">
+                <th className="text-right text-[11px] font-bold text-navy-100 uppercase tracking-wide px-5 py-3.5">
                   Action
                 </th>
 
@@ -1042,11 +1134,11 @@ const AirportDirectory = () => {
                         className="text-ember-600 animate-spin mb-3"
                       />
 
-                      <p className="text-sm font-semibold text-stone-600">
+                      <p className="text-sm font-semibold text-navy-600">
                         Loading airports...
                       </p>
 
-                      <p className="text-xs text-stone-400 mt-1">
+                      <p className="text-xs text-navy-400 mt-1">
                         Fetching latest airport data
                       </p>
 
@@ -1067,15 +1159,15 @@ const AirportDirectory = () => {
 
                     <div className="flex flex-col items-center">
 
-                      <div className="w-12 h-12 rounded-3xl bg-stone-100 text-stone-400 flex items-center justify-center mb-3">
+                      <div className="w-12 h-12 rounded-3xl bg-navy-50 text-navy-400 flex items-center justify-center mb-3">
                         <TbPlaneDeparture size={22} />
                       </div>
 
-                      <p className="text-sm font-semibold text-stone-700">
+                      <p className="text-sm font-semibold text-navy-700">
                         No airports found
                       </p>
 
-                      <p className="text-xs text-stone-400 mt-1">
+                      <p className="text-xs text-navy-400 mt-1">
                         Try changing your search or filters.
                       </p>
 
@@ -1091,7 +1183,7 @@ const AirportDirectory = () => {
 
                   <tr
                     key={airport._id}
-                    className="border-b border-stone-100 last:border-0 hover:bg-stone-50/70 transition"
+                    className="border-b border-navy-50 last:border-0 hover:bg-ember-50/70 transition"
                   >
 
                     {/* AIRPORT */}
@@ -1112,7 +1204,7 @@ const AirportDirectory = () => {
                             {airport.airportName}
                           </p>
 
-                          <p className="text-xs text-stone-400 mt-0.5 flex items-center gap-1">
+                          <p className="text-xs text-navy-400 mt-0.5 flex items-center gap-1">
                             <FiMapPin size={10} />
                             {airport.cityName}
                           </p>
@@ -1129,17 +1221,17 @@ const AirportDirectory = () => {
 
                       <div className="flex items-center gap-2">
 
-                        <div className="w-7 h-7 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500">
+                        <div className="w-7 h-7 rounded-xl bg-navy-50 flex items-center justify-center text-navy-500">
                           <FiFlag size={13} />
                         </div>
 
                         <div>
 
-                          <p className="text-sm text-stone-700 font-medium">
+                          <p className="text-sm text-navy-700 font-medium">
                             {airport.countryName}
                           </p>
 
-                          <p className="text-[11px] text-stone-400 uppercase">
+                          <p className="text-[11px] text-navy-400 uppercase">
                             {airport.countryCode || "—"}
                           </p>
 
@@ -1155,7 +1247,7 @@ const AirportDirectory = () => {
 
 <td className="px-5 py-4">
 
-<span className="inline-flex items-center bg-stone-100 border border-stone-200 text-stone-700 text-xs font-bold px-2.5 py-1.5 rounded-xl uppercase">
+<span className="inline-flex items-center bg-navy-50 border border-navy-100 text-navy-700 text-xs font-bold px-2.5 py-1.5 rounded-xl uppercase">
   {airport.airportCode || "—"}
 </span>
 
@@ -1165,7 +1257,7 @@ const AirportDirectory = () => {
 
 <td className="px-5 py-4">
 
-<span className="text-sm font-medium text-stone-700">
+<span className="text-sm font-medium text-navy-700">
   {airport.cityName || "—"}
 </span>
 
@@ -1175,17 +1267,17 @@ const AirportDirectory = () => {
 
                     <td className="px-5 py-4">
 
-                      <div className="text-xs text-stone-500">
+                      <div className="text-xs text-navy-500">
 
                         <p>
-                          <span className="text-stone-400 mr-1">
+                          <span className="text-navy-400 mr-1">
                             Lat
                           </span>
                           {airport.latitude || "—"}
                         </p>
 
                         <p className="mt-1">
-                          <span className="text-stone-400 mr-1">
+                          <span className="text-navy-400 mr-1">
                             Lng
                           </span>
                           {airport.longitude || "—"}
@@ -1243,7 +1335,7 @@ const AirportDirectory = () => {
                               airport
                             )
                           }
-                          className="w-9 h-9 rounded-2xl border border-stone-200 text-stone-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 flex items-center justify-center transition"
+                          className="w-9 h-9 rounded-2xl border border-navy-100 text-navy-400 hover:text-ember-600 hover:border-ember-200 hover:bg-ember-50 flex items-center justify-center transition"
                           title="Edit airport"
                         >
                           <FiEdit2
@@ -1271,9 +1363,9 @@ const AirportDirectory = () => {
             PAGINATION
         ================================================= */}
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-stone-100">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t border-navy-50">
 
-          <p className="text-xs text-stone-400">
+          <p className="text-xs text-navy-400">
 
             {pagination.total > 0
               ? `Showing ${
@@ -1304,13 +1396,13 @@ const AirportDirectory = () => {
                   currentPage - 1
                 )
               }
-              className="flex items-center gap-1.5 border border-stone-200 text-stone-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-stone-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 border border-navy-100 text-navy-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-ember-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <FiChevronLeft size={14} />
               Previous
             </button>
 
-            <div className="min-w-[38px] h-8 rounded-2xl bg-ember-600 text-white flex items-center justify-center text-xs font-bold">
+            <div className="min-w-[38px] h-8 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white flex items-center justify-center text-xs font-bold">
               {currentPage}
             </div>
 
@@ -1326,7 +1418,7 @@ const AirportDirectory = () => {
                   currentPage + 1
                 )
               }
-              className="flex items-center gap-1.5 border border-stone-200 text-stone-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-stone-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 border border-navy-100 text-navy-600 text-xs font-semibold px-3 py-2 rounded-2xl hover:bg-ember-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Next
               <FiChevronRight size={14} />

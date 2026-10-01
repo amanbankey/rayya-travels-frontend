@@ -1,5 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
+const BASE_URL = import.meta.env.VITE_API_URL || "https://rayya-travels-backend.onrender.com/api";
+//http://localhost:5000
 export const submitForm = async (endpoint, payload) => {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     method: "POST",

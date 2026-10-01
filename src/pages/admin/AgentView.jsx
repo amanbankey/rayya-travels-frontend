@@ -56,7 +56,7 @@ const VisaChargesManagementPopup = ({
         {/* CLOSE */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-stone-400 hover:text-stone-700 bg-white rounded-full p-1"
+          className="absolute top-4 right-4 z-10 text-navy-400 hover:text-navy-700 bg-white rounded-full p-1"
         >
           <FiX size={20} />
         </button>
@@ -68,7 +68,7 @@ const VisaChargesManagementPopup = ({
 
             <div>
 
-              <p className="text-xs font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-xs font-semibold tracking-wide text-navy-400 mb-1">
                 AGENT SETTINGS{" "}
                 <span className="mx-1">›</span>
 
@@ -81,7 +81,7 @@ const VisaChargesManagementPopup = ({
                 {agentName}
               </h2>
 
-              <p className="text-xs text-stone-500 mt-1">
+              <p className="text-xs text-navy-500 mt-1">
                 {agent.fullName || "N/A"}
               </p>
 
@@ -89,7 +89,7 @@ const VisaChargesManagementPopup = ({
 
             <button
               onClick={onViewProfile}
-              className="border border-stone-200 text-ember-600 text-xs font-semibold px-3 py-2 rounded-xl"
+              className="border border-navy-100 text-ember-600 text-xs font-semibold px-3 py-2 rounded-xl"
             >
               View Agent Profile
             </button>
@@ -99,9 +99,9 @@ const VisaChargesManagementPopup = ({
           {/* AGENT CONTACT INFO */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 AGENT
               </p>
 
@@ -111,9 +111,9 @@ const VisaChargesManagementPopup = ({
 
             </div>
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 CONTACT
               </p>
 
@@ -121,7 +121,7 @@ const VisaChargesManagementPopup = ({
 
                 <FiPhone
                   size={12}
-                  className="text-stone-400"
+                  className="text-navy-400"
                 />
 
                 <p className="text-sm font-medium text-navy-800">
@@ -132,9 +132,9 @@ const VisaChargesManagementPopup = ({
 
             </div>
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 LOCATION
               </p>
 
@@ -152,45 +152,45 @@ const VisaChargesManagementPopup = ({
           {/* CONFIGURATION STATS */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 CONFIGURED ROUTES
               </p>
 
               <p className="text-lg font-bold text-navy-900">
                 1{" "}
-                <span className="text-xs font-medium text-stone-400">
+                <span className="text-xs font-medium text-navy-400">
                   total
                 </span>
               </p>
 
             </div>
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 ACTIVE ROUTES
               </p>
 
               <p className="text-lg font-bold text-navy-900">
                 1{" "}
-                <span className="text-xs font-medium text-stone-400">
+                <span className="text-xs font-medium text-navy-400">
                   live
                 </span>
               </p>
 
             </div>
 
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3">
+            <div className="bg-[#EEF3F7] border border-navy-100 rounded-2xl p-3">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                 BASE AGENT PRICING
               </p>
 
               <p className="text-lg font-bold text-navy-900">
                 ₹6,880{" "}
-                <span className="text-xs font-medium text-stone-400">
+                <span className="text-xs font-medium text-navy-400">
                   avg/adult
                 </span>
               </p>
@@ -204,14 +204,14 @@ const VisaChargesManagementPopup = ({
             Configured Visas
           </p>
 
-          <div className="border border-stone-200 rounded-2xl overflow-hidden">
+          <div className="border border-navy-100 rounded-2xl overflow-hidden">
 
             {/* VISA HEADER */}
-            <div className="flex items-center justify-between gap-3 bg-stone-50 px-4 py-3 flex-wrap">
+            <div className="flex items-center justify-between gap-3 bg-[#EEF3F7] px-4 py-3 flex-wrap">
 
               <div className="flex items-center gap-3">
 
-                <span className="w-9 h-9 rounded-full bg-white border border-stone-200 flex items-center justify-center flex-shrink-0">
+                <span className="w-9 h-9 rounded-full bg-white border border-navy-100 flex items-center justify-center flex-shrink-0">
 
                   <TbPlaneDeparture
                     className="text-ember-600"
@@ -226,7 +226,7 @@ const VisaChargesManagementPopup = ({
 
                     {configuredVisa.from}{" "}
 
-                    <span className="text-stone-400">
+                    <span className="text-navy-400">
                       →
                     </span>{" "}
 
@@ -234,7 +234,7 @@ const VisaChargesManagementPopup = ({
 
                   </p>
 
-                  <p className="text-xs text-stone-500">
+                  <p className="text-xs text-navy-500">
                     {configuredVisa.title}
                   </p>
 
@@ -253,11 +253,11 @@ const VisaChargesManagementPopup = ({
             </div>
 
             {/* VISA DETAILS */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-4 py-4 border-t border-stone-100">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-4 py-4 border-t border-navy-50">
 
               <div>
 
-                <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                   ENTRY TYPE
                 </p>
 
@@ -269,7 +269,7 @@ const VisaChargesManagementPopup = ({
 
               <div>
 
-                <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                   VALIDITY
                 </p>
 
@@ -281,7 +281,7 @@ const VisaChargesManagementPopup = ({
 
               <div>
 
-                <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                   PROCESSING SLA
                 </p>
 
@@ -293,7 +293,7 @@ const VisaChargesManagementPopup = ({
 
               <div>
 
-                <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                   STAY PERIOD
                 </p>
 
@@ -306,9 +306,9 @@ const VisaChargesManagementPopup = ({
             </div>
 
             {/* DOCUMENTS */}
-            <div className="px-4 py-4 border-t border-stone-100">
+            <div className="px-4 py-4 border-t border-navy-50">
 
-              <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-2">
+              <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-2">
                 REQUIRED DOCUMENTS
               </p>
 
@@ -318,7 +318,7 @@ const VisaChargesManagementPopup = ({
 
                   <span
                     key={doc}
-                    className="border border-stone-200 text-stone-700 text-xs px-2.5 py-1 rounded-xl"
+                    className="border border-navy-100 text-navy-700 text-xs px-2.5 py-1 rounded-xl"
                   >
                     {doc}
                   </span>
@@ -330,17 +330,17 @@ const VisaChargesManagementPopup = ({
             </div>
 
             {/* PRICING */}
-            <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-4 border-t border-stone-100">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-4 border-t border-navy-50">
 
               <div className="flex flex-wrap gap-6">
 
                 <div>
 
-                  <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                  <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                     RETAIL PRICE
                   </p>
 
-                  <p className="text-sm font-medium text-stone-400 line-through">
+                  <p className="text-sm font-medium text-navy-400 line-through">
                     {configuredVisa.retailPrice}
                   </p>
 
@@ -348,7 +348,7 @@ const VisaChargesManagementPopup = ({
 
                 <div>
 
-                  <p className="text-[10px] font-semibold tracking-wide text-ember-500 mb-1">
+                  <p className="text-[10px] font-semibold tracking-wide text-ember-600 mb-1">
                     AGENT PRICE (ADULT)
                   </p>
 
@@ -360,7 +360,7 @@ const VisaChargesManagementPopup = ({
 
                 <div>
 
-                  <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                  <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                     AGENT PRICE (CHILD)
                   </p>
 
@@ -372,7 +372,7 @@ const VisaChargesManagementPopup = ({
 
                 <div>
 
-                  <p className="text-[10px] font-semibold tracking-wide text-stone-400 mb-1">
+                  <p className="text-[10px] font-semibold tracking-wide text-navy-400 mb-1">
                     YOUR MARGIN
                   </p>
 
@@ -399,7 +399,7 @@ const VisaChargesManagementPopup = ({
           {/* ADD ROUTE */}
           <button
             type="button"
-            className="w-full flex flex-col items-center justify-center gap-2 border-2 border-dashed border-stone-300 rounded-2xl py-6 mt-4 text-stone-500 hover:border-stone-400 hover:text-stone-600"
+            className="w-full flex flex-col items-center justify-center gap-2 border-2 border-dashed border-navy-100 rounded-2xl py-6 mt-4 text-navy-500 hover:border-gray-400 hover:text-navy-600"
           >
 
             <FiPlus size={20} />
@@ -408,7 +408,7 @@ const VisaChargesManagementPopup = ({
               Add New Route Configuration
             </span>
 
-            <span className="text-xs text-stone-400">
+            <span className="text-xs text-navy-400">
               Configure specialized pricing for this agent on a new route.
             </span>
 
