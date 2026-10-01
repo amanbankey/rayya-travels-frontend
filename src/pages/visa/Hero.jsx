@@ -43,8 +43,8 @@ const VisaHero = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-dark pb-40 pt-16 sm:pb-48 sm:pt-20">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark/95 to-dark" />
+    <section className="relative overflow-hidden bg-darkBlue pb-40 pt-16 sm:pb-48 sm:pt-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-darkBlue via-darkBlue/95 to-darkBlue" />
 
       <div className="relative mx-auto max-w-[1100px] px-4 text-center sm:px-8">
         <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white">
@@ -86,7 +86,7 @@ const VisaHero = () => {
                   key={type.key}
                   onClick={() => setValues({ ...values, visaType: type.key })}
                   className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
-                    active ? "bg-dark text-white" : "bg-oat text-ink/70 hover:bg-mist"
+                    active ? "bg-darkBlue text-white" : "bg-oat text-ink/70 hover:bg-mist"
                   }`}
                 >
                   <Icon size={14} /> {type.label}
@@ -165,7 +165,7 @@ const VisaHero = () => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="flex items-center justify-center gap-2 rounded-lg bg-dark px-6 py-4 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg disabled:opacity-60"
+              className="flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-4 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg disabled:opacity-60"
             >
               {status === "loading" ? "Checking" : "Check Visa Requirements"} <ArrowRight size={15} />
             </button>

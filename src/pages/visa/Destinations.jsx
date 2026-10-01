@@ -77,22 +77,22 @@ const destinations = [
   },
 ];
 
-const getBadgeStyle = (index) => (index % 2 === 0 ? "bg-badge text-badgetext" : "bg-dark text-white");
+const getBadgeStyle = (index) => (index % 2 === 0 ? "bg-badge text-badgetext" : "bg-darkBlue text-white");
 
 const Destinations = () => (
   <section className="bg-ivory px-4 py-14 sm:px-8 lg:px-12 lg:py-20">
     <div className="mx-auto max-w-[1300px]">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Global Corridors</p>
+          {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Global Corridors</p> */}
           <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Top Visa Destinations</h2>
           <p className="mt-2 max-w-[420px] text-sm text-ink/70">
             Expedited document verification and visa processing for high-frequency global routes.
           </p>
         </div>
-        <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.1em] text-ink/60">
+        {/* <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.1em] text-ink/60">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Consular Fast-Track Active
-        </p>
+        </p> */}
       </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -104,12 +104,12 @@ const Destinations = () => (
             <div className="relative h-44 overflow-hidden bg-mist">
               <img src={dest.image} alt={dest.city} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/85 via-dark/20 to-transparent" />
-              <span className="absolute left-3 top-3 rounded-md bg-white/90 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-ink">
+              {/* <span className="absolute left-3 top-3 rounded-md bg-white/90 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-ink">
                 {dest.flag} {dest.country}
-              </span>
-              <span className={`absolute right-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.05em] ${getBadgeStyle(index)}`}>
+              </span> */}
+              {/* <span className={`absolute right-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.05em] ${getBadgeStyle(index)}`}>
                 {dest.badge}
-              </span>
+              </span> */}
               <div className="absolute bottom-3 left-4">
                 <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/70">{dest.region}</p>
                 <h3 className="font-serif text-xl font-medium text-white">{dest.city}</h3>
@@ -123,23 +123,23 @@ const Destinations = () => (
                   <p className="mt-1 text-sm font-medium leading-snug text-ink">{dest.category}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-ink/50">Processing Window</p>
-                  <p className="mt-1 text-sm font-medium leading-snug text-brown">{dest.window}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-darkBlue">Processing Window</p>
+                  <p className="mt-1 text-sm font-medium leading-snug text-darkBlue">{dest.window}</p>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4">
+              {/* <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4">
                 <p className="flex items-center gap-1.5 text-xs text-ink/70">
                   <BadgeCheck size={14} className="shrink-0 text-emerald-600" /> {dest.note}
                 </p>
                 <span className="shrink-0 rounded-md bg-oat px-2.5 py-1.5 text-[10px] font-medium text-ink/70">
                   {dest.tag}
                 </span>
-              </div>
+              </div> */}
 
-              <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-oat py-3 text-sm font-medium text-ink transition-colors hover:bg-mist">
+              {/* <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-oat py-3 text-sm font-medium text-ink transition-colors hover:bg-mist">
                 View Requirements <ArrowRight size={14} />
-              </button>
+              </button> */}
             </div>
           </article>
         ))}

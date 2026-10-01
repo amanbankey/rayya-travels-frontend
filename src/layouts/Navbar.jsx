@@ -131,11 +131,12 @@ const Navbar = () => {
             <button
 
               // onClick={() => goTo("/signin")}
-              // onClick={() => setAuthMode("signin")}
+              //
               // className="hidden whitespace-nowrap rounded-full bg-darkBlue px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-ink hover:shadow-lg sm:block"
 
               type="button"
-              onClick={() => goTo("/signin")}
+              // onClick={() => goTo("/signin")}
+               onClick={() => setAuthMode("signin")}
               className="hidden whitespace-nowrap rounded-full bg-[#AE4000] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#AE4000]/30 transition-all hover:bg-[#8C3300] hover:shadow-lg sm:block"
 
             >
@@ -286,7 +287,8 @@ const Navbar = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => goTo("/signin")}
+                // onClick={() => goTo("/signin")}
+                 onClick={() => setAuthMode("signin")}
                 className="w-full rounded-full bg-[#AE4000] px-4 py-3 text-sm font-semibold text-white"
               >
                 Login / Sign Up

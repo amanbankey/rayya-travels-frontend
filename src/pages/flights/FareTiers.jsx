@@ -48,7 +48,7 @@ const FareTiers = ({ tiers, selected, onSelect }) => (
               type="button"
               onClick={() => onSelect(tier.key)}
               className={`mt-5 w-full rounded-lg py-3.5 text-xs font-medium uppercase tracking-[0.1em] transition-colors ${
-                active ? "bg-dark text-white" : "bg-tier text-ink hover:bg-line"
+                active ? "bg-darkBlue text-white" : "bg-tier text-ink hover:bg-line"
               }`}
             >
               {tier.button}

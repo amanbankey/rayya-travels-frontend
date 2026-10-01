@@ -16,7 +16,7 @@ import {
 import { FaGoogle } from "react-icons/fa";
 import { createPortal } from "react-dom";
 import { submitForm } from "../services/api";
-
+import logo from "../assets/image/rayyalogo.png"
 const initialValues = { email: "", password: "", remember: false };
 
 const AuthSidePanel = () => (
@@ -32,17 +32,15 @@ const AuthSidePanel = () => (
 
     <div className="relative flex h-full flex-col justify-between p-5 md:p-7">
       <div className="flex items-center justify-between">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-authBlue/40 text-white backdrop-blur-sm">
+        {/* <span className="flex h-9 w-9 items-center justify-center rounded-full bg-authBlue/40 text-white backdrop-blur-sm">
           <Plane size={16} />
-        </span>
-        <span className="rounded-full bg-authBlue/40 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-sm">
-          Private Atelier
-        </span>
+        </span> */}
+        <img src={logo} className="w-20 h-14"/>
       </div>
 
       <div className="space-y-4">
         <div>
-          <Quote size={22} className="text-authCream" />
+          {/* <Quote size={22} className="text-authCream" /> */}
           <p className="mt-2 max-w-[300px] font-serif text-lg leading-snug text-white md:text-2xl">
             Your journey begins with thoughtful planning and quiet, unhurried execution.
           </p>
@@ -125,7 +123,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl bg-authCream p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
+        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl bg-darkBlue p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
       >
         <AuthSidePanel />
 
