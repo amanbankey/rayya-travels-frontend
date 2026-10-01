@@ -21,7 +21,7 @@ const sortPackages = (list, sortBy) => {
   return list;
 };
 
-const AvailablePackages = () => {
+const AvailablePackages = ({showData}) => {
   const [filters, setFilters] = useState(defaultPackageFilters);
   const [sortBy, setSortBy] = useState("recommended");
   const [viewMode, setViewMode] = useState("grid");
@@ -39,9 +39,9 @@ const AvailablePackages = () => {
   };
 
   return (
-    <section id="packages" className="bg-oat px-4 py-14 sm:px-8 lg:px-12 lg:py-20">
+    <>    {showData && (  <section id="packages" className="bg-oat px-4 py-14 sm:px-8 lg:px-12 lg:py-20">
       <div className="mx-auto max-w-[1300px]">
-        <Reveal>
+        {/* <Reveal>
           <div className="rounded-2xl bg-white p-5 shadow-sm sm:p-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
@@ -93,9 +93,9 @@ const AvailablePackages = () => {
               </div>
             </div>
           </div>
-        </Reveal>
+        </Reveal> */}
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start">
+       <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start">
           <Reveal>
             <PackageFilters filters={filters} onChange={updateFilter} onApply={() => {}} resultCount={visiblePackages.length} />
           </Reveal>
@@ -145,7 +145,9 @@ const AvailablePackages = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section> )}
+
+    </>
   );
 };
 

@@ -32,7 +32,7 @@ const SignatureShowcase = () => (
               })}
             </ul>
 
-            <div className="mt-7 flex flex-col gap-4 border-t border- pt-5 sm:flex-row sm:items-center sm:justify-between">
+            {/* <div className="mt-7 flex flex-col gap-4 border-t border- pt-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.1em] text-white/60">All Inclusive Starting From</p>
                 <p className="mt-1 font-serif text-3xl font-medium text-white">
@@ -43,7 +43,7 @@ const SignatureShowcase = () => (
               <button className="flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-3.5 text-sm font-medium text-white transition-all   hover:shadow-lg">
                 Explore Luxury Package <ArrowRight size={15} />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </Reveal>

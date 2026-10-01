@@ -97,7 +97,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl bg-authCream p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
+        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl  p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
       >
         <AuthSidePanel />
 
@@ -131,8 +131,8 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
             </button>
           </div>
 
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p>
-          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue">Create your account</h2>
+          {/* <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p> */}
+          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue pt-4">Create your account</h2>
           <p className="mt-2 text-sm text-authDarkBlue/65">Unlock a seamless travel experience designed around you.</p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">

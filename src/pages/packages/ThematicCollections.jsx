@@ -27,14 +27,14 @@ const ThematicCollections = () => (
                 <h3 className="mt-5 text-xl font-medium text-ink">{collection.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink/70">{collection.text}</p>
 
-                <ul className="mt-5 flex-1 space-y-3 border-t border-line pt-4">
+                {/* <ul className="mt-5 flex-1 space-y-3 border-t border-line pt-4">
                   {collection.items.map((item) => (
                     <li key={item.label} className="flex items-start justify-between gap-3 text-sm">
                       <span className="text-ink/80">{item.label}</span>
                       <span className="shrink-0 font-medium text-brown">from {item.price}</span>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
 
                 {/* <a
                   href="#packages"

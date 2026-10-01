@@ -123,7 +123,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl bg-darkBlue p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
+        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl   p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
       >
         <AuthSidePanel />
 
@@ -163,7 +163,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
             >
               Sign Up
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={() => setMode("otp")}
               className={`flex-1 rounded-full py-2 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors ${
@@ -171,11 +171,11 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
               }`}
             >
               OTP
-            </button>
+            </button> */}
           </div>
 
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p>
-          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue">
+          {/* <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p> */}
+          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue pt-">
             {mode === "otp" ? "Sign In with OTP" : "Welcome Back"}
           </h2>
           <p className="mt-2 text-sm text-authDarkBlue/65">Access your itineraries, booking vouchers, and priority services.</p>

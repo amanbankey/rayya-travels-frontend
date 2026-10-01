@@ -6,7 +6,8 @@ import Reveal from "../../components/Reveal";
 const icons = { Globe, Landmark, Building2 };
 
 const PassportFolios = () => (
-  <section className="mx-auto max-w-7xl bg-soft/60 px-4 py-12 sm:px-8 lg:px-12">
+  <div className="bg-soft/60 w-full"> 
+  <section className="mx-auto max-w-7xl  px-4 py-12 sm:px-8 lg:px-12">
     <Reveal>
       <SectionHeader
         eyebrow=""
@@ -70,7 +71,7 @@ const PassportFolios = () => (
         );
       })}
     </div>
-  </section>
+  </section></div>
 );
 
 export default PassportFolios;

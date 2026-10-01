@@ -6,7 +6,8 @@ import Reveal from "../../components/Reveal";
 const icons = { Anchor, Plane, Crown, Droplets, Car, Palette, Waves, Compass, Wine };
 
 const TravelTrunks = () => (
-  <section className="mx-auto max-w-7xl bg-soft/60 px-4 py-12 sm:px-8 lg:px-12">
+  <div className="w-full bg-soft/60"> 
+  <section className="mx-auto max-w-7xl  px-4 py-12 sm:px-8 lg:px-12">
     <Reveal>
       <SectionHeader
         eyebrow=""
@@ -55,6 +56,7 @@ const TravelTrunks = () => (
       ))}
     </div>
   </section>
+  </div>
 );
 
 export default TravelTrunks;

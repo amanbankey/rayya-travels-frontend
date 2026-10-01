@@ -2,6 +2,10 @@ import { useState } from "react";
 import { ArrowRight, Calendar, MapPin, Users } from "lucide-react";
 import { packagesImages, searchCategories } from "../../data/packagesData";
 import { submitForm } from "../../services/api";
+import { useNavigate } from "react-router-dom";
+import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
+import { TbPlaneDeparture } from "react-icons/tb";
+import { Plus, Trash2 } from "lucide-react";
 import Reveal from "../../components/Reveal";
 
 const initialValues = {
@@ -13,10 +17,322 @@ const initialValues = {
   rooms: "1 Room",
 };
 
-const Hero = () => {
+/* ---------- Flight search fields (same as flights page Hero) ---------- */
+const flightTripTypes = ["One way", "Round-trip", "Multi-City"];
+const flightClassTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
+
+const fsLabelClass =
+  "mb-1 flex items-center gap-1 text-[11px] font-semibold text-darkBlue/70";
+const fsInputClass =
+  "w-full bg-transparent text-sm font-bold text-darkBlue outline-none placeholder:font-normal placeholder:text-darkBlue/40";
+const fsCellClass =
+  "px-4 py-3.5 transition-colors duration-300 hover:bg-cream/60";
+
+const FlightDateField = ({ value, min, onChange }) => (
+  <input
+    type="date"
+    value={value}
+    min={min || undefined}
+    onChange={(e) => onChange(e.target.value)}
+    className={fsInputClass}
+  />
+);
+
+const FlightSearchFields = ({ setShowData}) => {
+  const [tripType, setTripType] = useState("One way");
+  const [form, setForm] = useState({
+    from: "",
+    to: "",
+    departure: "",
+    returnDate: "",
+    passengers: 1,
+    classType: "ECONOMY",
+    cities: [],
+  });
+
+  const isRoundTrip = tripType === "Round-trip";
+
+  const handleChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleCityChange = (index, field, value) => {
+    setForm((prev) => ({
+      ...prev,
+      cities: prev.cities.map((city, i) =>
+        i === index ? { ...city, [field]: value } : city,
+      ),
+    }));
+  };
+
+  const handleCitySwap = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      cities: prev.cities.map((city, i) =>
+        i === index ? { ...city, from: city.to, to: city.from } : city,
+      ),
+    }));
+  };
+
+  const handleAddCity = () => {
+    setForm((prev) => ({
+      ...prev,
+      cities: [
+        ...prev.cities,
+        {
+          from: prev.cities.length
+            ? prev.cities[prev.cities.length - 1].to
+            : prev.to,
+          to: "",
+          departure: "",
+        },
+      ],
+    }));
+  };
+
+  const handleRemoveCity = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      cities: prev.cities.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSwap = () => {
+    setForm((prev) => ({ ...prev, from: prev.to, to: prev.from }));
+  };
+
+  const handleSearch = () => {
+    // if (onSearch) onSearch({ tripType, ...form });
+    setShowData(true)
+    
+  };
+
+  return (
+    <div
+      className="relative mt-3"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSearch();
+        }
+      }}
+    >
+      <div className="mb-4 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
+        {flightTripTypes.map((type) => (
+          <button
+            key={type}
+            type="button"
+            onClick={() => setTripType(type)}
+            className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+              tripType === type
+                ? "bg-darkBlue text-white shadow"
+                : "text-darkBlue/60 hover:text-darkBlue"
+            }`}
+          >
+            {type === "One way" ? <TbPlaneDeparture size={14} /> : null}
+            {type}
+          </button>
+        ))}
+      </div>
+
+      <div className="space-y-3">
+        <div className="rounded-2xl border border-dustyRose bg-white">
+          <div
+            className={`relative grid grid-cols-1 divide-y divide-dustyRose sm:grid-cols-2 sm:divide-x sm:divide-y-0 ${
+              isRoundTrip ? "lg:grid-cols-6" : "lg:grid-cols-5"
+            }`}
+          >
+            <div className={fsCellClass}>
+              <p className={fsLabelClass}>From</p>
+              <input
+                type="text"
+                value={form.from}
+                onChange={(e) => handleChange("from", e.target.value)}
+                placeholder="From"
+                className={fsInputClass}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleSwap}
+              className="absolute top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
+              style={{
+                left: `calc(${100 / (isRoundTrip ? 6 : 5)}% - 16px)`,
+              }}
+            >
+              <FiRepeat className="text-white" size={14} />
+            </button>
+
+            <div className={fsCellClass}>
+              <p className={fsLabelClass}>To</p>
+              <input
+                type="text"
+                value={form.to}
+                onChange={(e) => handleChange("to", e.target.value)}
+                placeholder="To"
+                className={fsInputClass}
+              />
+            </div>
+
+            <div className={fsCellClass}>
+              <p className={fsLabelClass}>
+                <FiCalendar size={11} />
+                Departure
+              </p>
+              <FlightDateField
+                value={form.departure}
+                onChange={(v) => handleChange("departure", v)}
+              />
+            </div>
+
+            {isRoundTrip && (
+              <div className={fsCellClass}>
+                <p className={fsLabelClass}>
+                  <FiCalendar size={11} />
+                  Return
+                </p>
+                <FlightDateField
+                  value={form.returnDate}
+                  min={form.departure}
+                  onChange={(v) => handleChange("returnDate", v)}
+                />
+              </div>
+            )}
+
+            <div className={fsCellClass}>
+              <p className={fsLabelClass}>
+                <FiUsers size={11} />
+                Passengers No.
+              </p>
+              <select
+                value={form.passengers}
+                onChange={(e) =>
+                  handleChange("passengers", Number(e.target.value))
+                }
+                className={fsInputClass}
+              >
+                {[1, 2, 3, 4, 5, 6].map((n) => (
+                  <option key={n} value={n}>
+                    {n} Passenger{n > 1 ? "s" : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={fsCellClass}>
+              <p className={fsLabelClass}>Class Type</p>
+              <select
+                value={form.classType}
+                onChange={(e) => handleChange("classType", e.target.value)}
+                className={fsInputClass}
+              >
+                {flightClassTypes.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {tripType === "Multi-City" &&
+          form.cities.map((city, index) => (
+            <div
+              key={index}
+              className="relative z-30 overflow-visible rounded-2xl border border-dustyRose bg-white"
+            >
+              <div className="relative z-30 grid grid-cols-1 divide-y divide-dustyRose overflow-visible sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+                <div className={fsCellClass}>
+                  <p className={fsLabelClass}>From</p>
+                  <input
+                    type="text"
+                    value={city.from}
+                    onChange={(e) =>
+                      handleCityChange(index, "from", e.target.value)
+                    }
+                    placeholder="From"
+                    className={fsInputClass}
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleCitySwap(index)}
+                  className="absolute left-1/4 top-1/2 z-10 hidden h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
+                >
+                  <FiRepeat className="text-white" size={14} />
+                </button>
+
+                <div className={fsCellClass}>
+                  <p className={fsLabelClass}>To</p>
+                  <input
+                    type="text"
+                    value={city.to}
+                    onChange={(e) =>
+                      handleCityChange(index, "to", e.target.value)
+                    }
+                    placeholder="To"
+                    className={fsInputClass}
+                  />
+                </div>
+
+                <div className={`relative z-[100] ${fsCellClass}`}>
+                  <p className={fsLabelClass}>
+                    <FiCalendar size={11} />
+                    Departure
+                  </p>
+                  <FlightDateField
+                    value={city.departure}
+                    min={index > 0 ? form.cities[index - 1].departure : ""}
+                    onChange={(v) => handleCityChange(index, "departure", v)}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleRemoveCity(index)}
+                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-dustyRose/40 text-darkBlue transition-all duration-300 hover:bg-darkBlue hover:text-white"
+                title="Remove city"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))}
+      </div>
+
+      <div className="mt-5 flex items-center justify-end gap-3">
+        {tripType === "Multi-City" && (
+          <button
+            type="button"
+            onClick={handleAddCity}
+            className="flex items-center gap-2 rounded-full bg-dustyRose/40 px-6 py-3 text-sm font-bold text-darkBlue transition-all duration-300 hover:bg-dustyRose"
+          >
+            <Plus size={17} />
+            Add City
+          </button>
+        )}
+
+        <button
+          type="button"
+
+          onClick={handleSearch}
+          className="flex items-center gap-2 rounded-full bg-darkBlue px-7 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
+        >
+          Search Flight
+          <TbPlaneDeparture size={17} className="text-brown" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const Hero = ({setShowData, showData}) => {
   const [values, setValues] = useState(initialValues);
   const [status, setStatus] = useState("idle");
-
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
@@ -58,101 +374,7 @@ const Hero = () => {
 
       <div className="relative mx-auto max-w-[1150px] px-4 sm:-mt-6 sm:px-8 pt-20">
         <Reveal delay={150}>
-          <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-4 shadow-2xl sm:p-6">
-            <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
-              {searchCategories.map((category) => (
-                <button
-                  type="button"
-                  key={category}
-                  onClick={() => setValues({ ...values, category })}
-                  className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
-                    values.category === category ? "bg-darkBlue text-white" : "bg-oat text-darkBlue hover:bg-mist"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-4 grid gap-3 rounded-xl bg-oat p-3 lg:grid-cols-[1.3fr_1.3fr_1fr_auto]">
-              <label className="rounded-lg bg-white px-4 py-3">
-                <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-darkBlue">
-                  <MapPin size={13} /> Destination
-                </span>
-                <input
-                  name="destination"
-                  value={values.destination}
-                  onChange={handleChange}
-                  className="mt-1 w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
-                />
-              </label>
-
-              <label className="rounded-lg bg-white px-4 py-3">
-                <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-darkBlue">
-                  <Calendar size={13} /> Departure Window
-                </span>
-                <span className="mt-1 flex items-center gap-2">
-                  <input
-                    type="date"
-                    name="departFrom"
-                    value={values.departFrom}
-                    onChange={handleChange}
-                    className="w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
-                  />
-                  <input
-                    type="date"
-                    name="departTo"
-                    value={values.departTo}
-                    onChange={handleChange}
-                    className="w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
-                  />
-                </span>
-              </label>
-
-              <label className="rounded-lg bg-white px-4 py-3">
-                <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-darkBlue">
-                  <Users size={13} /> Travellers & Rooms
-                </span>
-                <span className="mt-1 flex items-center gap-2">
-                  <select
-                    name="travellers"
-                    value={values.travellers}
-                    onChange={handleChange}
-                    className="w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
-                  >
-                    <option>1 Adult</option>
-                    <option>2 Adults</option>
-                    <option>4 Adults</option>
-                  </select>
-                  <select
-                    name="rooms"
-                    value={values.rooms}
-                    onChange={handleChange}
-                    className="w-full bg-transparent text-[15px] font-medium text-darkBlue outline-none"
-                  >
-                    <option>1 Room</option>
-                    <option>2 Rooms</option>
-                    <option>3 Rooms</option>
-                  </select>
-                </span>
-              </label>
-
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className="flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-3.5 text-sm font-medium text-white transition-all hover:bg-[#8b6538] hover:shadow-lg disabled:opacity-60 lg:px-8"
-              >
-                {status === "loading" ? "Searching" : "Search"} <ArrowRight size={15} />
-              </button>
-            </div>
-
-
-            {status === "success" && (
-              <p className="mt-3 rounded-lg bg-badge px-4 py-2.5 text-center text-sm font-medium text-badgetext">
-                Search saved. Our concierge desk will follow up with matching packages.
-              </p>
-            )}
-          </form>
+          <FlightSearchFields  setShowData={setShowData}/>
         </Reveal>
       </div>
     </section>

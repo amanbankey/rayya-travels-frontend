@@ -37,9 +37,9 @@ const FlightCard = ({ flight, onSelect }) => {
   return (
     <Reveal>
       <article className="overflow-hidden rounded-2xl bg-white shadow-card">
-        <div className="lg:grid lg:grid-cols-[1fr_28%]">
-          <div>
-            <div className="p-5 sm:p-6">
+        <div className="flex w-full flex-col md:flex-row">
+            {/* Left: ticket section */}
+            <div className="min-w-0 flex-1 p-4 sm:p-5 lg:p-6">
               <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4">
                 <div className="flex items-center gap-3">
                   <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold ${flight.avatar}`}>
@@ -48,18 +48,19 @@ const FlightCard = ({ flight, onSelect }) => {
                   <div>
                     <p className="flex flex-wrap items-baseline gap-x-3 text-lg font-medium text-ink">
                       {flight.airline}
-                      <span className="text-[13px] font-medium tracking-[0.15em] text-muted">{flight.flightNo}</span>
+                      {/* <span className="text-[13px] font-medium tracking-[0.15em] text-muted">{flight.flightNo}</span> */}
                     </p>
                     <p className="text-sm text-muted">
-                      {flight.aircraft} · {flight.note}
+                      {/* {flight.aircraft} ·  */}
+                      {/* {flight.note} */}
                     </p>
                   </div>
                 </div>
-                <span
+                {/* <span
                   className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.08em] ${badgeStyles[flight.badge.style]}`}
                 >
                   <BadgeIcon size={13} /> {flight.badge.label}
-                </span>
+                </span> */}
               </div>
 
               <div className="grid grid-cols-2 items-center gap-y-5 py-6 sm:grid-cols-[auto_1fr_auto] sm:gap-x-6">
@@ -80,7 +81,7 @@ const FlightCard = ({ flight, onSelect }) => {
                     )}
                     <span className="h-px flex-1 bg-line" />
                   </div>
-                  <p className="text-[11px] text-muted">{flight.routeNote}</p>
+                  {/* <p className="text-[11px] text-muted">{flight.routeNote}</p> */}
                 </div>
 
                 <Endpoint time={flight.arriveTime} airport={flight.to} align="right" />
@@ -95,17 +96,24 @@ const FlightCard = ({ flight, onSelect }) => {
                 </ul>
             </div>
 
+            {/* Ticket perforation: horizontal on mobile, vertical on md+ */}
+            <div className="relative h-0 shrink-0 border-t-2 border-dashed border-line md:h-auto md:w-0 md:border-t-0 md:border-l-2">
+              <span className="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-page" />
+              <span className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-page md:-left-3 md:bottom-[-12px] md:right-auto md:top-auto" />
+            </div>
+
+            {/* Right: fare card */}
+            <div className="w-full shrink-0 bg-panel md:w-64 lg:w-72">
             <form
               onSubmit={(event) => onSelect(event, flight, tier)}
-              className="border-l-2 border-line bg-panel p-5 text-left lg:w-[47%] lg:text-right"
+              className="flex h-full flex-col justify-center p-5 text-left sm:p-6"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-brown">Fare Assessment</p>
               <h3 className="mt-1 font-serif text-2xl font-medium text-ink">{flight.fare.title}</h3>
               <p className="mt-1 text-[13px] text-muted">{flight.fare.text}</p>
 
               <button
                 type="submit"
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-darkBlue py-3.5 text-base font-medium text-white transition-colors hover:bg-ink"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-darkBlue py-3.5 text-base font-medium text-white transition-colors "
               >
                 Select Passage <ArrowRight size={16} />
               </button>
@@ -120,12 +128,13 @@ const FlightCard = ({ flight, onSelect }) => {
                 {expanded ? details.open : details.closed} <ToggleIcon size={14} />
               </button>
             </form>
-          </div>
+        </div>
+         
 
-          <div className="relative hidden border-l border-dashed border-line lg:block">
+          {/* <div className="relative hidden border-l border-dashed border-black lg:block">
             <span className="absolute -top-3 left-0 h-6 w-6 -translate-x-1/2 rounded-full bg-page" />
             <span className="absolute bottom-6 left-0 h-6 w-6 -translate-x-1/2 rounded-full bg-panel" />
-          </div>
+          </div> */}
         </div>
 
         {expanded && renderDetails()}

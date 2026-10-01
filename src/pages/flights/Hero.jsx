@@ -25,7 +25,7 @@ const DateField = ({ value, min, onChange }) => (
   />
 );
 
-const Hero = ({ onSearch }) => {
+const Hero = ({ onSearch, setShowData, showData}) => {
   const [tripType, setTripType] = useState("One way");
   const [form, setForm] = useState({
     from: "",
@@ -37,6 +37,7 @@ const Hero = ({ onSearch }) => {
     cities: [],
   });
 
+ 
   const isRoundTrip = tripType === "Round-trip";
 
   const handleChange = (field, value) => {
@@ -92,6 +93,10 @@ const Hero = ({ onSearch }) => {
     e.preventDefault();
     if (onSearch) onSearch({ tripType, ...form });
   };
+
+//   const showData = (e) => {
+//     set
+//   }
 
   return (
     <div className="relative w-full overflow-hidden bg-darkBlue">
@@ -317,6 +322,7 @@ const Hero = ({ onSearch }) => {
                 )}
 
                 <button
+                onClick={() => setShowData(!showData)}
                   type="submit"
                   className="flex items-center gap-2 rounded-full bg-darkBlue px-7 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
                 >
@@ -328,6 +334,9 @@ const Hero = ({ onSearch }) => {
           </div>
         </div>
       </section>
+
+
+
     </div>
   );
 };

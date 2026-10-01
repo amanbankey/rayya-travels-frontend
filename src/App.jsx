@@ -34,7 +34,6 @@ function App() {
           
           <Route index element={<Home />} />
   
-          <Route path='/packages' element={<Packages />} />
           {/* <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
   */}
