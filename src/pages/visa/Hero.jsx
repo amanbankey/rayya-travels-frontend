@@ -6,7 +6,7 @@ import { FiCalendar, FiRepeat, FiSearch, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
 import TravelerDetails from "./TravelerDetail";
-import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
+import { DateField, SelectField, PassengerField, SwapButton, defaultPassengers, todayISO, classOptions, searchLabelClass, searchInputClass, searchCellClass, searchButtonClass } from "../../components/search/SearchFields";
 
 
 const visaTypes = [
@@ -32,21 +32,9 @@ const labelClass = "flex items-center gap-1.5 text-[11px] font-medium uppercase 
 const flightTripTypes = ["One way"];
 const flightClassTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
 
-const fsLabelClass = "mb-0.5 flex items-center gap-1 text-xs font-medium text-darkBlue/70";
-const fsInputClass =
-  "w-full bg-transparent text-lg font-medium text-darkBlue outline-none placeholder:text-darkBlue/30";
-const fsCellClass =
-  "relative rounded-2xl bg-oat px-5 py-3 transition-all duration-300 hover:bg-oat/70 focus-within:ring-2 focus-within:ring-darkBlue/30";
-
-const SwapButton = ({ onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="absolute right-[-20px] top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-darkBlue shadow transition-all duration-300 hover:rotate-180 lg:flex"
-  >
-    <FiRepeat className="text-white" size={13} />
-  </button>
-);
+const fsLabelClass = searchLabelClass;
+const fsInputClass = searchInputClass;
+const fsCellClass = searchCellClass;
 
 const FlightSearchFields = ({show, setShow}) => {
   const [tripType, setTripType] = useState("One way");
@@ -127,7 +115,7 @@ const FlightSearchFields = ({show, setShow}) => {
 
   return (
     <div
-      className="relative z-30 rounded-3xl bg-white p-4 text-left shadow-2xl sm:p-6"
+      className="relative z-30 rounded-2xl border border-lightBrown/20 bg-darkBlue50 p-3 text-left shadow-sm sm:p-4"
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -161,10 +149,10 @@ const FlightSearchFields = ({show, setShow}) => {
         })}
       </div> */}
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {/* Main search row */}
         <div
-          className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${
+          className={`grid grid-cols-1 gap-2 sm:grid-cols-2 ${
             isRoundTrip
               ? "lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto]"
               : "lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto]"
@@ -176,7 +164,7 @@ const FlightSearchFields = ({show, setShow}) => {
               type="text"
               value={form.from}
               onChange={(e) => handleChange("from", e.target.value)}
-              placeholder="Jakarta"
+              placeholder="City or airport"
               className={fsInputClass}
             />
             <SwapButton onClick={handleSwap} />
@@ -188,7 +176,7 @@ const FlightSearchFields = ({show, setShow}) => {
               type="text"
               value={form.to}
               onChange={(e) => handleChange("to", e.target.value)}
-              placeholder="Newyork"
+              placeholder="City or airport"
               className={fsInputClass}
             />
           </div>
@@ -201,10 +189,10 @@ const FlightSearchFields = ({show, setShow}) => {
             rangeFrom={isRoundTrip ? form.departure : ""}
             rangeTo={isRoundTrip ? form.returnDate : ""}
             onChange={handleDeparture}
-            placeholder="Date"
+            placeholder="Add date"
             cellClass={fsCellClass}
             labelClass={fsLabelClass}
-            valueClass="text-lg"
+            valueClass="text-sm"
           />
 
           {isRoundTrip && (
@@ -217,10 +205,10 @@ months={2}
               rangeTo={form.returnDate}
               onChange={(v) => handleChange("returnDate", v)}
               align="right"
-              placeholder="Date"
+              placeholder="Add date"
               cellClass={fsCellClass}
               labelClass={fsLabelClass}
-              valueClass="text-lg"
+              valueClass="text-sm"
             />
           )}
 
@@ -231,7 +219,7 @@ months={2}
             onChange={(v) => handleChange("passengers", v)}
             cellClass={fsCellClass}
             labelClass={fsLabelClass}
-            valueClass="text-lg"
+            valueClass="text-sm"
           />
 
           <SelectField
@@ -242,15 +230,15 @@ months={2}
             align="right"
             cellClass={fsCellClass}
             labelClass={fsLabelClass}
-            valueClass="text-lg"
+            valueClass="text-sm"
           />
 
           <button
             type="button"
             onClick={handleSearch}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-darkBlue px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl sm:col-span-2 lg:col-span-1"
+            className={searchButtonClass}
           >
-            <FiSearch size={20} />
+            <FiSearch size={17} className="text-aviationBrown" />
             Search
           </button>
         </div>

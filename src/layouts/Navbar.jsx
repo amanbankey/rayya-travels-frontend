@@ -131,7 +131,7 @@ const Navbar = () => {
           <img
             src={Logo}
             alt="Rayya Tour & Travel"
-            className="h-12 w-auto object-contain"
+            className="h-14 w-auto object-contain"
           />
         </NavLink>
 

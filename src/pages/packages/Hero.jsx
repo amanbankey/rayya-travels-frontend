@@ -7,7 +7,7 @@ import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { Plus, Trash2 } from "lucide-react";
 import Reveal from "../../components/Reveal";
-import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
+import { DateField, SelectField, PassengerField, SwapButton, defaultPassengers, todayISO, classOptions, searchLabelClass, searchInputClass, searchCellClass, searchButtonClass } from "../../components/search/SearchFields";
 
 const initialValues = {
   category: "Holidays",
@@ -22,13 +22,9 @@ const initialValues = {
 const flightTripTypes = ["One way", ];
 const flightClassTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
 
-const fsLabelClass =
-  "mb-1 flex items-center gap-1 text-[11px] font-semibold text-darkBlue/70";
-const fsInputClass =
-  "w-full bg-transparent text-sm font-bold text-darkBlue outline-none placeholder:font-normal placeholder:text-darkBlue/40";
-const fsCellClass =
-  "px-4 py-3.5 transition-colors duration-300 hover:bg-cream/60";
-
+const fsLabelClass = searchLabelClass;
+const fsInputClass = searchInputClass;
+const fsCellClass = searchCellClass;
 
 const FlightSearchFields = ({ setShowData}) => {
   const [tripType, setTripType] = useState("One way");
@@ -101,7 +97,7 @@ const FlightSearchFields = ({ setShowData}) => {
 
   return (
     <div
-      className="relative mt-3 rounded-2xl bg-white p-4 shadow-xl sm:p-5"
+      className="relative z-30 rounded-2xl border border-lightBrown/20 bg-darkBlue50 p-3 text-left shadow-sm sm:p-4"
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -109,171 +105,151 @@ const FlightSearchFields = ({ setShowData}) => {
         }
       }}
     >
-      {/* <div className="mb-4 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
-        {flightTripTypes.map((type) => (
-          <button
-            key={type}
-            type="button"
-            onClick={() => setTripType(type)}
-            className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
-              tripType === type
-                ? "bg-darkBlue text-white shadow"
-                : "text-darkBlue/60 hover:text-darkBlue"
-            }`}
-          >
-            {type === "One way" ? <TbPlaneDeparture size={14} /> : null}
-            {type}
-          </button>
-        ))}
-      </div> */}
+      <div className="space-y-2">
+        {/* Main search row */}
+        <div
+          className={`grid grid-cols-1 gap-2 sm:grid-cols-2 ${
+            isRoundTrip
+              ? "lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto]"
+              : "lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto]"
+          }`}
+        >
+          <div className={fsCellClass}>
+            <p className={fsLabelClass}>From</p>
+            <input
+              type="text"
+              value={form.from}
+              onChange={(e) => handleChange("from", e.target.value)}
+              placeholder="City or airport"
+              className={fsInputClass}
+            />
+            <SwapButton onClick={handleSwap} />
+          </div>
 
-      <div className="space-y-3">
-        <div className="rounded-2xl border border-dustyRose bg-white">
-          <div
-            className={`relative grid grid-cols-1 divide-y divide-dustyRose sm:grid-cols-2 sm:divide-x sm:divide-y-0 ${
-              isRoundTrip ? "lg:grid-cols-6" : "lg:grid-cols-5"
-            }`}
-          >
-            <div className={fsCellClass}>
-              <p className={fsLabelClass}>From</p>
-              <input
-                type="text"
-                value={form.from}
-                onChange={(e) => handleChange("from", e.target.value)}
-                placeholder="From"
-                className={fsInputClass}
-              />
-            </div>
+          <div className={fsCellClass}>
+            <p className={fsLabelClass}>To</p>
+            <input
+              type="text"
+              value={form.to}
+              onChange={(e) => handleChange("to", e.target.value)}
+              placeholder="City or airport"
+              className={fsInputClass}
+            />
+          </div>
 
-            <button
-              type="button"
-              onClick={handleSwap}
-              className="absolute top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
-              style={{
-                left: `calc(${100 / (isRoundTrip ? 6 : 5)}% - 16px)`,
-              }}
-            >
-              <FiRepeat className="text-white" size={14} />
-            </button>
+          <DateField
+            label="Departure"
+            months={isRoundTrip ? 2 : 1}
+            value={form.departure}
+            min={todayISO()}
+            onChange={(v) =>
+              setForm((prev) => ({
+                ...prev,
+                departure: v,
+                returnDate:
+                  prev.returnDate && prev.returnDate < v ? "" : prev.returnDate,
+              }))
+            }
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
+          />
 
-            <div className={fsCellClass}>
-              <p className={fsLabelClass}>To</p>
-              <input
-                type="text"
-                value={form.to}
-                onChange={(e) => handleChange("to", e.target.value)}
-                placeholder="To"
-                className={fsInputClass}
-              />
-            </div>
-
+          {isRoundTrip && (
             <DateField
-              label="Departure"
- months={isRoundTrip ? 2 : 1}
-              value={form.departure}
-              min={todayISO()}
-              onChange={(v) =>
-                setForm((prev) => ({
-                  ...prev,
-                  departure: v,
-                  returnDate:
-                    prev.returnDate && prev.returnDate < v ? "" : prev.returnDate,
-                }))
-              }
-              cellClass={fsCellClass}
-              labelClass={fsLabelClass}
-            />
-
-            {isRoundTrip && (
-              <DateField
-                label="Return"
-months={2}
-                value={form.returnDate}
-                min={form.departure || todayISO()}
-                rangeFrom={form.departure}
-                rangeTo={form.returnDate}
-                onChange={(v) => handleChange("returnDate", v)}
-                cellClass={fsCellClass}
-                labelClass={fsLabelClass}
-              />
-            )}
-
-            <PassengerField
-              label="Passengers No."
-              icon={FiUsers}
-              value={form.passengers}
-              onChange={(v) => handleChange("passengers", v)}
-              cellClass={fsCellClass}
-              labelClass={fsLabelClass}
-            />
-
-            <SelectField
-              label="Class Type"
-              value={form.classType}
-              options={classOptions}
-              onChange={(v) => handleChange("classType", v)}
+              label="Return"
+              months={2}
+              value={form.returnDate}
+              min={form.departure || todayISO()}
+              rangeFrom={form.departure}
+              rangeTo={form.returnDate}
+              onChange={(v) => handleChange("returnDate", v)}
               align="right"
               cellClass={fsCellClass}
               labelClass={fsLabelClass}
             />
-          </div>
+          )}
+
+          <PassengerField
+            label="Passengers No."
+            icon={FiUsers}
+            value={form.passengers}
+            onChange={(v) => handleChange("passengers", v)}
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
+          />
+
+          <SelectField
+            label="Class Type"
+            value={form.classType}
+            options={classOptions}
+            onChange={(v) => handleChange("classType", v)}
+            align="right"
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
+          />
+
+          <button
+            type="button"
+            onClick={handleSearch}
+            className={searchButtonClass}
+          >
+            Search Flight
+            <TbPlaneDeparture size={17} className="text-aviationBrown" />
+          </button>
         </div>
 
+        {/* Extra cities (Multi-City) */}
         {tripType === "Multi-City" &&
           form.cities.map((city, index) => (
             <div
               key={index}
-              className="relative z-30 overflow-visible rounded-2xl border border-dustyRose bg-white"
+              className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto]"
             >
-              <div className="relative z-30 grid grid-cols-1 divide-y divide-dustyRose overflow-visible sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-                <div className={fsCellClass}>
-                  <p className={fsLabelClass}>From</p>
-                  <input
-                    type="text"
-                    value={city.from}
-                    onChange={(e) =>
-                      handleCityChange(index, "from", e.target.value)
-                    }
-                    placeholder="From"
-                    className={fsInputClass}
-                  />
-                </div>
+              <div className={fsCellClass}>
+                <p className={fsLabelClass}>From</p>
+                <input
+                  type="text"
+                  value={city.from}
+                  onChange={(e) =>
+                    handleCityChange(index, "from", e.target.value)
+                  }
+                  placeholder="City or airport"
+                  className={fsInputClass}
+                />
+                <SwapButton onClick={() => handleCitySwap(index)} />
+              </div>
 
-                <button
-                  type="button"
-                  onClick={() => handleCitySwap(index)}
-                  className="absolute left-1/4 top-1/2 z-10 hidden h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
-                >
-                  <FiRepeat className="text-white" size={14} />
-                </button>
-
-                <div className={fsCellClass}>
-                  <p className={fsLabelClass}>To</p>
-                  <input
-                    type="text"
-                    value={city.to}
-                    onChange={(e) =>
-                      handleCityChange(index, "to", e.target.value)
-                    }
-                    placeholder="To"
-                    className={fsInputClass}
-                  />
-                </div>
-
-                <DateField
-                  label="Departure"
-                  value={city.departure}
-                  min={index > 0 ? form.cities[index - 1].departure : todayISO()}
-                  onChange={(v) => handleCityChange(index, "departure", v)}
-                  cellClass={`z-[100] ${fsCellClass}`}
-                  labelClass={fsLabelClass}
+              <div className={fsCellClass}>
+                <p className={fsLabelClass}>To</p>
+                <input
+                  type="text"
+                  value={city.to}
+                  onChange={(e) =>
+                    handleCityChange(index, "to", e.target.value)
+                  }
+                  placeholder="City or airport"
+                  className={fsInputClass}
                 />
               </div>
+
+              <DateField
+                label="Departure"
+                value={city.departure}
+                min={
+                  index > 0
+                    ? form.cities[index - 1].departure || todayISO()
+                    : form.departure || todayISO()
+                }
+                onChange={(v) => handleCityChange(index, "departure", v)}
+                align="right"
+                cellClass={fsCellClass}
+                labelClass={fsLabelClass}
+              />
 
               <button
                 type="button"
                 onClick={() => handleRemoveCity(index)}
-                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-dustyRose/40 text-darkBlue transition-all duration-300 hover:bg-darkBlue hover:text-white"
+                className="flex items-center justify-center rounded-xl bg-dustyRose/40 px-4 py-3 text-darkBlue transition-all duration-300 hover:bg-darkBlue hover:text-white sm:col-span-2 lg:col-span-1"
                 title="Remove city"
               >
                 <Trash2 size={16} />
@@ -282,8 +258,8 @@ months={2}
           ))}
       </div>
 
-      <div className="mt-5 flex items-center justify-end gap-3">
-        {tripType === "Multi-City" && (
+      {tripType === "Multi-City" && (
+        <div className="mt-3 flex justify-end">
           <button
             type="button"
             onClick={handleAddCity}
@@ -292,18 +268,8 @@ months={2}
             <Plus size={17} />
             Add City
           </button>
-        )}
-
-        <button
-          type="button"
-
-          onClick={handleSearch}
-          className="flex items-center gap-2 rounded-full bg-darkBlue px-7 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
-        >
-          Search Flight
-          <TbPlaneDeparture size={17} className="text-brown" />
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

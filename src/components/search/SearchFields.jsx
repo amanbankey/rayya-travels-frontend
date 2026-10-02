@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiRepeat } from "react-icons/fi";
 
 /* Shared hero search fields (custom calendar + custom dropdown) used on the
    Home, Flights, Packages and Visa hero sections. */
@@ -407,3 +407,25 @@ export const PassengerField = ({
     </div>
   );
 };
+
+// Round swap button that sits on the right edge of the "From" cell.
+export const SwapButton = ({ onClick }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label="Swap origin and destination"
+    className="absolute right-[-20px] top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-aviationBrown bg-aviationBrown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
+  >
+    <FiRepeat className="text-white" size={14} />
+  </button>
+);
+
+// Shared look of the hero search row (same as the Home page hero).
+export const searchLabelClass =
+  "mb-0.5 flex items-center gap-1 text-[11px] font-semibold text-darkBlue/70";
+export const searchInputClass =
+  "w-full bg-transparent text-sm font-bold text-darkBlue outline-none placeholder:font-normal placeholder:text-darkBlue/40";
+export const searchCellClass =
+  "relative rounded-xl border border-dustyRose bg-white px-4 py-2.5 transition-colors duration-300 hover:bg-cream/60 focus-within:border-darkBlue";
+export const searchButtonClass =
+  "flex items-center justify-center gap-2 rounded-xl bg-darkBlue px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl sm:col-span-2 lg:col-span-1";
