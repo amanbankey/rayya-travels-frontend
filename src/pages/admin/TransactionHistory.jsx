@@ -66,7 +66,7 @@ export const TransactionHistoryPage = () => {
             <span className="text-ember-600 font-semibold">Transaction History</span>
           </p>*/}
           <div className="flex items-center gap-4">
-            <span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center shadow-lg shadow-ember-500/30">
+            <span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center ">
               <Wallet size={24} />
             </span>
             <div>

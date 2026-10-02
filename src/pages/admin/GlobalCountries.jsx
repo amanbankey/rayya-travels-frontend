@@ -974,7 +974,7 @@ const CountriesDirectory = () => {
   ).size;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:pl-2 overflow-y-auto">
 
       <ToastContainer
         position="top-right"
@@ -997,7 +997,7 @@ const CountriesDirectory = () => {
           </p>*/}
 
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Global Countries Directory</h1></div>
+            <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center  flex-shrink-0"><PageIcon size={24} /></span><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Global Countries Directory</h1></div>
 
             <span className="bg-ember-50 text-ember-600 text-[10px] font-semibold px-2.5 py-1 rounded-full">
               {totalCountries} Countries
@@ -1011,7 +1011,7 @@ const CountriesDirectory = () => {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-sm transition"
+          className="flex items-center justify-center gap-2 bg-ember-500 hover:brightness-110 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-sm transition"
         >
           <FiPlus size={16} />
           Add Country
@@ -1162,7 +1162,7 @@ const CountriesDirectory = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 disabled:opacity-60 text-white text-sm font-semibold px-6 py-2.5 rounded-2xl"
+              className="bg-ember-500 hover:brightness-110 disabled:opacity-60 text-white text-sm font-semibold px-6 py-2.5 rounded-2xl"
             >
               Search
             </button>
