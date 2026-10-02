@@ -24,6 +24,7 @@ import {
 } from "../../api/airlineApi";
 
 const SERVER_URL = "https://rayya-travels-backend.onrender.com";
+//https://rayya-travels-backend.onrender.com
 //http://localhost:5000
 const getLogoUrl = (logo) => {
   if (!logo) return "";
@@ -180,7 +181,7 @@ const AirlineFormModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-4 ">
 
       <div className="w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-navy-100">
 
@@ -852,7 +853,7 @@ const AirlineDirectory = () => {
   ).length;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:pl-2overflow-y-auto">
 
       {/* =================================================
           PAGE HEADER
@@ -892,7 +893,7 @@ const AirlineDirectory = () => {
 
               <div>
 
-                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airlines Master Directory</h1><p className="text-navy-400 mt-0.5">Manage global airline master data</p></div></div>
+                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center  flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airlines Master Directory</h1><p className="text-navy-400 mt-0.5">Manage global airline master data</p></div></div>
 
               </div>
 
@@ -908,7 +909,7 @@ const AirlineDirectory = () => {
 
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-sm shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
+          className="flex items-center justify-center gap-2 bg-ember-500 hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
         >
           <FiPlus size={16} />
           Add New Airline
@@ -1479,7 +1480,7 @@ const AirlineDirectory = () => {
 
             {/* CURRENT PAGE */}
 
-            <div className="min-w-[38px] h-8 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white flex items-center justify-center text-xs font-bold">
+            <div className="min-w-[38px] h-8 rounded-2xl bg-ember-500 text-white flex items-center justify-center text-xs font-bold">
               {currentPage}
             </div>
 

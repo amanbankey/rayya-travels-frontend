@@ -868,7 +868,7 @@ const AirportDirectory = () => {
     pagination.totalPages || 1;
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:pl-2 overflow-y-auto">
 
       {/* =================================================
           PAGE HEADER
@@ -898,7 +898,7 @@ const AirportDirectory = () => {
               </div>*/}
 
               <div>
-                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airport Directory</h1><p className="text-navy-400 mt-0.5">Manage global airport master data</p></div></div>
+                <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center  flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Airport Directory</h1><p className="text-navy-400 mt-0.5">Manage global airport master data</p></div></div>
               </div>
 
             </div>
@@ -913,7 +913,7 @@ const AirportDirectory = () => {
 
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
+          className="flex items-center justify-center gap-2 bg-ember-500  hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl shadow-sm shadow-blue-200 transition"
         >
           <FiPlus size={16} />
           Add New Airport
@@ -1402,7 +1402,7 @@ const AirportDirectory = () => {
               Previous
             </button>
 
-            <div className="min-w-[38px] h-8 rounded-2xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white flex items-center justify-center text-xs font-bold">
+            <div className="min-w-[38px] h-8 rounded-2xl bg-ember-500 text-white flex items-center justify-center text-xs font-bold">
               {currentPage}
             </div>
 

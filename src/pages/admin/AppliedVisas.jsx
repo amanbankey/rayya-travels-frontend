@@ -154,9 +154,10 @@ const AppliedVisas = () => {
 
     if (url.startsWith("http")) return url;
 
-    return `https://rayya-travels-backend.onrender.com${url.startsWith("/") ? url : `/${url}`}`;
+    return `//https://rayya-travels-backend.onrender.com${url.startsWith("/") ? url : `/${url}`}`;
   };
 //http://localhost:5000
+//https://rayya-travels-backend.onrender.com
   return (
     <main className="p-4 sm:p-6 lg:pl-2 flex-1 min-w-0 overflow-y-auto bg-[#EEF3F7] p-4 sm:p-6">
       {/* HEADER */}
