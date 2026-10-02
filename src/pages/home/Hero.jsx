@@ -8,6 +8,7 @@ import { heroImage } from "../../data/homeData";
 import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
+import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
 const tabs = [
   { key: "flight", label: "Flight", icon: Plane, path: "/flights" },
   { key: "visa" , label: "Visa", icon: Landmark, path: "/visa" },
@@ -45,159 +46,6 @@ const fsInputClass =
 const fsCellClass =
   "relative rounded-xl border border-dustyRose bg-white px-4 py-2.5 transition-colors duration-300 hover:bg-cream/60 focus-within:border-darkBlue";
 
-const monthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
-
-const pad = (n) => String(n).padStart(2, "0");
-const toISO = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const fromISO = (s) => {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d);
-};
-const todayISO = () => toISO(new Date());
-const formatDate = (s) =>
-  s
-    ? fromISO(s).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })
-    : "";
-
-const CalendarMonth = ({ year, month, value, min, rangeFrom, rangeTo, onSelect }) => {
-  const offset = (new Date(year, month, 1).getDay() + 6) % 7; // Monday first
-  const total = new Date(year, month + 1, 0).getDate();
-  const today = todayISO();
-  const cells = [...Array(offset).fill(null), ...Array.from({ length: total }, (_, i) => i + 1)];
-
-  return (
-    <div className="w-full">
-      <p className="mb-2 text-center text-sm font-bold text-darkBlue">
-        {monthNames[month]} {year}
-      </p>
-      <div className="grid grid-cols-7 gap-y-0.5 text-center">
-        {weekDays.map((d, i) => (
-          <span key={i} className="pb-1 text-[10px] font-semibold text-darkBlue/50">
-            {d}
-          </span>
-        ))}
-        {cells.map((day, i) => {
-          if (!day) return <span key={i} />;
-          const iso = `${year}-${pad(month + 1)}-${pad(day)}`;
-          const disabled = min && iso < min;
-          const selected = iso === value;
-          const inRange = rangeFrom && rangeTo && iso > rangeFrom && iso < rangeTo;
-          return (
-            <button
-              key={i}
-              type="button"
-              disabled={disabled}
-              onClick={() => onSelect(iso)}
-              className={`mx-auto flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
-                selected
-                  ? "bg-darkBlue text-white"
-                  : inRange
-                    ? "bg-dustyRose/40 text-darkBlue"
-                    : iso === today
-                      ? "border border-brown text-brown hover:bg-dustyRose/40"
-                      : "text-darkBlue hover:bg-dustyRose/40"
-              } ${disabled ? "cursor-not-allowed opacity-30 hover:bg-transparent" : ""}`}
-            >
-              {day}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-// Date cell: shows the chosen date and opens a compact calendar popover on click.
-const FlightDateField = ({ label, value, min, rangeFrom, rangeTo, onChange, align = "left", className = "" }) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  const start = fromISO(value || min || todayISO());
-  const [view, setView] = useState({ y: start.getFullYear(), m: start.getMonth() });
-
-  useEffect(() => {
-    if (!open) return;
-    const close = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, [open]);
-
-  const shift = (delta) => {
-    const d = new Date(view.y, view.m + delta, 1);
-    setView({ y: d.getFullYear(), m: d.getMonth() });
-  };
-  const next = new Date(view.y, view.m + 1, 1);
-
-  const handleSelect = (iso) => {
-    onChange(iso);
-    setOpen(false);
-  };
-
-  return (
-    <div ref={ref} className={`${fsCellClass} ${open ? "!border-darkBlue" : ""} ${className}`}>
-      <button type="button" onClick={() => setOpen(!open)} className="block w-full text-left">
-        <span className={fsLabelClass}>
-          <FiCalendar size={11} />
-          {label}
-        </span>
-        <span className={`block text-sm ${value ? "font-bold text-darkBlue" : "text-darkBlue/40"}`}>
-          {value ? formatDate(value) : "Add date"}
-        </span>
-      </button>
-
-      {open && (
-        <div
-          className={`absolute top-full z-50 mt-2 w-[min(calc(100vw-2rem),30rem)] rounded-2xl border border-dustyRose bg-white p-4 shadow-xl ${
-            align === "right" ? "left-0 lg:left-auto lg:right-0" : "left-0"
-          }`}
-        >
-          <div className="relative flex gap-6">
-            <button
-              type="button"
-              onClick={() => shift(-1)}
-              className="absolute -left-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full text-darkBlue hover:bg-dustyRose/40"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={() => shift(1)}
-              className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full text-darkBlue hover:bg-dustyRose/40"
-            >
-              <ChevronRight size={16} />
-            </button>
-
-            <CalendarMonth
-              year={view.y}
-              month={view.m}
-              value={value}
-              min={min}
-              rangeFrom={rangeFrom}
-              rangeTo={rangeTo}
-              onSelect={handleSelect}
-            />
-            <div className="hidden w-full sm:block">
-              <CalendarMonth
-                year={next.getFullYear()}
-                month={next.getMonth()}
-                value={value}
-                min={min}
-                rangeFrom={rangeFrom}
-                rangeTo={rangeTo}
-                onSelect={handleSelect}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const SwapButton = ({ onClick }) => (
   <button
@@ -216,7 +64,7 @@ const FlightSearchFields = () => {
     to: "",
     departure: "",
     returnDate: "",
-    passengers: 1,
+    passengers: defaultPassengers,
     classType: "ECONOMY",
     cities: [],
   });
@@ -295,7 +143,7 @@ const FlightSearchFields = () => {
         }
       }}
     >
-      <div className="mb-3 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
+      {/* <div className="mb-3 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
         {flightTripTypes.map((type) => (
           <button
             key={type}
@@ -311,7 +159,7 @@ const FlightSearchFields = () => {
             {type}
           </button>
         ))}
-      </div>
+      </div> */}
 
       <div className="space-y-2">
         {/* Main search row */}
@@ -345,59 +193,51 @@ const FlightSearchFields = () => {
             />
           </div>
 
-          <FlightDateField
+          <DateField
             label="Departure"
+ months={isRoundTrip ? 2 : 1}
             value={form.departure}
             min={today}
             rangeFrom={isRoundTrip ? form.departure : ""}
             rangeTo={isRoundTrip ? form.returnDate : ""}
             onChange={handleDeparture}
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
           />
 
           {isRoundTrip && (
-            <FlightDateField
+            <DateField
               label="Return"
+months={2}
               value={form.returnDate}
               min={form.departure || today}
               rangeFrom={form.departure}
               rangeTo={form.returnDate}
               onChange={(v) => handleChange("returnDate", v)}
               align="right"
+              cellClass={fsCellClass}
+              labelClass={fsLabelClass}
             />
           )}
 
-          <div className={fsCellClass}>
-            <p className={fsLabelClass}>
-              <FiUsers size={11} />
-              Passengers No.
-            </p>
-            <select
-              value={form.passengers}
-              onChange={(e) => handleChange("passengers", Number(e.target.value))}
-              className={fsInputClass}
-            >
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option key={n} value={n}>
-                  {n} Passenger{n > 1 ? "s" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
+          <PassengerField
+            label="Passengers No."
+            icon={FiUsers}
+            value={form.passengers}
+            onChange={(v) => handleChange("passengers", v)}
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
+          />
 
-          <div className={fsCellClass}>
-            <p className={fsLabelClass}>Class Type</p>
-            <select
-              value={form.classType}
-              onChange={(e) => handleChange("classType", e.target.value)}
-              className={fsInputClass}
-            >
-              {flightClassTypes.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectField
+            label="Class Type"
+            value={form.classType}
+            options={classOptions}
+            onChange={(v) => handleChange("classType", v)}
+            align="right"
+            cellClass={fsCellClass}
+            labelClass={fsLabelClass}
+          />
 
           <button
             type="button"
@@ -410,7 +250,7 @@ const FlightSearchFields = () => {
         </div>
 
         {/* Extra cities (Multi-City) */}
-        {tripType === "Multi-City" &&
+        {/* {tripType === "Multi-City" &&
           form.cities.map((city, index) => (
             <div
               key={index}
@@ -456,10 +296,10 @@ const FlightSearchFields = () => {
                 <Trash2 size={16} />
               </button>
             </div>
-          ))}
+          ))} */}
       </div>
 
-      {tripType === "Multi-City" && (
+      {/* {tripType === "Multi-City" && (
         <div className="mt-3 flex justify-end">
           <button
             type="button"
@@ -470,7 +310,7 @@ const FlightSearchFields = () => {
             Add City
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
@@ -505,29 +345,13 @@ const Hero = () => {
         className="absolute inset-0 h-full w-full object-cover opacity-30 [mask-image:linear-gradient(to_right,transparent_15%,black_90%)]"
       />
       {/* <div className="absolute inset-0 bg-gradient-to-b from-cream/40 via-transparent to-cream" /> */}
-    <section id="home" className="max-w-7xl mx-auto px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16 bg-darkBlue/10 ">
+    <section id="home" className="max-w-6xl mx-auto px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16 bg-darkBlue/10 ">
 
       <div className="relative">
     
-
         <h1 className="mt-5 max-w-xl  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           The Art of <span className="block italic text-dustyRose">Considered Journeying</span> 
         </h1>
-
-        {/* <p className="mt-5 max-w-md  text-sm leading-relaxed text-white/70 sm:text-base">
-          Curated departures, private sanctuaries, and architectural voyages crafted exclusively for the discerning
-          epicurean.
-        </p> */}
-
-        {/* <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
-          {perks.map(({ icon: Icon, label }) => (
-            <li key={label} className="flex items-center gap-1.5 text-[8px] font-medium uppercase tracking-[0.2em] text-dustyRose">
-              <Icon size={11} /> {label}
-            </li>
-          ))}
-        </ul> */}
-
-
      
     <form
       onSubmit={handleSubmit}

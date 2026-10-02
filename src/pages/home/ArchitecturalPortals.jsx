@@ -26,25 +26,7 @@ const ArchitecturalPortals = () => {
           title="Architectural Portals"
           text="Rare global enclaves where topography, antiquity, and exquisite restorative design converge."
         >
-          {/* <div className="flex items-center gap-3">
-            <span className="hidden text-[8px] font-medium uppercase tracking-[0.2em] text-muted sm:block">
-              Status: <span className="rounded-full bg-badge px-2 py-1 text-badgetext">Curated Itinerary</span>
-            </span>
-            <button
-              onClick={() => scroll(-1)}
-              aria-label="Previous"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-paper text-ink transition-colors hover:bg-dark hover:text-paper"
-            >
-              <ChevronLeft size={14} />
-            </button>
-            <button
-              onClick={() => scroll(1)}
-              aria-label="Next"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-paper text-ink transition-colors hover:bg-dark hover:text-paper"
-            >
-              <ChevronRight size={14} />
-            </button>
-          </div> */}
+        
         </SectionHeader>
       </Reveal>
 
@@ -63,7 +45,6 @@ const ArchitecturalPortals = () => {
               </div>
 
               <div className="p-4">
-                {/* <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-muted">{item.location}</p> */}
                 <h3 className="mt-1  text-lg font-medium text-ink">{item.title}</h3>
                 <p className="mt-2 text-[11px] leading-relaxed text-muted">{item.text}</p>
                 

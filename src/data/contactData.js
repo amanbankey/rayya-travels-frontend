@@ -61,7 +61,7 @@ export const serviceOptions = [
   { value: "crew", label: "Crew & Marine Travel" },
 ];
 
-export const travellerOptions = ["1 Adult", "2 Adults", "3–5 Group", "6+ Delegation"];
+export const travellerOptions = ["1 Adult", "2 Adults"];
 
 export const pathways = [
   {

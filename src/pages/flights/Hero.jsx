@@ -3,27 +3,19 @@ import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { Plus, Trash2 } from "lucide-react";
 import { heroImage } from "../../data/homeData";
+import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
 
 const tripTypes = ["One way", "Round-trip", "Multi-City"];
 const classTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
 
 const labelClass =
-  "mb-1 flex items-center gap-1 text-[11px] font-semibold text-darkBlue/70";
+  "mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-darkBlue/55";
 const inputClass =
-  "w-full bg-transparent text-sm font-bold text-darkBlue outline-none placeholder:font-normal placeholder:text-darkBlue/40";
+  "w-full bg-transparent text-[15px] font-bold text-darkBlue outline-none placeholder:font-normal placeholder:text-darkBlue/35";
+const valueClass = "text-[15px]";
 const cellClass =
-  "px-4 py-3.5 transition-colors duration-300 hover:bg-cream/60";
+  "px-5 py-4 transition-colors duration-300 hover:bg-cream/50 focus-within:bg-cream/50";
 
-// Native date input styled to match the theme
-const DateField = ({ value, min, onChange }) => (
-  <input
-    type="date"
-    value={value}
-    min={min || undefined}
-    onChange={(e) => onChange(e.target.value)}
-    className={inputClass}
-  />
-);
 
 const Hero = ({ onSearch, setShowData, showData}) => {
   const [tripType, setTripType] = useState("One way");
@@ -32,7 +24,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
     to: "",
     departure: "",
     returnDate: "",
-    passengers: 1,
+    passengers: defaultPassengers,
     classType: "ECONOMY",
     cities: [],
   });
@@ -42,6 +34,15 @@ const Hero = ({ onSearch, setShowData, showData}) => {
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleDeparture = (value) => {
+    setForm((prev) => ({
+      ...prev,
+      departure: value,
+      returnDate:
+        prev.returnDate && prev.returnDate < value ? "" : prev.returnDate,
+    }));
   };
 
   const handleCityChange = (index, field, value) => {
@@ -99,30 +100,32 @@ const Hero = ({ onSearch, setShowData, showData}) => {
 //   }
 
   return (
-    <div className="relative w-full overflow-hidden bg-darkBlue">
-      <img
-        src={heroImage}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-30 [mask-image:linear-gradient(to_right,transparent_15%,black_90%)]"
-      />
+    <div className="relative w-full bg-darkBlue">
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={heroImage}
+          alt=""
+          className="h-full w-full object-cover opacity-30 [mask-image:linear-gradient(to_right,transparent_15%,black_90%)]"
+        />
+      </div>
 
-      <section className="relative mx-auto max-w-7xl px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16">
-        <h1 className="mt-5 max-w-xl mx-auto text-center  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-8 sm:pb-14 sm:pt-14 lg:px-12 lg:pb-16 lg:pt-16">
+        <h1 className="mx-auto max-w-xl text-center font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           Discover your flight under  {" "} 
           <span className="inline italic text-brown">
             60 {" "}
           </span>seconds{" "}
         </h1>
 
-        <div className="relative mx-auto mt-7 max-w-5xl lg:mt-8">
-          <div className="rounded-3xl border border-dustyRose bg-lightGray p-5 shadow-sm sm:p-7">
-            <div className="mb-6 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
+        <div className="relative mx-auto mt-8 max-w-5xl lg:mt-10">
+          <div className="rounded-3xl border border-dustyRose bg-lightGray p-4 shadow-xl shadow-darkBlue/20 sm:p-6 lg:p-8">
+            <div className="mb-5 flex w-full items-center gap-1 rounded-full bg-dustyRose/40 p-1 sm:mb-6 sm:inline-flex sm:w-auto">
               {tripTypes.map((type) => (
                 <button
                   key={type}
                   type="button"
                   onClick={() => setTripType(type)}
-                  className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                  className={`flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-semibold transition-all duration-300 sm:flex-none sm:px-6 ${
                     tripType === type
                       ? "bg-darkBlue text-white shadow"
                       : "text-darkBlue/60 hover:text-darkBlue"
@@ -135,8 +138,8 @@ const Hero = ({ onSearch, setShowData, showData}) => {
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div className="space-y-3">
-                <div className="rounded-2xl border border-dustyRose bg-white">
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-dustyRose bg-white shadow-sm">
                   <div
                     className={`relative grid grid-cols-1 divide-y divide-dustyRose sm:grid-cols-2 sm:divide-x sm:divide-y-0 ${
                       isRoundTrip ? "lg:grid-cols-6" : "lg:grid-cols-5"
@@ -175,67 +178,52 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                       />
                     </div>
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>
-                        <FiCalendar size={11} />
-                        Departure
-                      </p>
-                      <DateField
-                        value={form.departure}
-                        onChange={(v) => handleChange("departure", v)}
-                      />
-                    </div>
+                    <DateField
+                      label="Departure"
+ months={isRoundTrip ? 2 : 1}
+                      value={form.departure}
+                      min={todayISO()}
+                      onChange={handleDeparture}
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                      valueClass={valueClass}
+                    />
 
                     {isRoundTrip && (
-                      <div className={cellClass}>
-                        <p className={labelClass}>
-                          <FiCalendar size={11} />
-                          Return
-                        </p>
-                        <DateField
-                          value={form.returnDate}
-                          min={form.departure}
-                          onChange={(v) => handleChange("returnDate", v)}
-                        />
-                      </div>
+                      <DateField
+                        label="Return"
+months={2}
+                        value={form.returnDate}
+                        min={form.departure || todayISO()}
+                        rangeFrom={form.departure}
+                        rangeTo={form.returnDate}
+                        onChange={(v) => handleChange("returnDate", v)}
+                        cellClass={cellClass}
+                        labelClass={labelClass}
+                        valueClass={valueClass}
+                      />
                     )}
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>
-                        <FiUsers size={11} />
-                        Passengers No.
-                      </p>
-                      <select
-                        value={form.passengers}
-                        onChange={(e) =>
-                          handleChange("passengers", Number(e.target.value))
-                        }
-                        className={inputClass}
-                      >
-                        {[1, 2, 3, 4, 5, 6].map((n) => (
-                          <option key={n} value={n}>
-                            {n} Passenger{n > 1 ? "s" : ""}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <PassengerField
+                      label="Passengers No."
+                      icon={FiUsers}
+                      value={form.passengers}
+                      onChange={(v) => handleChange("passengers", v)}
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                      valueClass={valueClass}
+                    />
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>Class Type</p>
-                      <select
-                        value={form.classType}
-                        onChange={(e) =>
-                          handleChange("classType", e.target.value)
-                        }
-                        className={inputClass}
-                      >
-                        {classTypes.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <SelectField
+                      label="Class Type"
+                      value={form.classType}
+                      options={classOptions}
+                      onChange={(v) => handleChange("classType", v)}
+                      align="right"
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                      valueClass={valueClass}
+                    />
                   </div>
                 </div>
 
@@ -243,9 +231,9 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                   form.cities.map((city, index) => (
                     <div
                       key={index}
-                      className="relative z-30 overflow-visible rounded-2xl border border-dustyRose bg-white"
+                      className="relative z-30 overflow-visible rounded-2xl border border-dustyRose bg-white shadow-sm"
                     >
-                      <div className="relative z-30 grid grid-cols-1 divide-y divide-dustyRose overflow-visible sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+                      <div className="relative z-30 grid grid-cols-1 divide-y divide-dustyRose overflow-visible sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4 lg:pr-14">
                         <div className={cellClass}>
                           <p className={labelClass}>From</p>
                           <input
@@ -262,7 +250,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                         <button
                           type="button"
                           onClick={() => handleCitySwap(index)}
-                          className="absolute left-1/4 top-1/2 z-10 hidden h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
+                          className="absolute left-[calc((100%-3.5rem)/4)] top-1/2 z-10 hidden h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-brown bg-brown shadow transition-all duration-300 hover:rotate-180 hover:border-darkBlue hover:bg-darkBlue lg:flex"
                         >
                           <FiRepeat className="text-white" size={14} />
                         </button>
@@ -280,27 +268,27 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                           />
                         </div>
 
-                        <div className={`relative z-[100] ${cellClass}`}>
-                          <p className={labelClass}>
-                            <FiCalendar size={11} />
-                            Departure
-                          </p>
-                          <DateField
-                            value={city.departure}
-                            min={
-                              index > 0 ? form.cities[index - 1].departure : ""
-                            }
-                            onChange={(v) =>
-                              handleCityChange(index, "departure", v)
-                            }
-                          />
-                        </div>
+                        <DateField
+                          label="Departure"
+                          value={city.departure}
+                          min={
+                            index > 0
+                              ? form.cities[index - 1].departure
+                              : todayISO()
+                          }
+                          onChange={(v) =>
+                            handleCityChange(index, "departure", v)
+                          }
+                          cellClass={`z-[100] ${cellClass}`}
+                          labelClass={labelClass}
+                          valueClass={valueClass}
+                        />
                       </div>
 
                       <button
                         type="button"
                         onClick={() => handleRemoveCity(index)}
-                        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-dustyRose/40 text-darkBlue transition-all duration-300 hover:bg-darkBlue hover:text-white"
+                        className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg bg-dustyRose/40 lg:top-1/2 lg:-translate-y-1/2 text-darkBlue transition-all duration-300 hover:bg-darkBlue hover:text-white"
                         title="Remove city"
                       >
                         <Trash2 size={16} />
@@ -309,12 +297,12 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                   ))}
               </div>
 
-              <div className="mt-5 flex items-center justify-end gap-3">
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
                 {tripType === "Multi-City" && (
                   <button
                     type="button"
                     onClick={handleAddCity}
-                    className="flex items-center gap-2 rounded-full bg-dustyRose/40 px-6 py-3 text-sm font-bold text-darkBlue transition-all duration-300 hover:bg-dustyRose"
+                    className="flex items-center justify-center gap-2 rounded-full bg-dustyRose/40 px-6 py-3.5 text-sm font-bold text-darkBlue transition-all duration-300 hover:bg-dustyRose"
                   >
                     <Plus size={17} />
                     Add City
@@ -322,9 +310,9 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                 )}
 
                 <button
-                onClick={() => setShowData(!showData)}
+                onClick={() => setShowData(true)}
                   type="submit"
-                  className="flex items-center gap-2 rounded-full bg-darkBlue px-7 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
+                  className="flex items-center justify-center gap-2 rounded-full bg-darkBlue px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
                 >
                   Search Flight
                   <TbPlaneDeparture size={17} className="text-brown" />

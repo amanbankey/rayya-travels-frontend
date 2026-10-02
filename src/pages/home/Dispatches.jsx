@@ -8,8 +8,8 @@ const Dispatches = () => (
     <Reveal>
       <SectionHeader
         eyebrow=""
-        title="Dispatches & Essays"
-        text="Musings on architectural romance, slow regional cuisines, and the cultural philosophy of restorative wanderlust."
+        title="Travel Guides & Stories"
+        text="Practical tips, destination guides and travel ideas to help you plan your next trip across India with confidence."
       >
         {/* <a href="#essays" className="flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.18em] text-muted hover:text-ink">
           Read all essays <ArrowUpRight size={11} />

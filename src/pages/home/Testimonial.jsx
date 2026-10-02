@@ -49,9 +49,9 @@ const Testimonial = () => {
           >
             <div className="relative mx-auto h-72 w-56 overflow-hidden rounded-xl bg-soft md:w-full">
               <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
-              <span className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-1.5 rounded-lg bg-paper/95 px-2 py-2 text-[8px] font-medium uppercase tracking-[0.15em] text-ink">
+              {/* <span className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-1.5 rounded-lg bg-paper/95 px-2 py-2 text-[8px] font-medium uppercase tracking-[0.15em] text-ink">
                 <BadgeCheck size={11} /> {item.badge}
-              </span>
+              </span> */}
             </div>
 
             <div>
@@ -64,10 +64,7 @@ const Testimonial = () => {
                   <p className="text-xs font-medium text-ink">{item.name}</p>
                   <p className="mt-1 text-[10px] text-muted">{item.meta}</p>
                 </div>
-                {/* <p className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted">
-                  Journey Status:{" "}
-                  <span className="ml-1 rounded-full bg-badge px-2 py-1 text-badgetext">{item.status}</span>
-                </p> */}
+                
               </div>
             </div>
           </div>

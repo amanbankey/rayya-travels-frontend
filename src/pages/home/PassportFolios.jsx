@@ -11,8 +11,8 @@ const PassportFolios = () => (
     <Reveal>
       <SectionHeader
         eyebrow=""
-        title="Passport & Residency Folios"
-        text="High-touch consular processing, diplomatic visa fast-tracking, and sovereign residency governance executed with complete discretion."
+        title="Visa Services for Indian Travellers"
+        text="Reliable visa assistance for Indian passport holders, from document checking and application filing to appointment support and timely updates."
       >
         {/* <span className="flex items-center gap-1.5 text-[9px] font-medium text-muted">
           <ShieldCheck size={12} /> Government Accredited Legal Attaches
