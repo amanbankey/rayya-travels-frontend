@@ -24,31 +24,31 @@ export const trustCards = [
     tag: "01 / Accreditation",
     icon: Ticket,
     title: "IATA Approved Ticketing",
-    text: "Reliable and professional flight booking services with trusted industry standards.",
+    text: "Genuine, confirmed e-tickets on domestic and international airlines, issued under trusted IATA standards.",
   },
   {
     tag: "02 / Personalization",
     icon: Sparkles,
-    title: "Customized Travel Solutions",
-    text: "Tailor-made domestic and international travel solutions designed around your preferences and budget.",
+    title: "Flexible Flight Options",
+    text: "One-way, round-trip and multi-city flights matched to your schedule and budget, with easy rescheduling.",
   },
   {
     tag: "03 / End-to-End",
     icon: Network,
     title: "Complete Travel Assistance",
-    text: "From visas and hotel bookings to transportation and travel insurance, travel support is available under one roof.",
+    text: "Beyond flights, get visa support, hotel bookings, airport transfers and travel insurance under one roof.",
   },
   {
     tag: "04 / Transparency",
     icon: ScrollText,
     title: "Competitive Pricing",
-    text: "Affordable travel packages and transparent pricing without hidden charges.",
+    text: "Competitive airfares with the full price shown upfront, including taxes and fees, and no hidden charges.",
   },
   {
     tag: "05 / Enterprise",
     icon: Anchor,
     title: "Corporate & Crew Expertise",
-    text: "Specialized travel management solutions for corporate clients and shipping companies.",
+    text: "Dedicated flight management for corporate clients and shipping companies, including crew change tickets.",
   },
 ];
 

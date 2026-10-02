@@ -9,7 +9,6 @@ import {
   Phone,
   X,
 } from "lucide-react";
-import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { submitForm } from "../services/api";
 import logo from "../assets/image/rayyalogo.png";
@@ -21,7 +20,7 @@ const initialValues = {
 };
 
 const AuthSidePanel = () => (
-  <div className="relative h-44 overflow-hidden rounded-2xl md:h-auto md:min-h-[620px]">
+  <div className="relative h-44 overflow-hidden rounded-2xl md:h-auto md:min-h-[500px]">
     <img
       src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80"
       alt=""
@@ -67,7 +66,7 @@ const AuthSidePanel = () => (
   </div>
 );
 
-const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
+const SignInModal = () => {
   const navigate = useNavigate();
 
   const [values, setValues] = useState(initialValues);
@@ -75,7 +74,8 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  if (!open) return null;
+  const onClose = () => navigate("/");
+  const onSwitchToSignUp = () => navigate("/signup");
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -120,8 +120,6 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
 
       setStatus("success");
 
-      onClose();
-
       navigate("/", {
         replace: true,
       });
@@ -145,18 +143,12 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
     onSwitchToSignUp();
   };
 
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-authBlue/70 p-3 backdrop-blur-md sm:p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(event) => event.stopPropagation()}
-        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl   p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
-      >
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-darkBlue50 p-3 sm:p-4">
+      <div className="grid w-full max-w-[800px] gap-2 rounded-3xl p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]">
         <AuthSidePanel />
 
-        <div className="relative rounded-2xl bg-white p-6 sm:p-8">
+        <div className="relative rounded-2xl bg-white p-5 sm:p-6">
           <button
             type="button"
             onClick={onClose}
@@ -178,7 +170,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
             </span>
           </div>
 
-          <div className="mt-5 flex gap-1 rounded-full bg-[#E5E7EB] p-1">
+          <div className="mt-4 flex gap-1 rounded-full bg-[#E5E7EB] p-1">
             <button
               type="button"
               className="flex-1 rounded-full bg-white py-2 text-[11px] font-medium uppercase tracking-[0.1em] text-authDarkBlue shadow-sm"
@@ -211,9 +203,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
 
           </div>
 
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">
-            Client Portal
-          </p>
+      
 
           <h2 className="mt-1  text-3xl font-medium text-authDarkBlue">
             Welcome Back
@@ -225,13 +215,13 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
             services.
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
             <label className="block">
               <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-authDarkBlue/70">
                 Email Address or Mobile
               </span>
 
-              <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+              <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                 <Mail
                   size={15}
                   className="shrink-0 text-authLightBrown"
@@ -263,7 +253,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
                 </button>
               </span>
 
-              <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+              <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                 <Lock
                   size={15}
                   className="shrink-0 text-authLightBrown"
@@ -316,7 +306,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-3.5 text-sm font-medium text-blue transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-2.5 text-sm font-medium text-white transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
             >
               {status === "loading"
                 ? "Signing In..."
@@ -333,8 +323,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
           </form>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 

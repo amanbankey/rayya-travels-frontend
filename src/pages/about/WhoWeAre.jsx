@@ -23,13 +23,7 @@ const WhoWeAre = () => (
 
       <Reveal delay={150}>
         <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Who We Are</span>
-            <span className="hidden h-px w-12 bg-sand/60 sm:block" />
-            <span className="rounded-full bg-peach px-3 py-1.5 text-xs font-medium text-brown">
-              Domestic & International Travel
-            </span>
-          </div>
+         
 
           <h2 className="mt-5  text-3xl leading-[1.25] text-ink sm:text-4xl lg:text-5xl">
             Creating Hassle-Free Travel Experiences

@@ -174,7 +174,8 @@ const Navbar = () => {
           {!isLoggedIn && (
             <button
               type="button"
-              onClick={() => setAuthMode("signin")}
+              // onClick={() => setAuthMode("signin")}
+               onClick={() => navigate("/signin")}
               className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-[#AE4000] to-[#E97D34] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#AE4000]/30 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:brightness-110 sm:flex"
             >
               <LogIn size={16} />
@@ -366,7 +367,7 @@ const Navbar = () => {
                 type="button"
                 onClick={() => {
                   setMobileOpen(false);
-                  setAuthMode("signin");
+                  navigate("/signin");
                 }}
                 className="w-full rounded-full bg-gradient-to-r from-[#AE4000] to-[#E97D34] px-4 py-3 text-sm font-semibold text-white"
               >
@@ -377,8 +378,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      <SignInModal
-        open={authMode === "signin"}
+      {/* <SignInModal
+        // open={authMode === "signin"}
         onClose={() => setAuthMode(null)}
         onSwitchToSignUp={() => setAuthMode("signup")}
       />
@@ -386,7 +387,7 @@ const Navbar = () => {
         open={authMode === "signup"}
         onClose={() => setAuthMode(null)}
         onSwitchToSignIn={() => setAuthMode("signin")}
-      />
+      /> */}
     </header>
   );
 };

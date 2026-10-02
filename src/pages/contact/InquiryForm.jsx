@@ -179,9 +179,6 @@ const InquiryForm = ({ service, onServiceChange }) => {
           </p>
         )}
 
-        <p className="mt-4 text-center text-xs text-ink/60">
-          Your information is handled with utmost discretion. We respect your complete privacy.
-        </p>
       </form>
     </Reveal>
   );

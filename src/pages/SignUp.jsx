@@ -12,7 +12,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { submitForm } from "../services/api";
 import logo from "../assets/image/rayyalogo.png";
 
@@ -36,7 +36,7 @@ const initialValues = {
 };
 
 const AuthSidePanel = () => (
-  <div className="relative h-44 overflow-hidden rounded-2xl md:h-auto md:min-h-[620px]">
+  <div className="relative h-44 overflow-hidden rounded-2xl md:h-auto md:min-h-[500px]">
     <img
       src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=80"
       alt=""
@@ -81,14 +81,16 @@ const AuthSidePanel = () => (
   </div>
 );
 
-const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
+const SignUpModal = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialValues);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  if (!open) return null;
+  const onClose = () => navigate("/");
+  const onSwitchToSignIn = () => navigate("/signin");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -167,18 +169,12 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
     }
   };
 
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-authBlue/70 p-3 backdrop-blur-md sm:p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(event) => event.stopPropagation()}
-        className="grid max-h-[94vh] w-full max-w-[1000px] gap-2 overflow-y-auto rounded-3xl  p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]"
-      >
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-darkBlue50 p-3 sm:p-4">
+      <div className="grid w-full max-w-[800px] gap-2 rounded-3xl p-2 shadow-2xl md:grid-cols-[1.1fr_1fr]">
         <AuthSidePanel />
 
-        <div className="relative rounded-2xl bg-white p-6 sm:p-8">
+        <div className="relative rounded-2xl bg-white p-5 sm:p-6">
           <button
             type="button"
             onClick={onClose}
@@ -198,7 +194,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
             </span>
           </div>
 
-          <div className="mt-5 flex gap-1 rounded-full bg-[#E5E7EB] p-1">
+          <div className="mt-4 flex gap-1 rounded-full bg-[#E5E7EB] p-1">
             <button
               type="button"
               onClick={onSwitchToSignIn}
@@ -215,13 +211,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
             </button>
           </div>
 
-          {/* <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p> */}
-          {/* <h2 className="mt-1  text-3xl font-medium text-authDarkBlue pt-4">Create your account</h2>
-          <p className="mt-2 text-sm text-authDarkBlue/65">Unlock a seamless travel experience designed around you.</p> */}
-
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">
-            Client Portal
-          </p>
+         
 
           <h2 className="mt-1  text-3xl font-medium text-authDarkBlue">
             Create your account
@@ -232,8 +222,8 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
           </p>
 
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+            <div className="grid gap-3 sm:grid-cols-2">
 
               {/* Full Name */}
               <label className="block">
@@ -241,7 +231,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Full Name
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <User size={15} className="shrink-0 text-authLightBrown" />
 
                   <input
@@ -249,7 +239,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                     required
                     value={values.fullName}
                     onChange={handleChange}
-                    placeholder="Enter your full name"
+                    placeholder="Enter full name"
                     className="w-full min-w-0 bg-transparent text-sm text-authDarkBlue outline-none"
                   />
                 </span>
@@ -261,7 +251,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Email Address
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <Mail size={15} className="shrink-0 text-authLightBrown" />
 
                   <input
@@ -270,7 +260,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                     required
                     value={values.email}
                     onChange={handleChange}
-                    placeholder="Enter your email"
+                    placeholder="Enter email"
                     className="w-full min-w-0 bg-transparent text-sm text-authDarkBlue outline-none"
                   />
                 </span>
@@ -282,7 +272,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Phone Number
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <Phone size={15} className="shrink-0 text-authLightBrown" />
 
                   <input
@@ -303,7 +293,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Password
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <Lock size={15} className="shrink-0 text-authLightBrown" />
 
                   <input
@@ -336,7 +326,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Confirm Password
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <Lock size={15} className="shrink-0 text-authLightBrown" />
 
                   <input
@@ -369,7 +359,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
                   Country
                 </span>
 
-                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-3 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
+                <span className="mt-1.5 flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-[#E5E7EB] px-3.5 py-2 transition-colors focus-within:border-authLightBrown focus-within:bg-white">
                   <Globe size={15} className="shrink-0 text-authLightBrown" />
 
                   <select
@@ -400,7 +390,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-3.5 text-sm font-medium text-blue transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-2.5 text-sm font-medium text-white transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
             >
               {status === "loading"
                 ? "Creating Account..."
@@ -428,8 +418,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
           </form>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 

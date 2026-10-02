@@ -9,9 +9,7 @@ const Hero = () => (
 
     <div className="relative mx-auto w-full max-w-[1440px] px-4 py-20 sm:px-8 lg:px-20">
       <Reveal>
-        {/* <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-peach">
-          <span className="h-2 w-2 rounded-full bg-peach" /> About Raaya Travels
-        </span> */}
+      
 
         <h1 className="mt-5 max-w-[780px]  text-4xl leading-[1.25] text-white sm:text-5xl lg:text-6xl lg:leading-[1.2]">
           Your Trusted Partner for Memorable Travel Experiences

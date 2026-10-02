@@ -16,7 +16,7 @@ const airlinePartners = [
   {
     name: "Etihad Airways",
     tagline: "Exceptional journeys from Abu Dhabi",
-    aircraftImage: "https://images.unsplash.com/photo-1540339832862-474c8ba0d0d3?auto=format&fit=crop&w=800&q=80",
+    aircraftImage: "https://www.bing.com/th/id/OIP.WCNGhH5TVGXjy0jiQH2amwHaDT?w=193&h=135&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.3&pid=ImgAns&rm=2",
   },
   {
     name: "Air India Express",

@@ -22,6 +22,8 @@ import AdminDashboard from './pages/admin/Dashboard'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminSignup from './pages/admin/AdminSignup'
 import AdminRoute from './components/auth/AdminRoute'
+import SignIn from "./pages/SignIn"
+import SignUp from "./pages/SignUp"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -47,9 +49,9 @@ function App() {
           
           <Route index element={<Home />} />
   
-          {/* <Route path="signin" element={<SignIn />} />
+          <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
-  */}
+ 
           <Route path="about" element={<About />} />
 
           <Route path="contact" element={<Contact />} />

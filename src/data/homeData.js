@@ -110,8 +110,8 @@ export const flights = [
     aircraft: "Bombardier Global 7500",
     kind: "Non-Stop Transatlantic Flight",
     manifest: "902-RY",
-    from: { code: "JFK", city: "New York, US", detail: "Teterboro VIP Apron • 08:00 EDT" },
-    to: { code: "CDG", city: "Paris, FR", detail: "Le Bourget Private • 08:05 CEST" },
+    from: { code: "JFK", city: "New York, US", detail: "Teterboro VIP Apron " },
+    to: { code: "CDG", city: "Paris, FR", detail: "Le Bourget Private " },
     duration: "7h 25m Direct",
     route: "Sub-Stratospheric",
     perks: [
@@ -127,8 +127,8 @@ export const flights = [
     aircraft: "Gulfstream G700",
     kind: "Indian Ocean Sky Corridor",
     manifest: "411-RY",
-    from: { code: "DXB", city: "Dubai, UAE", detail: "Al Maktoum FBO • 02:15 GST" },
-    to: { code: "SIN", city: "Singapore, SG", detail: "Seletar Airport FBO • 13:25 SGT" },
+    from: { code: "DXB", city: "Dubai, UAE", detail: "Al Maktoum FBO " },
+    to: { code: "SIN", city: "Singapore, SG", detail: "Seletar Airport FBO" },
     duration: "7h 10m Direct",
     route: "Quiet Jetway",
     perks: [
@@ -207,31 +207,31 @@ export const provenance = {
 
 export const testimonial = [
   {
-    image: img("photo-1494790108377-be9c29b29330"),
-    badge: "Verified Connoisseur",
+    image: img("photo-1712425718137-491250cfde88"),
+    badge: "Verified Traveller",
     quote:
-      "Raaya orchestrated three weeks across Kyoto and the Seto Inland Sea without a single jarring transition. From our private tea master in Daitoku-ji to the secluded fishing boat passage, every day felt like an impeccably written poem.",
-    name: "Helena & Marcus Vance",
-    meta: "Geneva & New York • Private Clients since 2021",
-    status: "Bespoke Journey",
+      "Raaya booked my Mumbai to Dubai family trip with confirmed seats together and a smooth baggage plan. When our dates changed, the team rescheduled the tickets within hours without any hidden charges.",
+    name: "Rahul Sharma",
+    meta: "Mumbai, Maharashtra • Customer since 2021",
+    status: "Family Journey",
   },
   {
-    image: img("photo-1544005313-94ddf0286df2"),
-    badge: "Verified Connoisseur",
+    image: img("photo-1768221677463-191fc4e15690"),
+    badge: "Verified Traveller",
     quote:
-      "Every consular formality for our Alpine chalet season was resolved before we even packed. Raaya's team anticipated requirements we hadn't thought to ask about, down to the last signature.",
-    name: "Isabelle Roux",
-    meta: "Paris • Private Client since 2019",
-    status: "Diplomatic Passage",
+      "From the visa documents to the Delhi to London flight, everything was handled before I even asked. The fares were transparent and the whole process felt effortless for my business trip.",
+    name: "Ananya Mehta",
+    meta: "New Delhi • Customer since 2019",
+    status: "Business Travel",
   },
   {
-    image: img("photo-1531123897727-8f129e1688ce"),
-    badge: "Verified Connoisseur",
+    image: img("photo-1670110531916-41045e83cb0a"),
+    badge: "Verified Traveller",
     quote:
-      "The maritime crew rotation across three ports could have been chaos. Instead it was quietly precise, every visa, transfer, and berth confirmed days ahead of schedule.",
-    name: "Captain Rhys Adebayo",
-    meta: "Lagos & Singapore • Private Client since 2022",
-    status: "Maritime Mobility",
+      "Our crew change across three ports could have been chaos. Instead every flight, transfer and visa was confirmed days ahead of schedule, with support available whenever we needed it.",
+    name: "Captain Arjun Nair",
+    meta: "Kochi, Kerala • Customer since 2022",
+    status: "Crew Travel",
   },
 ];
 

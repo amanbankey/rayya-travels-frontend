@@ -7,6 +7,7 @@ import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { Plus, Trash2 } from "lucide-react";
 import Reveal from "../../components/Reveal";
+import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
 
 const initialValues = {
   category: "Holidays",
@@ -18,7 +19,7 @@ const initialValues = {
 };
 
 /* ---------- Flight search fields (same as flights page Hero) ---------- */
-const flightTripTypes = ["One way", "Round-trip", "Multi-City"];
+const flightTripTypes = ["One way", ];
 const flightClassTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
 
 const fsLabelClass =
@@ -28,15 +29,6 @@ const fsInputClass =
 const fsCellClass =
   "px-4 py-3.5 transition-colors duration-300 hover:bg-cream/60";
 
-const FlightDateField = ({ value, min, onChange }) => (
-  <input
-    type="date"
-    value={value}
-    min={min || undefined}
-    onChange={(e) => onChange(e.target.value)}
-    className={fsInputClass}
-  />
-);
 
 const FlightSearchFields = ({ setShowData}) => {
   const [tripType, setTripType] = useState("One way");
@@ -45,7 +37,7 @@ const FlightSearchFields = ({ setShowData}) => {
     to: "",
     departure: "",
     returnDate: "",
-    passengers: 1,
+    passengers: defaultPassengers,
     classType: "ECONOMY",
     cities: [],
   });
@@ -109,7 +101,7 @@ const FlightSearchFields = ({ setShowData}) => {
 
   return (
     <div
-      className="relative mt-3"
+      className="relative mt-3 rounded-2xl bg-white p-4 shadow-xl sm:p-5"
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -117,7 +109,7 @@ const FlightSearchFields = ({ setShowData}) => {
         }
       }}
     >
-      <div className="mb-4 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
+      {/* <div className="mb-4 inline-flex items-center gap-1 rounded-full bg-dustyRose/40 p-1">
         {flightTripTypes.map((type) => (
           <button
             key={type}
@@ -133,7 +125,7 @@ const FlightSearchFields = ({ setShowData}) => {
             {type}
           </button>
         ))}
-      </div>
+      </div> */}
 
       <div className="space-y-3">
         <div className="rounded-2xl border border-dustyRose bg-white">
@@ -175,65 +167,55 @@ const FlightSearchFields = ({ setShowData}) => {
               />
             </div>
 
-            <div className={fsCellClass}>
-              <p className={fsLabelClass}>
-                <FiCalendar size={11} />
-                Departure
-              </p>
-              <FlightDateField
-                value={form.departure}
-                onChange={(v) => handleChange("departure", v)}
-              />
-            </div>
+            <DateField
+              label="Departure"
+ months={isRoundTrip ? 2 : 1}
+              value={form.departure}
+              min={todayISO()}
+              onChange={(v) =>
+                setForm((prev) => ({
+                  ...prev,
+                  departure: v,
+                  returnDate:
+                    prev.returnDate && prev.returnDate < v ? "" : prev.returnDate,
+                }))
+              }
+              cellClass={fsCellClass}
+              labelClass={fsLabelClass}
+            />
 
             {isRoundTrip && (
-              <div className={fsCellClass}>
-                <p className={fsLabelClass}>
-                  <FiCalendar size={11} />
-                  Return
-                </p>
-                <FlightDateField
-                  value={form.returnDate}
-                  min={form.departure}
-                  onChange={(v) => handleChange("returnDate", v)}
-                />
-              </div>
+              <DateField
+                label="Return"
+months={2}
+                value={form.returnDate}
+                min={form.departure || todayISO()}
+                rangeFrom={form.departure}
+                rangeTo={form.returnDate}
+                onChange={(v) => handleChange("returnDate", v)}
+                cellClass={fsCellClass}
+                labelClass={fsLabelClass}
+              />
             )}
 
-            <div className={fsCellClass}>
-              <p className={fsLabelClass}>
-                <FiUsers size={11} />
-                Passengers No.
-              </p>
-              <select
-                value={form.passengers}
-                onChange={(e) =>
-                  handleChange("passengers", Number(e.target.value))
-                }
-                className={fsInputClass}
-              >
-                {[1, 2, 3, 4, 5, 6].map((n) => (
-                  <option key={n} value={n}>
-                    {n} Passenger{n > 1 ? "s" : ""}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <PassengerField
+              label="Passengers No."
+              icon={FiUsers}
+              value={form.passengers}
+              onChange={(v) => handleChange("passengers", v)}
+              cellClass={fsCellClass}
+              labelClass={fsLabelClass}
+            />
 
-            <div className={fsCellClass}>
-              <p className={fsLabelClass}>Class Type</p>
-              <select
-                value={form.classType}
-                onChange={(e) => handleChange("classType", e.target.value)}
-                className={fsInputClass}
-              >
-                {flightClassTypes.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <SelectField
+              label="Class Type"
+              value={form.classType}
+              options={classOptions}
+              onChange={(v) => handleChange("classType", v)}
+              align="right"
+              cellClass={fsCellClass}
+              labelClass={fsLabelClass}
+            />
           </div>
         </div>
 
@@ -278,17 +260,14 @@ const FlightSearchFields = ({ setShowData}) => {
                   />
                 </div>
 
-                <div className={`relative z-[100] ${fsCellClass}`}>
-                  <p className={fsLabelClass}>
-                    <FiCalendar size={11} />
-                    Departure
-                  </p>
-                  <FlightDateField
-                    value={city.departure}
-                    min={index > 0 ? form.cities[index - 1].departure : ""}
-                    onChange={(v) => handleCityChange(index, "departure", v)}
-                  />
-                </div>
+                <DateField
+                  label="Departure"
+                  value={city.departure}
+                  min={index > 0 ? form.cities[index - 1].departure : todayISO()}
+                  onChange={(v) => handleCityChange(index, "departure", v)}
+                  cellClass={`z-[100] ${fsCellClass}`}
+                  labelClass={fsLabelClass}
+                />
               </div>
 
               <button
@@ -351,15 +330,13 @@ const Hero = ({setShowData, showData}) => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-darkBlue pb-16 py-10">
-      <img src={packagesImages.hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-35" />
-      {/* <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/70 to-dark" /> */}
+    <section className="relative bg-darkBlue pb-16 py-10">
+      <div className="absolute inset-0 overflow-hidden">
+        <img src={packagesImages.hero} alt="" className="h-full w-full object-cover opacity-35" />
+      </div>
 
       <div className="relative mx-auto max-w-[1100px] px-4 text-center sm:px-8">
         <Reveal>
-          {/* <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white">
-            <span className="h-1.5 w-1.5 rounded-full bg-peach" /> Curated Global Holidays
-          </span> */}
 
           <h1 className="mt-6  text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
             Explore the World. <span className="italic text-peach">Your Way.</span>
@@ -373,7 +350,7 @@ const Hero = ({setShowData, showData}) => {
       </div>
 
       <div className="relative mx-auto max-w-[1150px] px-4 sm:-mt-6 sm:px-8 pt-20">
-        <Reveal delay={150}>
+        <Reveal delay={150} className="relative z-30">
           <FlightSearchFields  setShowData={setShowData}/>
         </Reveal>
       </div>

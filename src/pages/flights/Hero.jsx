@@ -3,6 +3,7 @@ import { FiCalendar, FiRepeat, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { Plus, Trash2 } from "lucide-react";
 import { heroImage } from "../../data/homeData";
+import { DateField, SelectField, PassengerField, defaultPassengers, todayISO, classOptions } from "../../components/search/SearchFields";
 
 const tripTypes = ["One way", "Round-trip", "Multi-City"];
 const classTypes = ["ECONOMY", "PREMIUM ECONOMY", "BUSINESS", "FIRST"];
@@ -14,16 +15,6 @@ const inputClass =
 const cellClass =
   "px-4 py-3.5 transition-colors duration-300 hover:bg-cream/60";
 
-// Native date input styled to match the theme
-const DateField = ({ value, min, onChange }) => (
-  <input
-    type="date"
-    value={value}
-    min={min || undefined}
-    onChange={(e) => onChange(e.target.value)}
-    className={inputClass}
-  />
-);
 
 const Hero = ({ onSearch, setShowData, showData}) => {
   const [tripType, setTripType] = useState("One way");
@@ -32,7 +23,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
     to: "",
     departure: "",
     returnDate: "",
-    passengers: 1,
+    passengers: defaultPassengers,
     classType: "ECONOMY",
     cities: [],
   });
@@ -42,6 +33,15 @@ const Hero = ({ onSearch, setShowData, showData}) => {
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleDeparture = (value) => {
+    setForm((prev) => ({
+      ...prev,
+      departure: value,
+      returnDate:
+        prev.returnDate && prev.returnDate < value ? "" : prev.returnDate,
+    }));
   };
 
   const handleCityChange = (index, field, value) => {
@@ -99,15 +99,17 @@ const Hero = ({ onSearch, setShowData, showData}) => {
 //   }
 
   return (
-    <div className="relative w-full overflow-hidden bg-darkBlue">
-      <img
-        src={heroImage}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-30 [mask-image:linear-gradient(to_right,transparent_15%,black_90%)]"
-      />
+    <div className="relative w-full bg-darkBlue">
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={heroImage}
+          alt=""
+          className="h-full w-full object-cover opacity-30 [mask-image:linear-gradient(to_right,transparent_15%,black_90%)]"
+        />
+      </div>
 
       <section className="relative mx-auto max-w-7xl px-4 pb-10 pt-10 sm:px-8 sm:pt-14 lg:px-12 lg:pt-16">
-        <h1 className="mt-5 max-w-xl mx-auto text-center  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mt-5 max-w-xl mx-auto text-center font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           Discover your flight under  {" "} 
           <span className="inline italic text-brown">
             60 {" "}
@@ -175,67 +177,48 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                       />
                     </div>
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>
-                        <FiCalendar size={11} />
-                        Departure
-                      </p>
-                      <DateField
-                        value={form.departure}
-                        onChange={(v) => handleChange("departure", v)}
-                      />
-                    </div>
+                    <DateField
+                      label="Departure"
+ months={isRoundTrip ? 2 : 1}
+                      value={form.departure}
+                      min={todayISO()}
+                      onChange={handleDeparture}
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                    />
 
                     {isRoundTrip && (
-                      <div className={cellClass}>
-                        <p className={labelClass}>
-                          <FiCalendar size={11} />
-                          Return
-                        </p>
-                        <DateField
-                          value={form.returnDate}
-                          min={form.departure}
-                          onChange={(v) => handleChange("returnDate", v)}
-                        />
-                      </div>
+                      <DateField
+                        label="Return"
+months={2}
+                        value={form.returnDate}
+                        min={form.departure || todayISO()}
+                        rangeFrom={form.departure}
+                        rangeTo={form.returnDate}
+                        onChange={(v) => handleChange("returnDate", v)}
+                        cellClass={cellClass}
+                        labelClass={labelClass}
+                      />
                     )}
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>
-                        <FiUsers size={11} />
-                        Passengers No.
-                      </p>
-                      <select
-                        value={form.passengers}
-                        onChange={(e) =>
-                          handleChange("passengers", Number(e.target.value))
-                        }
-                        className={inputClass}
-                      >
-                        {[1, 2, 3, 4, 5, 6].map((n) => (
-                          <option key={n} value={n}>
-                            {n} Passenger{n > 1 ? "s" : ""}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <PassengerField
+                      label="Passengers No."
+                      icon={FiUsers}
+                      value={form.passengers}
+                      onChange={(v) => handleChange("passengers", v)}
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                    />
 
-                    <div className={cellClass}>
-                      <p className={labelClass}>Class Type</p>
-                      <select
-                        value={form.classType}
-                        onChange={(e) =>
-                          handleChange("classType", e.target.value)
-                        }
-                        className={inputClass}
-                      >
-                        {classTypes.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <SelectField
+                      label="Class Type"
+                      value={form.classType}
+                      options={classOptions}
+                      onChange={(v) => handleChange("classType", v)}
+                      align="right"
+                      cellClass={cellClass}
+                      labelClass={labelClass}
+                    />
                   </div>
                 </div>
 
@@ -280,21 +263,20 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                           />
                         </div>
 
-                        <div className={`relative z-[100] ${cellClass}`}>
-                          <p className={labelClass}>
-                            <FiCalendar size={11} />
-                            Departure
-                          </p>
-                          <DateField
-                            value={city.departure}
-                            min={
-                              index > 0 ? form.cities[index - 1].departure : ""
-                            }
-                            onChange={(v) =>
-                              handleCityChange(index, "departure", v)
-                            }
-                          />
-                        </div>
+                        <DateField
+                          label="Departure"
+                          value={city.departure}
+                          min={
+                            index > 0
+                              ? form.cities[index - 1].departure
+                              : todayISO()
+                          }
+                          onChange={(v) =>
+                            handleCityChange(index, "departure", v)
+                          }
+                          cellClass={`z-[100] ${cellClass}`}
+                          labelClass={labelClass}
+                        />
                       </div>
 
                       <button
@@ -322,7 +304,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                 )}
 
                 <button
-                onClick={() => setShowData(!showData)}
+                onClick={() => setShowData(true)}
                   type="submit"
                   className="flex items-center gap-2 rounded-full bg-darkBlue px-7 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl"
                 >

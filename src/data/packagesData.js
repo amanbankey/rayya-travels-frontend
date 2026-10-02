@@ -256,32 +256,32 @@ export const thematicCollections = [
   {
     icon: Heart,
     title: "Honeymoon Romantic Escapes",
-    text: "Private candlelit beach dinners, secluded plunge pool villas, sunset catamaran cruises, and thoughtful couple indulgences in Bali, Maldives, and Paris.",
+    text: "Return flights, private pool villas, candlelit beach dinners and sunset cruises, planned for couples in Bali, the Maldives and Europe.",
     items: [
-      { label: "Bali Intimate Pool Villa (6D/5N)", price: "₹48,000" },
-      { label: "Swiss Alps & Paris Romance (7D/6N)", price: "₹1,35,000" },
+      { label: "Bali Pool Villa with Flights (6D/5N)", price: "₹48,000" },
+      { label: "Maldives Overwater Retreat (5D/4N)", price: "₹89,500" },
     ],
-    link: "View all honeymoon itineraries",
+    link: "View honeymoon packages",
   },
   {
     icon: Plane,
     title: "Global Short & Long Hauls",
-    text: "Seamless international travel with visa assistance, handpicked premium accommodations, private guided tours, and 24/7 dedicated concierge coverage.",
+    text: "Hassle-free international trips with confirmed flights, visa assistance, handpicked hotels, airport transfers and 24/7 travel support.",
     items: [
-      { label: "Dubai Marina & Atlantis Stay (5D/4N)", price: "₹54,999" },
-      { label: "Singapore & Universal Studios (5D/4N)", price: "₹58,000" },
+      { label: "Dubai City & Desert Safari (5D/4N)", price: "₹54,999" },
+      { label: "Singapore & Sentosa Getaway (5D/4N)", price: "₹58,000" },
     ],
-    link: "Explore international gateways",
+    link: "Explore international packages",
   },
   {
     icon: Landmark,
     title: "Discover Incredible India",
-    text: "Experience the royal heritage palaces of Rajasthan, tranquil backwaters of Kerala, spiritual ghats of Varanasi, and majestic valleys of Kashmir.",
+    text: "Domestic holidays with flights and stays covered, from the palaces of Rajasthan and Kerala backwaters to the valleys of Kashmir.",
     items: [
-      { label: "Kashmir Alpine Valleys & Dal Lake (6D/5N)", price: "₹36,500" },
-      { label: "Kerala Luxury Houseboat & Munnar (5D/4N)", price: "₹32,000" },
+      { label: "Kashmir Valleys & Dal Lake (6D/5N)", price: "₹36,500" },
+      { label: "Kerala Houseboat & Munnar (5D/4N)", price: "₹32,000" },
     ],
-    link: "Browse Indian heritage tours",
+    link: "Browse India packages",
   },
 ];
 

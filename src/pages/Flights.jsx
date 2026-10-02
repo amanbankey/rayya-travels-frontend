@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { dates, defaultFilters, flights } from "../data/flightData";
 import { submitForm } from "../services/api";
@@ -43,6 +43,19 @@ const Flights = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [notice, setNotice] = useState(null);
   const [showData, setShowData] = useState(false)
+  const [scrollTick, setScrollTick] = useState(0)
+  const resultsRef = useRef(null)
+
+  // Search Flight click: smoothly scroll down to the filter sidebar + tickets.
+  const handleShowData = (value) => {
+    setShowData(value)
+    if (value) setScrollTick((tick) => tick + 1)
+  }
+
+  useEffect(() => {
+    if (!scrollTick) return
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }, [scrollTick])
 
   const selectedLabel = dates.find((date) => date.id === selectedDate).label;
   const filteredFlights = isFiltered ? flights.filter((flight) => matchesFilters(flight, filters)) : flights;
@@ -89,7 +102,7 @@ const Flights = () => {
 
   return (
     <div className="min-h-screen bg-lightGray">
-       <FlightHero setShowData={setShowData} showData={showData}/>
+       <FlightHero setShowData={handleShowData} showData={showData}/>
       <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-8 lg:px-12 ">
        
 
@@ -108,7 +121,7 @@ const Flights = () => {
           </div>
         )}
 
-        {showData && (<div className="mt-6 grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start xl:grid-cols-[360px_minmax(0,1fr)]">
+        {showData && (<div ref={resultsRef} className="mt-6 scroll-mt-24 grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start xl:grid-cols-[360px_minmax(0,1fr)]">
           <FilterSidebar
             filters={filters}
             open={filtersOpen}

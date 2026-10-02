@@ -236,13 +236,6 @@ function TravelerCard({ traveler, index, canDelete, onFieldChange, onFileChange,
             </div>
           </div>
 
-          <div className="flex items-start gap-2 bg-gray-50 rounded-xl p-3">
-            <Shield size={16} className="text-gray-400 mt-0.5 shrink-0" />
-            <p className="text-xs text-gray-500">
-              Only information available on the uploaded document will be filled automatically. You can review and
-              edit the details before continuing.
-            </p>
-          </div>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
@@ -658,31 +651,6 @@ export default function TravelerDetails() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 flex items-center justify-between gap-4 transition-shadow duration-300 hover:shadow-lg animate-fade-in-up">
-              <div className="flex items-start gap-3">
-                <span className="w-10 h-10 rounded-xl bg-brown/10 flex items-center justify-center shrink-0">
-                  <Shield size={20} className="text-brown" />
-                </span>
-                <div>
-                  <h3 className="font-semibold text-darkBlue">Travel insurance</h3>
-                  <p className="text-sm text-gray-500">Add basic travel protection to your application.</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setTravelInsurance((prev) => !prev)}
-                className={`w-11 h-6 rounded-full relative transition-colors duration-300 shrink-0 ${
-                  travelInsurance ? "bg-brown" : "bg-gray-200"
-                }`}
-              >
-                <span
-                  className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 ${
-                    travelInsurance ? "translate-x-5" : "translate-x-0.5"
-                  }`}
-                />
-              </button>
             </div>
           </div>
         </div>

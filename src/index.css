@@ -7,6 +7,15 @@
  
 
 
+/* Browser autofill ka light-blue background hata kar field ka apna background rakhta h */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1e2229;
+  caret-color: #1e2229;
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }
