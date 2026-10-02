@@ -32,14 +32,16 @@ const AirlineCard = ({ partner }) => (
       <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
 
       <div className="relative flex h-full flex-col justify-between p-6">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white">
+          <Plane size={15} />
+        </span>
+
+        {/* Text sits in the lower part of the card, below the overlapping aircraft image */}
         <div>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white">
-            <Plane size={15} />
-          </span>
-          <h3 className="mt-5  text-2xl font-medium leading-snug text-white transition-colors duration-500 group-hover:text-brown">
+          <h3 className="text-2xl font-medium leading-snug text-white transition-colors duration-500 group-hover:text-brown">
             {partner.name}
           </h3>
-          <p className="mt-2 max-w-[170px] text-[13px] leading-relaxed text-white/65">{partner.tagline}</p>
+          <p className="mt-2 text-[13px] leading-relaxed text-white/65">{partner.tagline}</p>
         </div>
 
       </div>
