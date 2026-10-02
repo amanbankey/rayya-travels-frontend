@@ -209,7 +209,7 @@ const SwapButton = ({ onClick }) => (
   </button>
 );
 
-const FlightSearchFields = ({ onSearch }) => {
+const FlightSearchFields = () => {
   const [tripType, setTripType] = useState("One way");
   const [form, setForm] = useState({
     from: "",
@@ -282,7 +282,7 @@ const FlightSearchFields = ({ onSearch }) => {
   };
 
   const handleSearch = () => {
-    if (onSearch) onSearch({ tripType, ...form });
+    // if (onSearch) onSearch({ tripType, ...form });
   };
 
   return (
@@ -629,7 +629,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <FlightSearchFields onSearch={(data) => navigate("/flights", { state: data })} />
+      <FlightSearchFields  />
     </form>
 
       </div>

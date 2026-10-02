@@ -86,6 +86,32 @@ slate: "#1e2738",
       boxShadow: {
         card: "0 2px 24px rgba(120, 90, 50, 0.07)",
       },
+       animation: {
+        "fade-in-up": "fadeInUp 0.55s ease-out both",
+        fly: "flyAcross 2.6s ease-in-out infinite alternate",
+        "pulse-brown": "pulseBrown 2s ease-in-out infinite",
+        drift: "cloudDrift 6s linear infinite"
+      },
+       keyframes: {
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        flyAcross: {
+          "0%": { left: "0%" },
+          "100%": { left: "calc(100% - 16px)" }
+        },
+        pulseBrown: {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(161,59,0,0.35)" },
+          "50%": { boxShadow: "0 0 0 6px rgba(161,59,0,0)" }
+        },
+        cloudDrift: {
+          "0%": { transform: "translateX(-10%)", opacity: "0" },
+          "15%": { opacity: "1" },
+          "85%": { opacity: "1" },
+          "100%": { transform: "translateX(110%)", opacity: "0" }
+        }
+      },
     },
   },
   plugins: [],

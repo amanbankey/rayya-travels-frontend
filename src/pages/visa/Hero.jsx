@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FiCalendar, FiRepeat, FiSearch, FiUsers } from "react-icons/fi";
 import { TbPlaneDeparture } from "react-icons/tb";
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
+import TravelerDetails from "./TravelerDetail";
 
 const visaTypes = [
   { key: "tourist", label: "Tourist Visa", icon: Plane },
@@ -199,7 +200,7 @@ const SwapButton = ({ onClick }) => (
   </button>
 );
 
-const FlightSearchFields = () => {
+const FlightSearchFields = ({show, setShow}) => {
   const [tripType, setTripType] = useState("One way");
   const [form, setForm] = useState({
     from: "",
@@ -273,6 +274,7 @@ const FlightSearchFields = () => {
 
   const handleSearch = () => {
     // if (onSearch) onSearch({ tripType, ...form });
+    setShow(true)
   };
 
   return (
@@ -473,10 +475,11 @@ const FlightSearchFields = () => {
   );
 };
 
-const VisaHero = () => {
+const VisaHero = ({setShow, show}) => {
   const [values, setValues] = useState(initialValues);
   const [status, setStatus] = useState("idle");
   const navigate = useNavigate();
+ 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
@@ -515,8 +518,13 @@ const VisaHero = () => {
       </div>
 
       <div className="relative mx-auto  max-w-[1150px] px-4 sm:mt-16 sm:px-8">
-        <FlightSearchFields  />
+        <FlightSearchFields  setShow={setShow} show={show} />
       </div>
+
+
+    
+
+
     </section>
   );
 };

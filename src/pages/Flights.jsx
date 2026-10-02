@@ -93,12 +93,7 @@ const Flights = () => {
       <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-8 lg:px-12 ">
        
 
-        <ResultsHeader
-          passageCount={passageCount}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          onOpenFilters={() => setFiltersOpen(true)}
-        />
+       
 
         {notice && (
           <div
@@ -134,6 +129,13 @@ const Flights = () => {
             <DiagnosticStates onReset={resetFilters} />
           </section>
         </div> )}
+
+         <ResultsHeader
+          passageCount={passageCount}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          onOpenFilters={() => setFiltersOpen(true)}
+        />
       </div>
     </div>
   );
