@@ -17,7 +17,7 @@ const SignatureShowcase = () => (
             </span>
 
             <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-brown">{signatureShowcase.tag}</p>
-            <h2 className="mt-2 font-serif text-3xl leading-tight text-white sm:text-4xl">{signatureShowcase.title}</h2>
+            <h2 className="mt-2  text-3xl leading-tight text-white sm:text-4xl">{signatureShowcase.title}</h2>
 
             <p className="mt-4 max-w-[500px] text-sm leading-relaxed text-white/75">{signatureShowcase.text}</p>
 
@@ -35,7 +35,7 @@ const SignatureShowcase = () => (
             {/* <div className="mt-7 flex flex-col gap-4 border-t border- pt-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.1em] text-white/60">All Inclusive Starting From</p>
-                <p className="mt-1 font-serif text-3xl font-medium text-white">
+                <p className="mt-1  text-3xl font-medium text-white">
                   ₹{signatureShowcase.price.toLocaleString("en-IN")}
                 </p>
                 <p className="text-xs text-white/50">per person on twin sharing</p>

@@ -11,7 +11,7 @@ const ContactHero = () => (
       <Reveal>
        
 
-        <h1 className="mt-5 font-serif text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mt-5  text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
           Let’s Plan Your <span className="italic text-peach">Journey</span>
         </h1>
 

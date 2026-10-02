@@ -64,7 +64,7 @@ const ArchitecturalPortals = () => {
 
               <div className="p-4">
                 {/* <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-muted">{item.location}</p> */}
-                <h3 className="mt-1 font-serif text-lg font-medium text-ink">{item.title}</h3>
+                <h3 className="mt-1  text-lg font-medium text-ink">{item.title}</h3>
                 <p className="mt-2 text-[11px] leading-relaxed text-muted">{item.text}</p>
                 
               </div>

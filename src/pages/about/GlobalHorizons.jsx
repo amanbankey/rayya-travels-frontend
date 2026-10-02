@@ -8,7 +8,7 @@ const GlobalHorizons = () => (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Global Horizons</p>
-            <h2 className="mt-3 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">From India to the World</h2>
+            <h2 className="mt-3  text-3xl text-ink sm:text-4xl lg:text-5xl">From India to the World</h2>
           </div>
           <p className="text-base text-ink/75">Explore destinations and travel experiences with RAAYA.</p>
         </div>
@@ -27,7 +27,7 @@ const GlobalHorizons = () => (
               </div>
               <div className="p-5">
                 <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-brown">{place.category}</p>
-                <h3 className="mt-2 font-serif text-2xl font-medium text-ink">{place.name}</h3>
+                <h3 className="mt-2  text-2xl font-medium text-ink">{place.name}</h3>
                 <p className="mt-1 text-sm leading-relaxed text-ink/75">{place.text}</p>
               </div>
             </article>

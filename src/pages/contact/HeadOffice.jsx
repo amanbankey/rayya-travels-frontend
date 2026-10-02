@@ -17,7 +17,7 @@ const HeadOffice = () => {
       <div className="mx-auto max-w-[1200px]">
         <Reveal>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Headquarters</p>
-          <h2 className="mt-3 font-serif text-4xl text-ink sm:text-5xl">Visit Our Head Office</h2>
+          <h2 className="mt-3  text-4xl text-ink sm:text-5xl">Visit Our Head Office</h2>
         </Reveal>
 
         <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-[0.8fr_1.2fr]">

@@ -33,7 +33,7 @@ const AppliedPackages = () => {
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-serif text-2xl font-medium text-navy">Applied Packages</h2>
+          <h2 className=" text-2xl font-medium text-navy">Applied Packages</h2>
           <p className="text-sm text-navy-400">Holiday packages you have applied for or booked.</p>
         </div>
         <div className="no-scrollbar flex max-w-full gap-1 overflow-x-auto rounded-full border border-navy-100 bg-white p-1">
@@ -48,7 +48,7 @@ const AppliedPackages = () => {
       {list.length === 0 ? (
         <div className="flex flex-col items-center rounded-2xl bg-white px-6 py-16 text-center shadow-[0_8px_30px_-14px_rgba(11,22,40,0.18)]">
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ember-50 text-ember-400"><Inbox size={24} /></span>
-          <h3 className="mt-4 font-serif text-xl font-medium text-navy">No packages found</h3>
+          <h3 className="mt-4  text-xl font-medium text-navy">No packages found</h3>
           <p className="mt-1 max-w-xs text-sm text-navy-400">Explore our holiday packages and your applications will show up here.</p>
           <Link to="/packages" className="mt-5 rounded-full bg-gradient-to-r from-ember-600 to-ember-400 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-ember-600/25">Explore Packages</Link>
         </div>
@@ -66,7 +66,7 @@ const AppliedPackages = () => {
                       <div className="flex items-center gap-3">
                         <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ember-600 to-ember-400 shadow-lg shadow-ember-900/30"><Package size={20} /></span>
                         <div>
-                          <h3 className="font-serif text-xl font-medium">{p.name}</h3>
+                          <h3 className=" text-xl font-medium">{p.name}</h3>
                           <p className="flex items-center gap-1 text-xs text-navy-200"><MapPin size={12} /> {p.destination}</p>
                         </div>
                       </div>
@@ -116,7 +116,7 @@ const AppliedPackages = () => {
                     <div className="mt-5 flex items-center justify-between border-t border-dashed border-navy-100 pt-4">
                       <div>
                         <p className="text-xs text-navy-400">Application {p.id}</p>
-                        <p className={`font-serif text-2xl font-medium ${cancelled ? "text-navy-300 line-through" : "text-navy"}`}>₹{p.amount.toLocaleString("en-IN")}</p>
+                        <p className={` text-2xl font-medium ${cancelled ? "text-navy-300 line-through" : "text-navy"}`}>₹{p.amount.toLocaleString("en-IN")}</p>
                       </div>
                       {!cancelled && (
                         <button className="rounded-full bg-gradient-to-r from-ember-600 to-ember-400 px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-ember-600/25 transition-all hover:-translate-y-0.5 hover:shadow-xl">

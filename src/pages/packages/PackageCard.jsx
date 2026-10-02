@@ -56,7 +56,7 @@ const PackageCard = ({ pkg, viewMode }) => {
         <div className="mt-4 flex items-end justify-between gap-3 border-t border-line pt-4">
           <div>
             <p className="text-xs text-ink/60">Starting from</p>
-            <p className="font-serif text-2xl font-medium text-ink">₹{pkg.price.toLocaleString("en-IN")}</p>
+            <p className=" text-2xl font-medium text-ink">₹{pkg.price.toLocaleString("en-IN")}</p>
             <p className="text-[11px] text-ink/55">per person on twin sharing</p>
           </div>
         </div>

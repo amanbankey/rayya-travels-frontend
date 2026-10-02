@@ -7,7 +7,7 @@ const icons = { Bed, Utensils, Briefcase, Wifi, Crown, Sparkles };
 
 const Airport = ({ data, align }) => (
   <div className={align === "right" ? "text-right" : "text-left"}>
-    <p className="font-serif text-3xl font-medium text-ink sm:text-4xl">{data.code}</p>
+    <p className=" text-3xl font-medium text-ink sm:text-4xl">{data.code}</p>
     <p className="mt-1 text-[11px] font-medium text-ink">{data.city}</p>
     <p className="mt-0.5 text-[9px] text-muted">{data.detail}</p>
   </div>

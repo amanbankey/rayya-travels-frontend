@@ -8,7 +8,7 @@ const BusinessCrew = () => (
       <Reveal>
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Business & Shipping Operations</p>
-          <h2 className="mt-4 font-serif text-4xl leading-[1.25] text-ink sm:text-5xl">
+          <h2 className="mt-4  text-4xl leading-[1.25] text-ink sm:text-5xl">
             Reliable Travel Coordination for Businesses & Crew
           </h2>
           <p className="mt-5 max-w-[470px] text-base leading-relaxed text-ink/80">
@@ -34,7 +34,7 @@ const BusinessCrew = () => (
                 <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-white text-brown shadow-sm">
                   <Icon size={22} />
                 </span>
-                <h3 className="mt-8 font-serif text-2xl font-medium text-ink">{card.title}</h3>
+                <h3 className="mt-8  text-2xl font-medium text-ink">{card.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink/75">{card.text}</p>
                 <ul className="mt-10 flex flex-wrap gap-2">
                   {card.tags.map((tag) => (

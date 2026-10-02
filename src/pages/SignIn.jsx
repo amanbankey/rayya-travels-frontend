@@ -38,7 +38,7 @@ const AuthSidePanel = () => (
 
       <div className="space-y-4">
         <div>
-          <p className="mt-2 max-w-[300px] font-serif text-lg leading-snug text-white md:text-2xl">
+          <p className="mt-2 max-w-[300px]  text-lg leading-snug text-white md:text-2xl">
             Your journey begins with thoughtful planning and quiet,
             unhurried execution.
           </p>
@@ -172,7 +172,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
                 R
               </span>
 
-              <span className="font-serif text-lg font-medium text-authDarkBlue">
+              <span className=" text-lg font-medium text-authDarkBlue">
                 Raaya Travels
               </span>
             </span>
@@ -206,7 +206,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
           {/* </div> */}
 
           {/* <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p> */}
-          {/* <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue pt-">
+          {/* <h2 className="mt-1  text-3xl font-medium text-authDarkBlue pt-">
             {mode === "otp" ? "Sign In with OTP" : "Welcome Back"} */}
 
           </div>
@@ -215,7 +215,7 @@ const SignInModal = ({ open, onClose, onSwitchToSignUp }) => {
             Client Portal
           </p>
 
-          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue">
+          <h2 className="mt-1  text-3xl font-medium text-authDarkBlue">
             Welcome Back
 
           </h2>

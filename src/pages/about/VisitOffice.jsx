@@ -10,7 +10,7 @@ const VisitOffice = () => (
       <div className="mx-auto grid max-w-[1200px] items-center gap-8 rounded-3xl bg-oat p-6 sm:p-10 lg:grid-cols-2 lg:gap-10 lg:p-14">
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Global Coordination Office</p>
-          <h2 className="mt-4 font-serif text-4xl text-ink sm:text-5xl">Visit RAAYA Travels</h2>
+          <h2 className="mt-4  text-4xl text-ink sm:text-5xl">Visit RAAYA Travels</h2>
 
           <p className={`mt-7 ${labelClass}`}>Registered Entity</p>
           <p className="mt-1 text-lg font-medium text-ink">{office.entity}</p>

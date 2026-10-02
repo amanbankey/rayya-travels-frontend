@@ -20,7 +20,7 @@ const ReadyCta = () => {
             Quiet Luxury • Flawless Execution
           </p>
 
-          <h2 className="mt-5 font-serif text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+          <h2 className="mt-5  text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
             Ready to Start Your <span className="italic text-peach">Journey?</span>
           </h2>
 

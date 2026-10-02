@@ -12,7 +12,7 @@ const VisionMission = () => (
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-brown">
             <span className="h-2.5 w-2.5 rounded-full bg-brown" /> Our Vision
           </p>
-          <h3 className="mt-5 font-serif text-2xl leading-snug text-ink sm:text-3xl">
+          <h3 className="mt-5  text-2xl leading-snug text-ink sm:text-3xl">
             Making Travel Seamless, Memorable & Value-Driven
           </h3>
           <p className="mt-4 text-base leading-relaxed text-ink/75">
@@ -36,7 +36,7 @@ const VisionMission = () => (
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-brown">
             <span className="h-2.5 w-2.5 rounded-full bg-brown" /> Our Mission
           </p>
-          <h3 className="mt-5 font-serif text-2xl leading-snug text-ink sm:text-3xl">Travel Support Built Around You</h3>
+          <h3 className="mt-5  text-2xl leading-snug text-ink sm:text-3xl">Travel Support Built Around You</h3>
           <p className="mt-4 text-base leading-relaxed text-ink/75">
             To provide reliable travel coordination, personalized itineraries, and transparent service that ensures peace
             of mind for every leisure, business, and maritime client we serve worldwide.

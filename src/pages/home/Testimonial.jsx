@@ -56,7 +56,7 @@ const Testimonial = () => {
 
             <div>
               <Quote size={22} className="text-sand/60" />
-              <blockquote className="mt-3 font-serif text-xl italic leading-relaxed text-ink sm:text-2xl lg:text-[28px] lg:leading-[1.5]">
+              <blockquote className="mt-3  text-xl italic leading-relaxed text-ink sm:text-2xl lg:text-[28px] lg:leading-[1.5]">
                 {item.quote}
               </blockquote>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

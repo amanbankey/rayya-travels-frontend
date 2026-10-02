@@ -6,7 +6,7 @@ const CtaBanner = () => (
       <div className="flex flex-col gap-6 rounded-2xl bg-soft p-6 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-lg">
           {/* <p className="text-[8px] font-medium uppercase tracking-[0.22em] text-muted">Private Client Advisory</p> */}
-          <h2 className="mt-3 font-serif text-3xl font-medium leading-tight text-ink sm:text-4xl">
+          <h2 className="mt-3  text-3xl font-medium leading-tight text-ink sm:text-4xl">
             Architect your next departure.
           </h2>
           <p className="mt-3 text-xs leading-relaxed text-muted">

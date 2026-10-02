@@ -8,7 +8,7 @@ const ThematicCollections = () => (
       <Reveal>
         <div className="text-center">
           {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Thematic Collections</p> */}
-          <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Holidays Designed Around You</h2>
+          <h2 className="mt-2  text-3xl text-ink sm:text-4xl">Holidays Designed Around You</h2>
           <p className="mx-auto mt-3 max-w-[520px] text-sm text-ink/70">
             Whether celebrating romance, traveling with three generations, or escaping into untamed wilderness.
           </p>

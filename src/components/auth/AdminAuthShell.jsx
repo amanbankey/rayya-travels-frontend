@@ -140,7 +140,7 @@ const AdminAuthShell = ({ mode, title, subtitle, wide = false, children }) => (
         </Link>
 
         <div className="mt-10 max-w-md xl:mt-14">
-          <h2 className="font-serif text-4xl font-bold leading-[1.15] text-white xl:text-[42px]">
+          <h2 className=" text-4xl font-bold leading-[1.15] text-white xl:text-[42px]">
             Every booking, visa and traveler, in one place.
           </h2>
           <ul className="mt-7 space-y-3.5">
@@ -203,7 +203,7 @@ const AdminAuthShell = ({ mode, title, subtitle, wide = false, children }) => (
                 <ShieldCheck size={20} />
               </span>
               <div className="min-w-0">
-                <h1 className="font-serif text-2xl font-bold leading-tight text-[#102030]">{title}</h1>
+                <h1 className="text-2xl font-bold leading-tight text-[#102030]">{title}</h1>
                 <p className="text-sm leading-snug text-[#64748B]">{subtitle}</p>
               </div>
             </div>

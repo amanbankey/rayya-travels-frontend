@@ -506,7 +506,7 @@ const VisaHero = ({setShow, show}) => {
           <span className="h-1.5 w-1.5 rounded-full bg-peach" /> Global Immigration & Entry Desk
         </span> */}
 
-        <h1 className="mt-6 font-serif text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mt-6  text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
           Your Visa Journey <span className="italic text-peach">Starts Here</span>
         </h1>
 

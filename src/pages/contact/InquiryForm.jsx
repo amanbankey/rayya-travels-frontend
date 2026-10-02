@@ -51,7 +51,7 @@ const InquiryForm = ({ service, onServiceChange }) => {
     <Reveal delay={150}>
       <form onSubmit={handleSubmit} className="rounded-md bg-white p-6 shadow-xl sm:p-8 lg:p-10">
         <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Private Inquiry</p>
-        <h3 className="mt-1 font-serif text-3xl text-ink">Send Your Travel Inquiry</h3>
+        <h3 className="mt-1  text-3xl text-ink">Send Your Travel Inquiry</h3>
         <p className="mt-2 text-sm leading-relaxed text-ink/75">
           Provide your travel details below and our concierge desk will construct your personalized briefing.
         </p>

@@ -53,7 +53,7 @@ const AuthSidePanel = () => (
 
       <div className="space-y-4">
         <div>
-          <p className="mt-2 max-w-[300px] font-serif text-lg leading-snug text-white md:text-2xl">
+          <p className="mt-2 max-w-[300px]  text-lg leading-snug text-white md:text-2xl">
             Every itinerary begins with a single, unhurried conversation.
           </p>
 
@@ -193,7 +193,7 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
               R
             </span>
 
-            <span className="font-serif text-lg font-medium text-authDarkBlue">
+            <span className=" text-lg font-medium text-authDarkBlue">
               Raaya Travels
             </span>
           </div>
@@ -216,14 +216,14 @@ const SignUpModal = ({ open, onClose, onSwitchToSignIn }) => {
           </div>
 
           {/* <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">Client Portal</p> */}
-          {/* <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue pt-4">Create your account</h2>
+          {/* <h2 className="mt-1  text-3xl font-medium text-authDarkBlue pt-4">Create your account</h2>
           <p className="mt-2 text-sm text-authDarkBlue/65">Unlock a seamless travel experience designed around you.</p> */}
 
           <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.15em] text-authBrown">
             Client Portal
           </p>
 
-          <h2 className="mt-1 font-serif text-3xl font-medium text-authDarkBlue">
+          <h2 className="mt-1  text-3xl font-medium text-authDarkBlue">
             Create your account
           </h2>
 

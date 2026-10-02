@@ -7,7 +7,7 @@ const ConnectChannels = () => (
       <Reveal>
         <div className="text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Direct Channels</p>
-          <h2 className="mt-3 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">Choose How You’d Like to Connect</h2>
+          <h2 className="mt-3  text-3xl text-ink sm:text-4xl lg:text-5xl">Choose How You’d Like to Connect</h2>
         </div>
       </Reveal>
 
@@ -16,7 +16,7 @@ const ConnectChannels = () => (
           <Reveal key={channel.title} delay={index * 120}>
             <article className="flex h-full flex-col rounded-md bg-oat p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
               <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-brown">{channel.tag}</p>
-              <h3 className="mt-4 font-serif text-2xl font-medium text-ink">{channel.title}</h3>
+              <h3 className="mt-4  text-2xl font-medium text-ink">{channel.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/70">{channel.text}</p>
               <p className="mt-5 break-words text-lg font-medium text-brown">{channel.value}</p>
               <a

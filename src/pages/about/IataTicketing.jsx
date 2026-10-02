@@ -23,7 +23,7 @@ const IataTicketing = () => (
             </span>
           </div>
 
-          <h2 className="mt-5 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">IATA Approved Ticketing</h2>
+          <h2 className="mt-5  text-3xl text-ink sm:text-4xl lg:text-5xl">IATA Approved Ticketing</h2>
           <p className="mt-4 text-base leading-relaxed text-ink/80">
             RAAYA TOUR & TRAVEL PVT. LTD. provides professional domestic and international flight booking services with
             trusted industry standards.

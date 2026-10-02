@@ -6,7 +6,7 @@ const WhyTrust = () => (
     <div className="mx-auto max-w-[1200px]">
       <Reveal>
         <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Our Distinction</p>
-        <h2 className="mt-3 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">Why Travelers Trust RAAYA</h2>
+        <h2 className="mt-3  text-3xl text-ink sm:text-4xl lg:text-5xl">Why Travelers Trust RAAYA</h2>
       </Reveal>
 
       <div className="mt-10 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">

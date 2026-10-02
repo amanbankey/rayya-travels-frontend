@@ -13,7 +13,7 @@ const WhoWeAre = () => (
           />
           <div className="mt-4 rounded-md bg-white p-5 shadow-xl md:absolute md:bottom-0 md:right-4 md:mt-0 md:w-[270px] lg:-right-10">
             <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-brown">Corporate Credo</p>
-            <h3 className="mt-1 font-serif text-xl font-medium text-ink sm:text-2xl">Seamless. Timeless.</h3>
+            <h3 className="mt-1  text-xl font-medium text-ink sm:text-2xl">Seamless. Timeless.</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink/75">
               Dedicated travel desk supporting discerning individual & commercial voyagers.
             </p>
@@ -31,7 +31,7 @@ const WhoWeAre = () => (
             </span>
           </div>
 
-          <h2 className="mt-5 font-serif text-3xl leading-[1.25] text-ink sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5  text-3xl leading-[1.25] text-ink sm:text-4xl lg:text-5xl">
             Creating Hassle-Free Travel Experiences
           </h2>
 
@@ -47,7 +47,7 @@ const WhoWeAre = () => (
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
             {whoStats.map((stat) => (
               <div key={stat.title} className="rounded-sm bg-oat px-5 py-5">
-                <p className="font-serif text-3xl font-medium text-brown">{stat.title}</p>
+                <p className=" text-3xl font-medium text-brown">{stat.title}</p>
                 <p className="mt-1 text-xs font-medium uppercase tracking-[0.08em] text-ink">{stat.text}</p>
               </div>
             ))}

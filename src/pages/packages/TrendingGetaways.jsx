@@ -17,7 +17,7 @@ const TrendingGetaways = () => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Destinations</p> */}
-              <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Trending Getaways</h2>
+              <h2 className="mt-2  text-3xl text-ink sm:text-4xl">Trending Getaways</h2>
               <p className="mt-2 text-sm text-ink/70">Where discerning travelers are booking right now.</p>
             </div>
             <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -55,7 +55,7 @@ const TrendingGetaways = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-peach">{place.country}</p>
-                  <h3 className="mt-1 font-serif text-2xl font-medium text-white">{place.city}</h3>
+                  <h3 className="mt-1  text-2xl font-medium text-white">{place.city}</h3>
                   <p className="mt-1 text-xs text-white/75">{place.text}</p>
                   {/* <div className="mt-3 flex items-center justify-between border-t border-white/20 pt-2 text-[11px] font-medium">
                     <span className="text-white/70">{place.count}</span>

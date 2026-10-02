@@ -36,7 +36,7 @@ const AirlineCard = ({ partner }) => (
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white">
             <Plane size={15} />
           </span>
-          <h3 className="mt-5 font-serif text-2xl font-medium leading-snug text-white transition-colors duration-500 group-hover:text-brown">
+          <h3 className="mt-5  text-2xl font-medium leading-snug text-white transition-colors duration-500 group-hover:text-brown">
             {partner.name}
           </h3>
           <p className="mt-2 max-w-[170px] text-[13px] leading-relaxed text-white/65">{partner.tagline}</p>
@@ -78,7 +78,7 @@ const ResultsHeader = () => {
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.25em] text-brown">
             <Navigation size={13} /> Aviation Partners
           </p>
-          <h2 className="mt-4 max-w-2xl font-serif text-3xl leading-tight text-darkBlue sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 max-w-2xl  text-3xl leading-tight text-darkBlue sm:text-4xl lg:text-5xl">
             Experience Flying with Our Airline Partners
           </h2>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-darkBlue/65">

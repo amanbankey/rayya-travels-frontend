@@ -425,7 +425,7 @@ const DashboardLayout = () => {
 
               <div className="absolute -inset-[2px] rounded-[30px] bg-navy" />
 
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-ember-600 to-ember-400 font-serif text-5xl text-white">
+              <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-ember-600 to-ember-400  text-5xl text-white">
 
                 {profile.profilePhoto ? (
                   <img
@@ -472,7 +472,7 @@ const DashboardLayout = () => {
                 Member Dashboard
               </p>
 
-              <h1 className="dash-up mt-1 truncate font-serif text-3xl font-medium text-white sm:text-5xl [animation-delay:250ms]">
+              <h1 className="dash-up mt-1 truncate  text-3xl font-medium text-white sm:text-5xl [animation-delay:250ms]">
                 {name}
               </h1>
 
