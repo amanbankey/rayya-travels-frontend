@@ -510,11 +510,11 @@ const Hero = () => {
       <div className="relative">
     
 
-        <h1 className="mt-5 max-w-xl font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mt-5 max-w-xl  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           The Art of <span className="block italic text-dustyRose">Considered Journeying</span> 
         </h1>
 
-        {/* <p className="mt-5 max-w-md font-serif text-sm leading-relaxed text-white/70 sm:text-base">
+        {/* <p className="mt-5 max-w-md  text-sm leading-relaxed text-white/70 sm:text-base">
           Curated departures, private sanctuaries, and architectural voyages crafted exclusively for the discerning
           epicurean.
         </p> */}

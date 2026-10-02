@@ -35,7 +35,7 @@ const TravelTrunks = () => (
             </div>
 
             <div className="p-5">
-              <h3 className="mt-2 font-serif text-xl font-medium text-ink">{item.title}</h3>
+              <h3 className="mt-2  text-xl font-medium text-ink">{item.title}</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted">{item.text}</p>
 
               {/* <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 border-t border-line pt-4">

@@ -9,7 +9,7 @@ const CustomItineraryCta = () => (
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.15em] text-peach">
             <Wand2 size={14} /> Bespoke Travel Studio
           </p>
-          <h2 className="mt-3 font-serif text-3xl leading-tight text-white sm:text-4xl">
+          <h2 className="mt-3  text-3xl leading-tight text-white sm:text-4xl">
             Can’t Find the Perfect Holiday Itinerary?
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-white/75">

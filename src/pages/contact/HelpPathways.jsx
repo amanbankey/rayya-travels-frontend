@@ -9,7 +9,7 @@ const HelpPathways = ({ onSelect }) => (
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Inquiry Pathways</p>
-            <h2 className="mt-3 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">What Can We Help You With?</h2>
+            <h2 className="mt-3  text-3xl text-ink sm:text-4xl lg:text-5xl">What Can We Help You With?</h2>
           </div>
           <p className="max-w-[420px] text-sm leading-relaxed text-ink/75">
             Select any capability below to pre-populate our concierge inquiry desk and initiate your personalized

@@ -11,7 +11,7 @@ const ExploreWorld = () => (
       <Reveal>
         <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-peach">Begin Your Voyage</p>
 
-        <h2 className="mx-auto mt-4 max-w-[760px] font-serif text-3xl leading-tight text-white sm:text-4xl lg:text-5xl">
+        <h2 className="mx-auto mt-4 max-w-[760px]  text-3xl leading-tight text-white sm:text-4xl lg:text-5xl">
           Let's Explore the World Together
         </h2>
 

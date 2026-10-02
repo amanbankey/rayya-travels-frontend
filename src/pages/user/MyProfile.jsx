@@ -117,7 +117,7 @@ const Section = ({
       </span>
 
       <div className="flex-1">
-        <h3 className="font-serif text-xl font-medium text-navy">
+        <h3 className=" text-xl font-medium text-navy">
           {title}
         </h3>
       </div>

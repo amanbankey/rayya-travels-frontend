@@ -15,7 +15,7 @@ const Provenance = () => (
             <span className="rounded-full bg-paper/20 px-2.5 py-1 text-[7px] font-medium uppercase tracking-[0.2em] text-paper backdrop-blur">
               {provenance.doctrine}
             </span>
-            <h3 className="mt-3 font-serif text-2xl font-medium text-paper">{provenance.imageTitle}</h3>
+            <h3 className="mt-3  text-2xl font-medium text-paper">{provenance.imageTitle}</h3>
             <p className="mt-2 max-w-sm text-[11px] leading-relaxed text-paper/80">{provenance.imageText}</p>
           </div> */}
         </div>
@@ -25,7 +25,7 @@ const Provenance = () => (
         <Reveal delay={100}>
           <div className="rounded-2xl border border-line bg-paper p-6 sm:p-8">
             <p className="text-[8px] font-medium uppercase tracking-[0.22em] text-muted">{provenance.eyebrow}</p>
-            <h2 className="mt-3 font-serif text-3xl font-medium leading-tight text-ink sm:text-4xl">{provenance.title}</h2>
+            <h2 className="mt-3  text-3xl font-medium leading-tight text-ink sm:text-4xl">{provenance.title}</h2>
             <p className="mt-4 text-xs leading-relaxed text-muted sm:text-sm">{provenance.text}</p>
           </div>
         </Reveal>

@@ -13,7 +13,7 @@ const Hero = () => (
           <span className="h-2 w-2 rounded-full bg-peach" /> About Raaya Travels
         </span> */}
 
-        <h1 className="mt-5 max-w-[780px] font-serif text-4xl leading-[1.25] text-white sm:text-5xl lg:text-6xl lg:leading-[1.2]">
+        <h1 className="mt-5 max-w-[780px]  text-4xl leading-[1.25] text-white sm:text-5xl lg:text-6xl lg:leading-[1.2]">
           Your Trusted Partner for Memorable Travel Experiences
         </h1>
 

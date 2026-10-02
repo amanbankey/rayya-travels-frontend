@@ -34,7 +34,7 @@ const PassportFolios = () => (
                 </span>
                 <div className="min-w-0">
                   {/* <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-muted">{folio.region}</p> */}
-                  <h3 className="mt-1 font-serif text-lg font-medium leading-snug text-ink">{folio.title}</h3>
+                  <h3 className="mt-1  text-lg font-medium leading-snug text-ink">{folio.title}</h3>
                 </div>
               </div>
 

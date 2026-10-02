@@ -22,7 +22,7 @@ const WalletHistory = () => {
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-serif text-2xl font-medium text-navy">Wallet History</h2>
+          <h2 className=" text-2xl font-medium text-navy">Wallet History</h2>
           <p className="text-sm text-navy-400">Every top-up, payment and refund.</p>
         </div>
         <div className="flex gap-1 rounded-full border border-navy-100 bg-white p-1">
@@ -40,15 +40,15 @@ const WalletHistory = () => {
             <span className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-ember-500/40 blur-2xl" />
             <span className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-ember-600 to-ember-400"><Wallet size={20} /></span>
             <p className="relative mt-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-ember-300">Available balance</p>
-            <p className="relative font-serif text-4xl font-medium">{fmt(credits - debits)}</p>
+            <p className="relative  text-4xl font-medium">{fmt(credits - debits)}</p>
           </div>
           <div className="flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-6 shadow-[0_8px_30px_-14px_rgba(11,22,40,0.18)]">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600"><TrendingUp size={20} /></span>
-            <div><p className="text-xs text-navy-400">Total credited</p><p className="font-serif text-2xl font-medium text-emerald-600">{fmt(credits)}</p></div>
+            <div><p className="text-xs text-navy-400">Total credited</p><p className=" text-2xl font-medium text-emerald-600">{fmt(credits)}</p></div>
           </div>
           <div className="flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-6 shadow-[0_8px_30px_-14px_rgba(11,22,40,0.18)]">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ember-50 text-ember-600"><TrendingDown size={20} /></span>
-            <div><p className="text-xs text-navy-400">Total spent</p><p className="font-serif text-2xl font-medium text-navy">{fmt(debits)}</p></div>
+            <div><p className="text-xs text-navy-400">Total spent</p><p className=" text-2xl font-medium text-navy">{fmt(debits)}</p></div>
           </div>
         </div>
       </Reveal>
@@ -67,7 +67,7 @@ const WalletHistory = () => {
                   <p className="truncate text-xs text-navy-400">{t.note} • {t.id}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`font-serif text-xl font-medium ${credit ? "text-emerald-600" : "text-navy"}`}>
+                  <p className={` text-xl font-medium ${credit ? "text-emerald-600" : "text-navy"}`}>
                     {credit ? "+" : "−"}₹{t.amount.toLocaleString("en-IN")}
                   </p>
                   <p className="text-xs text-navy-400">{t.date}</p>

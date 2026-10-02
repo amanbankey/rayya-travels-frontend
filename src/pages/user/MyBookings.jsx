@@ -26,7 +26,7 @@ const MyBookings = () => {
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-serif text-2xl font-medium text-navy">My Bookings</h2>
+          <h2 className=" text-2xl font-medium text-navy">My Bookings</h2>
           <p className="text-sm text-navy-400">All your flight tickets in one place.</p>
         </div>
         <div className="no-scrollbar flex max-w-full gap-1 overflow-x-auto rounded-full border border-navy-100 bg-white p-1">
@@ -41,7 +41,7 @@ const MyBookings = () => {
       {list.length === 0 ? (
         <div className="flex flex-col items-center rounded-2xl bg-white px-6 py-16 text-center shadow-[0_8px_30px_-14px_rgba(11,22,40,0.18)]">
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ember-50 text-ember-400"><Inbox size={24} /></span>
-          <h3 className="mt-4 font-serif text-xl font-medium text-navy">No bookings found</h3>
+          <h3 className="mt-4  text-xl font-medium text-navy">No bookings found</h3>
           <p className="mt-1 max-w-xs text-sm text-navy-400">Book your next journey and it will show up here.</p>
           <Link to="/flights" className="mt-5 rounded-full bg-navy px-6 py-2.5 text-sm font-medium text-white hover:bg-navy-800">Search Flights</Link>
         </div>
@@ -53,7 +53,7 @@ const MyBookings = () => {
                 <span className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b ${accent[b.status]}`} />
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-dashed border-navy-100 px-6 py-4 sm:px-7">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ember-50 font-serif text-sm font-semibold text-ember-700">{b.code}</span>
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ember-50  text-sm font-semibold text-ember-700">{b.code}</span>
                     <div>
                       <p className="font-medium text-navy">{b.airline}</p>
                       <p className="text-xs text-navy-400">Booking {b.id} • PNR <span className="font-semibold text-ember-600">{b.pnr}</span></p>
@@ -65,7 +65,7 @@ const MyBookings = () => {
                 <div className="grid items-center gap-5 px-6 py-5 sm:px-7 md:grid-cols-[1fr_auto]">
                   <div className="flex items-center gap-4 sm:gap-8">
                     <div>
-                      <p className="font-serif text-3xl font-medium text-navy">{b.from.time}</p>
+                      <p className=" text-3xl font-medium text-navy">{b.from.time}</p>
                       <p className="mt-1 text-base font-semibold text-ember-600">{b.from.code}</p>
                       <p className="text-xs text-navy-400">{b.from.city}</p>
                     </div>
@@ -81,7 +81,7 @@ const MyBookings = () => {
                       <p className="text-xs text-navy-400">{b.date}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-serif text-3xl font-medium text-navy">{b.to.time}</p>
+                      <p className=" text-3xl font-medium text-navy">{b.to.time}</p>
                       <p className="mt-1 text-base font-semibold text-ember-600">{b.to.code}</p>
                       <p className="text-xs text-navy-400">{b.to.city}</p>
                     </div>
@@ -90,7 +90,7 @@ const MyBookings = () => {
                   <div className="flex items-center justify-between gap-5 border-t border-dashed border-navy-100 pt-4 md:flex-col md:items-end md:border-l md:border-t-0 md:pl-8 md:pt-0">
                     <div className="md:text-right">
                       <p className="flex items-center gap-1 text-xs text-navy-400 md:justify-end"><Users size={12} /> {b.pax} Traveller{b.pax > 1 && "s"}</p>
-                      <p className="font-serif text-2xl font-medium text-navy">₹{b.amount.toLocaleString("en-IN")}</p>
+                      <p className=" text-2xl font-medium text-navy">₹{b.amount.toLocaleString("en-IN")}</p>
                     </div>
                     {b.status !== "Cancelled" && (
                       <button className="flex items-center gap-1.5 rounded-full bg-navy px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-ember-600">

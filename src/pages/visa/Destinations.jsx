@@ -85,7 +85,7 @@ const Destinations = () => (
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           {/* <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Curated Global Corridors</p> */}
-          <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Top Visa Destinations</h2>
+          <h2 className="mt-2  text-3xl text-ink sm:text-4xl">Top Visa Destinations</h2>
           <p className="mt-2 max-w-[420px] text-sm text-ink/70">
             Expedited document verification and visa processing for high-frequency global routes.
           </p>
@@ -112,7 +112,7 @@ const Destinations = () => (
               </span> */}
               <div className="absolute bottom-3 left-4">
                 <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/70">{dest.region}</p>
-                <h3 className="font-serif text-xl font-medium text-white">{dest.city}</h3>
+                <h3 className=" text-xl font-medium text-white">{dest.city}</h3>
               </div>
             </div>
 

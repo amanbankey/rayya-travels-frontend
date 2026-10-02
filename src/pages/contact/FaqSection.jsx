@@ -16,7 +16,7 @@ const FaqSection = () => {
         <Reveal>
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Clarity & Assurance</p>
-            <h2 className="mt-3 font-serif text-3xl text-ink sm:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
+            <h2 className="mt-3  text-3xl text-ink sm:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
             <p className="mx-auto mt-4 max-w-[400px] text-sm leading-relaxed text-ink/70">
               Clear answers about connecting with Raaya Travels and commissioning our specialized travel folios.
             </p>

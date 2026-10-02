@@ -16,7 +16,7 @@ const PackagesFaq = () => {
         <Reveal>
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Travel Advisory & Assistance</p>
-            <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">Frequently Asked Questions</h2>
+            <h2 className="mt-2  text-3xl text-ink sm:text-4xl">Frequently Asked Questions</h2>
           </div>
         </Reveal>
 

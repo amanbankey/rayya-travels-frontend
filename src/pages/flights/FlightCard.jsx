@@ -14,7 +14,7 @@ const badgeStyles = {
 
 const Endpoint = ({ time, airport, align }) => (
   <div className={align === "right" ? "text-right" : "text-left"}>
-    <p className="font-serif text-3xl font-medium leading-none text-ink sm:text-[34px]">{time}</p>
+    <p className=" text-3xl font-medium leading-none text-ink sm:text-[34px]">{time}</p>
     <p className="mt-1.5 text-base font-semibold text-brown">{airport.code}</p>
     <p className="text-xs text-muted sm:text-[13px]">{airport.terminal}</p>
   </div>
@@ -42,7 +42,7 @@ const FlightCard = ({ flight, onSelect }) => {
             <div className="min-w-0 flex-1 p-4 sm:p-5 lg:p-6">
               <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4">
                 <div className="flex items-center gap-3">
-                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold ${flight.avatar}`}>
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full  text-sm font-semibold ${flight.avatar}`}>
                     {flight.code}
                   </span>
                   <div>
@@ -108,7 +108,7 @@ const FlightCard = ({ flight, onSelect }) => {
               onSubmit={(event) => onSelect(event, flight, tier)}
               className="flex h-full flex-col justify-center p-5 text-left sm:p-6"
             >
-              <h3 className="mt-1 font-serif text-2xl font-medium text-ink">{flight.fare.title}</h3>
+              <h3 className="mt-1  text-2xl font-medium text-ink">{flight.fare.title}</h3>
               <p className="mt-1 text-[13px] text-muted">{flight.fare.text}</p>
 
               <button

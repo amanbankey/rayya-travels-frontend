@@ -7,7 +7,7 @@
 //     <div className="mx-auto max-w-[1000px] text-center">
 //       <Reveal>
 //         <Quote size={28} className="mx-auto fill-[#c4a982] text-[#c4a982]" />
-//         <h2 className="mt-3 font-serif text-3xl leading-tight text-ink sm:text-4xl lg:text-5xl">
+//         <h2 className="mt-3  text-3xl leading-tight text-ink sm:text-4xl lg:text-5xl">
 //           “Every Journey Deserves Thoughtful Planning”
 //         </h2>
 //         <p className="mx-auto mt-5 max-w-[620px] text-base leading-relaxed text-ink/75">
@@ -42,7 +42,7 @@ const ThoughtfulPlanning = () => (
     <div className="mx-auto max-w-[1000px] text-center">
       <Reveal>
         <Quote size={28} className="mx-auto fill-[#b89f80] text-[#b89f80]" />
-        <h2 className="mt-3 font-serif text-3xl leading-tight text-ink sm:text-4xl lg:text-5xl">
+        <h2 className="mt-3  text-3xl leading-tight text-ink sm:text-4xl lg:text-5xl">
           “Every Journey Deserves Thoughtful Planning”
         </h2>
         <p className="mx-auto mt-5 max-w-[680px] text-base leading-relaxed text-ink/75">

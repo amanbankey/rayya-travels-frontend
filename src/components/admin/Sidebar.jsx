@@ -53,7 +53,7 @@ const Sidebar = ({ activeItem, onNavigate, sidebarOpen, setSidebarOpen }) => {
     <>
       {sidebarOpen && <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-30 lg:hidden" />}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-40 h-screen p-3 w-[270px] flex-shrink-0 font-sans transition-transform duration-300
+        className={`fixed lg:sticky top-0 left-0 z-40 h-screen p-3 w-[270px] flex-shrink-0  transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="h-full flex flex-col rounded-[26px] overflow-hidden bg-gradient-to-b from-navy-950 via-navy-900 to-navy-800 border-t-4 border-ember-500 shadow-2xl">

@@ -9,7 +9,7 @@ const InquiryInfo = () => (
         <span className="h-px w-8 bg-brown" /> Direct Assistance
       </p>
 
-      <h2 className="mt-4 font-serif text-4xl leading-tight text-ink sm:text-5xl">
+      <h2 className="mt-4  text-4xl leading-tight text-ink sm:text-5xl">
         Tell Us How We Can <span className="italic">Help</span>
       </h2>
 
@@ -55,7 +55,7 @@ const InquiryInfo = () => (
         <img src={contactImages.inquiry} alt="Private travel folio curation" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent" />
         {/* <div className="absolute bottom-0 p-5">
-          <p className="font-serif text-xl italic leading-snug text-white sm:text-2xl">
+          <p className=" text-xl italic leading-snug text-white sm:text-2xl">
             “Every journey should feel effortless before you even pack.”
           </p>
           <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-peach">

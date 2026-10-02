@@ -31,7 +31,7 @@ const Dispatches = () => (
             {/* <p className="mt-4 text-[8px] font-medium uppercase tracking-[0.2em] text-muted">
               {essay.category} • {essay.read}
             </p> */}
-            <h3 className="mt-2 font-serif text-lg font-medium text-ink transition-colors group-hover:text-sand">{essay.title}</h3>
+            <h3 className="mt-2  text-lg font-medium text-ink transition-colors group-hover:text-sand">{essay.title}</h3>
             <p className="mt-2 text-[11px] leading-relaxed text-muted">{essay.text}</p>
           </article>
         </Reveal>

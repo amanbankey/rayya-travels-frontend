@@ -158,7 +158,7 @@ const Dashboard = () => {
             </button>
             <div>
               <p className="text-[11px] font-semibold tracking-[0.35em] text-ember-300">OPERATIONAL OVERVIEW</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
+              <h1 className=" text-3xl sm:text-4xl font-bold text-white mt-1">
                 Welcome back, {admin?.fullName?.split(" ")[0] || "Admin"}
               </h1>
               <p className="text-sm text-navy-200 mt-1.5">Here is what is happening at Rayya Tour &amp; Travel today.</p>
@@ -200,7 +200,7 @@ const Dashboard = () => {
               </span>
             </div>
             <p className="text-[11px] font-semibold tracking-widest text-navy-500">{label}</p>
-            <p className="font-serif text-4xl font-bold text-navy-900 mt-1">{value}</p>
+            <p className=" text-4xl font-bold text-navy-900 mt-1">{value}</p>
           </div>
         ))}
         <div className="rounded-3xl bg-gradient-to-br from-ember-500 to-ember-800 shadow-lg shadow-ember-900/30 p-5 sm:col-span-2 xl:col-span-1">
@@ -209,7 +209,7 @@ const Dashboard = () => {
             <span className="bg-white/20 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">+9%</span>
           </div>
           <p className="text-[11px] font-semibold tracking-widest text-ember-100">TOTAL WALLET</p>
-          <p className="font-serif text-4xl font-bold text-white mt-1">₹2,45,680</p>
+          <p className=" text-4xl font-bold text-white mt-1">₹2,45,680</p>
         </div>
       </div>
 
@@ -236,7 +236,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
             {ticketStats.map(({ value, label, box, text, bar, w }) => (
               <div key={label} className={`${box} rounded-2xl p-3 flex flex-col`}>
-                <p className={`font-serif text-2xl font-bold ${text}`}>{value}</p>
+                <p className={` text-2xl font-bold ${text}`}>{value}</p>
                 <p className="text-[10px] font-semibold tracking-wide text-navy-500 mt-1 mb-3">{label}</p>
                 <div className="h-1.5 bg-white/80 rounded-full mt-auto overflow-hidden">
                   <div className={`${bar} h-full rounded-full`} style={{ width: w }} />

@@ -24,7 +24,7 @@ const AppliedVisaHistory = () => {
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-serif text-2xl font-medium text-navy">Applied Visa History</h2>
+          <h2 className=" text-2xl font-medium text-navy">Applied Visa History</h2>
           <p className="text-sm text-navy-400">Track every visa application you have submitted.</p>
         </div>
         <div className="no-scrollbar flex max-w-full gap-1 overflow-x-auto rounded-full border border-navy-100 bg-white p-1">
@@ -46,7 +46,7 @@ const AppliedVisaHistory = () => {
                   <div className="flex items-center gap-3">
                     <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ember-600 to-ember-400 text-white shadow-md"><Stamp size={20} /></span>
                     <div>
-                      <h3 className="font-serif text-xl font-medium text-navy">{v.country}</h3>
+                      <h3 className=" text-xl font-medium text-navy">{v.country}</h3>
                       <p className="text-xs text-navy-400">{v.type}</p>
                     </div>
                   </div>
