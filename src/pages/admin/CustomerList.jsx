@@ -1,11 +1,11 @@
-import { FiUsers as PageIcon, FiSearch } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import {
   FiUsers,
   FiUser,
   FiMail,
   FiPhone,
-  FiPlus,
+  FiSearch,
+  FiMapPin,
   FiMoreVertical,
   FiEye,
   FiTrash2,
@@ -217,400 +217,233 @@ const CustomerList = () => {
   };
 
   return (
-    <div className="flex-1 min-w-0 min-h-screen bg-[#EEF3F7] p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <div className="p-4 sm:p-6 lg:pl-2">
 
       {/* ================= HEADER ================= */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
-        <div>
-          {/*<p className="text-xs text-navy-500 mb-1">
-            Operations{" "}
-            <span className="mx-1">›</span>
-
-            <span className="text-ember-600 font-medium">
-              Customer List
-            </span>
-          </p>*/}
-
-          <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><div><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Customer List</h1><p className="text-navy-400 mt-0.5">Manage client accounts and direct actions.</p></div></div>
+      <div className="mb-6">
+        {/*<p className="text-sm text-navy-400 mb-3">
+          Operations <span className="mx-2">/</span>
+          <span className="text-ember-600 font-semibold">Customer List</span>
+        </p>*/}
+        <div className="flex items-center gap-4">
+          <span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center flex-shrink-0">
+            <FiUsers size={24} />
+          </span>
+          <div>
+            <h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Customer List</h1>
+            <p className="text-navy-400 mt-0.5">Manage client accounts and direct actions.</p>
+          </div>
         </div>
-
-        {/*<button
-          type="button"
-          className="flex items-center gap-2 bg-navy-900 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl h-fit"
-        >
-          <FiPlus size={16} />
-
-          Add New Customer
-        </button>*/}
       </div>
 
       {/* ================= ERROR ================= */}
       {error && (
-        <div className="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-2xl">
+        <div className="mb-5 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-2xl">
           {error}
         </div>
       )}
 
-      {/* ================= STAT CARD ================= */}
+      {/* ================= STAT CARDS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-        <div className="relative overflow-hidden bg-white rounded-3xl border border-navy-100 shadow-card p-4">
-          <div className="relative flex items-center gap-4">
-            <span className="w-11 h-11 rounded-xl flex items-center justify-center text-white flex-shrink-0 bg-navy-900"><FiUsers size={18} /></span>
-            <div>
-              <p className="text-[11px] font-semibold tracking-[0.18em] text-navy-500">TOTAL REGISTERED</p>
-              <p className="text-2xl font-extrabold text-navy-900 leading-tight">{totalUsers}</p>
-              <p className="text-xs text-navy-400">Registered customers</p>
-            </div>
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 flex items-center gap-4">
+          <span className="w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center flex-shrink-0"><FiUsers size={18} /></span>
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.18em] text-navy-500">TOTAL REGISTERED</p>
+            <p className="text-2xl font-extrabold text-navy-900 leading-tight">{totalUsers}</p>
+            <p className="text-xs text-navy-400">Registered customers</p>
           </div>
         </div>
-        <div className="relative overflow-hidden bg-white rounded-3xl border border-navy-100 shadow-card p-4">
-          <div className="relative flex items-center gap-4">
-            <span className="w-11 h-11 rounded-xl flex items-center justify-center text-white flex-shrink-0 bg-ember-500"><FiUser size={18} /></span>
-            <div>
-              <p className="text-[11px] font-semibold tracking-[0.18em] text-navy-500">CURRENT RESULTS</p>
-              <p className="text-2xl font-extrabold text-navy-900 leading-tight">{customers.length}</p>
-              <p className="text-xs text-navy-400">Customers displayed</p>
-            </div>
+        <div className="bg-white rounded-3xl border border-navy-100 p-4 flex items-center gap-4">
+          <span className="w-11 h-11 rounded-xl bg-ember-500 text-white flex items-center justify-center flex-shrink-0"><FiUser size={18} /></span>
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.18em] text-navy-500">CURRENT RESULTS</p>
+            <p className="text-2xl font-extrabold text-navy-900 leading-tight">{customers.length}</p>
+            <p className="text-xs text-navy-400">Customers displayed</p>
           </div>
         </div>
       </div>
 
       {/* ================= SEARCH ================= */}
-      <form
-        onSubmit={handleSearch}
-        className="bg-white rounded-3xl border border-navy-100 p-6 mb-5 shadow-card"
-      >
-        <div className="flex items-center gap-4 pb-5 mb-5 border-b border-navy-50"><span className="w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center"><FiSearch size={18} /></span><div><p className="font-bold text-navy-900">Search Customers</p><p className="text-sm text-navy-400">Find customers using name, email or phone number</p></div></div>
+      <form onSubmit={handleSearch} className="bg-white rounded-3xl border border-navy-100 p-6 mb-5">
+        <div className="flex items-center gap-4 pb-5 mb-5 border-b border-navy-50">
+          <span className="w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center"><FiSearch size={18} /></span>
+          <div>
+            <p className="font-bold text-navy-900">Search Customers</p>
+            <p className="text-sm text-navy-400">Find customers using name, email or phone number</p>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-3">
+          {[
+            { name: "name", icon: FiUser, placeholder: "Search by Name" },
+            { name: "email", icon: FiMail, placeholder: "Search by Email" },
+            { name: "number", icon: FiPhone, placeholder: "Search by Number" },
+          ].map(({ name, icon: Icon, placeholder }) => (
+            <div key={name} className="flex-1 flex items-center gap-3 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-5 py-3 focus-within:border-ember-400 focus-within:bg-white">
+              <Icon className="text-navy-400 flex-shrink-0" size={16} />
+              <input
+                type="text"
+                name={name}
+                value={searchForm[name]}
+                onChange={handleChange}
+                placeholder={placeholder}
+                className="w-full bg-transparent text-sm text-navy-700 placeholder:text-navy-300 focus:outline-none"
+              />
+            </div>
+          ))}
 
-          {/* NAME */}
-          <div className="flex-1 flex items-center gap-2 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-5 py-3.5">
-
-            <FiUser
-              className="text-navy-400 flex-shrink-0"
-              size={16}
-            />
-
-            <input
-              type="text"
-              name="name"
-              value={searchForm.name}
-              onChange={handleChange}
-              placeholder="Search by Name"
-              className="w-full bg-transparent text-sm text-navy-700 focus:outline-none"
-            />
-          </div>
-
-          {/* EMAIL */}
-          <div className="flex-1 flex items-center gap-2 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-5 py-3.5">
-
-            <FiMail className="text-navy-400 flex-shrink-0" size={16} />
-
-            <input
-              type="text"
-              name="email"
-              value={searchForm.email}
-              onChange={handleChange}
-              placeholder="Search by Email"
-              className="w-full bg-transparent text-sm text-navy-700 focus:outline-none"
-            />
-          </div>
-
-          {/* NUMBER */}
-          <div className="flex-1 flex items-center gap-2 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-5 py-3.5">
-
-            <FiPhone className="text-navy-400 flex-shrink-0" size={16} />
-
-            <input
-              type="text"
-              name="number"
-              value={searchForm.number}
-              onChange={handleChange}
-              placeholder="Search by Number"
-              className="w-full bg-transparent text-sm text-navy-700 focus:outline-none"
-            />
-          </div>
-
-          {/* BUTTONS */}
           <div className="flex gap-2">
-
             <button
               type="submit"
               disabled={searching}
-              className="bg-ember-500 shadow-lg shadow-ember-500/30 hover:bg-ember-600 disabled:opacity-60 text-white text-sm font-bold px-7 py-3.5 rounded-full"
+              className="bg-ember-500 hover:bg-ember-600 disabled:opacity-60 text-white text-sm font-bold px-7 py-3 rounded-full transition-colors"
             >
               {searching ? "Searching..." : "Search"}
             </button>
-
             <button
               type="button"
               onClick={handleReset}
-              className="border border-navy-100 text-navy-700 text-sm font-semibold px-6 py-3.5 rounded-full hover:bg-ember-50"
+              className="border border-navy-100 text-navy-700 text-sm font-semibold px-6 py-3 rounded-full hover:bg-ember-50 transition-colors"
             >
               Reset
             </button>
-
           </div>
         </div>
       </form>
 
       {/* ================= USER TABLE ================= */}
-      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden shadow-card">
+      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden">
 
         <div className="flex items-center justify-between gap-3 bg-navy-900 px-6 py-5">
           <div>
             <p className="font-bold text-white text-lg">Customer Accounts</p>
             <p className="text-sm text-navy-200">Manage registered customer information</p>
           </div>
-          <span className="bg-white/10 border border-white/10 text-ember-300 text-sm font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">{customers.length} Records</span>
+          <span className="bg-white/10 text-ember-300 text-sm font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">
+            {customers.length} Records
+          </span>
         </div>
-        <div className="overflow-x-auto">
 
+        {/* click outside closes the action menu */}
+        {openMenu && <div className="fixed inset-0 z-[5]" onClick={() => setOpenMenu(null)} />}
+
+        <div className="overflow-x-auto min-h-[260px]">
           <table className="w-full min-w-[850px]">
-
-            <thead className="bg-navy-900 text-navy-100">
-              <tr className=" border-b border-navy-100">
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  SL
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  FULL NAME
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  EMAIL
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  NUMBER
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  COUNTRY
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  ROLE
-                </th>
-
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
-                  ACTION
-                </th>
-
+            <thead>
+              <tr className="bg-[#EEF3F7]">
+                {["SL", "FULL NAME", "EMAIL", "NUMBER", "COUNTRY", "ROLE", "ACTION"].map((h) => (
+                  <th key={h} className={`text-[11px] font-bold tracking-widest text-navy-500 px-6 py-4 ${h === "ACTION" ? "text-right" : "text-left"}`}>
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
 
             <tbody>
-
               {loading ? (
-                <tr>
-                  <td
-                    colSpan="7"
-                    className="px-4 py-10 text-center text-sm text-navy-500"
-                  >
-                    Loading users...
-                  </td>
-                </tr>
+                <tr><td colSpan="7" className="px-6 py-12 text-center text-sm text-navy-500">Loading users...</td></tr>
               ) : customers.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan="7"
-                    className="px-4 py-10 text-center text-sm text-navy-500"
-                  >
-                    No users found.
-                  </td>
-                </tr>
+                <tr><td colSpan="7" className="px-6 py-12 text-center text-sm text-navy-500">No users found.</td></tr>
               ) : (
-                customers.map((customer, i) => (
+                customers.map((customer, i) => {
+                  const openUp = customers.length > 3 && i >= customers.length - 2;
+                  return (
+                    <tr key={customer._id} className="border-t border-navy-50 hover:bg-[#f7f9fb] transition-colors">
 
-                  <tr
-                    key={customer._id}
-                    className="border-b border-navy-50 last:border-0"
-                  >
+                      <td className="px-6 py-4 text-sm font-semibold text-navy-400">{String(i + 1).padStart(2, "0")}</td>
 
-                    {/* SL */}
-                    <td className="px-4 py-4 text-sm text-navy-600">
-                      {i + 1}
-                    </td>
-
-                    {/* FULL NAME */}
-                    <td className="px-4 py-4">
-
-                      <div className="flex items-center gap-3">
-
-                        <span className="w-11 h-11 rounded-xl bg-navy-900 text-ember-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
-                          {getInitials(customer.fullName)}
-                        </span>
-
-                        <p className="text-sm font-semibold text-navy-900">
-                          {customer.fullName || "N/A"}
-                        </p>
-
-                      </div>
-
-                    </td>
-
-                    {/* EMAIL */}
-                    <td className="px-4 py-4">
-
-                      <div className="flex items-center gap-2 text-sm text-navy-600">
-
-                        <span className="w-8 h-8 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0"><FiMail size={14} /></span>
-
-                        <span>
-                          {customer.email || "N/A"}
-                        </span>
-
-                      </div>
-
-                    </td>
-
-                    {/* NUMBER */}
-                    <td className="px-4 py-4">
-
-                      <div className="flex items-center gap-2 text-sm text-navy-600">
-
-                        <span className="w-8 h-8 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0"><FiPhone size={14} /></span>
-
-                        <span>
-                          {customer.phoneNumber || "N/A"}
-                        </span>
-
-                      </div>
-
-                    </td>
-
-                    {/* COUNTRY */}
-                    <td className="px-4 py-4">
-
-                      <span className="text-sm text-navy-700">
-                        {customer.country || "N/A"}
-                      </span>
-
-                    </td>
-
-                    {/* ROLE */}
-                    <td className="px-4 py-4">
-
-                      <span className="bg-ember-50 text-ember-600 text-xs font-semibold px-2.5 py-1 rounded-full capitalize">
-                        {customer.role || "N/A"}
-                      </span>
-
-                    </td>
-
-                    {/* ACTION */}
-                    <td className="px-4 py-4 relative">
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenMenu(
-                            openMenu === customer._id
-                              ? null
-                              : customer._id
-                          )
-                        }
-                        className="text-navy-400 hover:text-navy-700"
-                      >
-                        <FiMoreVertical size={18} />
-                      </button>
-
-                      {openMenu === customer._id && (
-
-                        <div className="absolute right-4 top-10 z-10 w-32 bg-white border border-navy-100 rounded-xl shadow-lg py-1">
-
-                          {/* VIEW */}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              console.log(
-                                "View user:",
-                                customer._id
-                              );
-
-                              setOpenMenu(null);
-                            }}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-navy-700 hover:bg-ember-50"
-                          >
-                            <FiEye size={13} />
-                            View
-                          </button>
-
-                          {/* DELETE */}
-                          <button
-                            type="button"
-                            disabled={
-                              deletingId === customer._id
-                            }
-                            onClick={() =>
-                              handleDelete(customer._id)
-                            }
-                            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
-                          >
-                            <FiTrash2 size={13} />
-
-                            {deletingId === customer._id
-                              ? "Deleting..."
-                              : "Delete"}
-                          </button>
-
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <span className="w-11 h-11 rounded-xl bg-navy-900 text-ember-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                            {getInitials(customer.fullName)}
+                          </span>
+                          <div>
+                            <p className="text-sm font-bold text-navy-900">{customer.fullName || "N/A"}</p>
+                            <p className="text-xs text-navy-400">Customer</p>
+                          </div>
                         </div>
+                      </td>
 
-                      )}
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2.5 text-sm text-navy-700">
+                          <span className="w-8 h-8 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0"><FiMail size={14} /></span>
+                          {customer.email || "N/A"}
+                        </div>
+                      </td>
 
-                    </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2.5 text-sm text-navy-700">
+                          <span className="w-8 h-8 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0"><FiPhone size={14} /></span>
+                          {customer.phoneNumber || "N/A"}
+                        </div>
+                      </td>
 
-                  </tr>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2.5 text-sm text-navy-700">
+                          <span className="w-8 h-8 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0"><FiMapPin size={14} /></span>
+                          {customer.country || "N/A"}
+                        </div>
+                      </td>
 
-                ))
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center gap-1.5 bg-ember-50 text-ember-700 text-xs font-bold px-3 py-1 rounded-full capitalize">
+                          <span className="w-1.5 h-1.5 rounded-full bg-ember-500" />
+                          {customer.role || "N/A"}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4 relative text-right">
+                        <button
+                          type="button"
+                          onClick={() => setOpenMenu(openMenu === customer._id ? null : customer._id)}
+                          className="w-9 h-9 inline-flex items-center justify-center rounded-full text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition-colors"
+                        >
+                          <FiMoreVertical size={18} />
+                        </button>
+
+                        {openMenu === customer._id && (
+                          <div className={`absolute right-6 z-10 w-36 bg-white border border-navy-100 rounded-2xl p-1 text-left ${openUp ? "bottom-14" : "top-14"}`}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                console.log("View user:", customer._id);
+                                setOpenMenu(null);
+                              }}
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-navy-700 rounded-xl hover:bg-ember-50"
+                            >
+                              <FiEye size={13} /> View
+                            </button>
+                            <button
+                              type="button"
+                              disabled={deletingId === customer._id}
+                              onClick={() => handleDelete(customer._id)}
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 rounded-xl hover:bg-red-50 disabled:opacity-50"
+                            >
+                              <FiTrash2 size={13} />
+                              {deletingId === customer._id ? "Deleting..." : "Delete"}
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
-
             </tbody>
-
           </table>
-
         </div>
 
         {/* ================= FOOTER ================= */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-navy-50">
-
-          <p className="text-sm text-navy-500">
-            Showing {customers.length} of {totalUsers} users
-          </p>
-
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-navy-50">
+          <p className="text-sm text-navy-500">Showing {customers.length} of {totalUsers} users</p>
           <div className="flex items-center gap-2">
-
-            <button
-              type="button"
-              disabled
-              className="border border-navy-100 text-navy-400 text-xs font-medium px-3 py-1.5 rounded-xl cursor-not-allowed"
-            >
-              Previous
-            </button>
-
-            <button
-              type="button"
-              className="w-8 h-8 text-xs font-semibold rounded-xl bg-navy-900 text-white"
-            >
-              1
-            </button>
-
-            <button
-              type="button"
-              disabled
-              className="border border-navy-100 text-navy-400 text-xs font-medium px-3 py-1.5 rounded-xl cursor-not-allowed"
-            >
-              Next
-            </button>
-
+            <button type="button" disabled className="border border-navy-100 text-navy-300 text-xs font-medium px-4 py-2 rounded-full cursor-not-allowed">Previous</button>
+            <button type="button" className="w-8 h-8 text-xs font-semibold rounded-full bg-ember-500 text-white">1</button>
+            <button type="button" disabled className="border border-navy-100 text-navy-300 text-xs font-medium px-4 py-2 rounded-full cursor-not-allowed">Next</button>
           </div>
-
         </div>
 
       </div>
-
     </div>
   );
 };

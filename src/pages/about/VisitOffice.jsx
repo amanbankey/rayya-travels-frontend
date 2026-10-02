@@ -9,10 +9,8 @@ const VisitOffice = () => (
     <Reveal>
       <div className="mx-auto grid max-w-[1200px] items-center gap-8 rounded-3xl bg-oat p-6 sm:p-10 lg:grid-cols-2 lg:gap-10 lg:p-14">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brown">Global Coordination Office</p>
           <h2 className="mt-4  text-4xl text-ink sm:text-5xl">Visit RAAYA Travels</h2>
 
-          <p className={`mt-7 ${labelClass}`}>Registered Entity</p>
           <p className="mt-1 text-lg font-medium text-ink">{office.entity}</p>
 
           <p className={`mt-4 ${labelClass}`}>Headquarters</p>
@@ -39,12 +37,12 @@ const VisitOffice = () => (
             </div>
           </div>
 
-          <a
+          {/* <a
             href={`mailto:${office.email}`}
             className="mt-7 inline-flex items-center gap-2 rounded-sm bg-brown px-7 py-4 text-xs font-medium uppercase tracking-[0.12em] text-white transition-all hover:bg-[#8b6538] hover:shadow-lg"
           >
             Contact Us <ArrowRight size={14} />
-          </a>
+          </a> */}
         </div>
 
         <div className="relative h-[300px] overflow-hidden rounded-2xl bg-[#efece7] shadow-md sm:h-[360px] lg:h-[400px]">

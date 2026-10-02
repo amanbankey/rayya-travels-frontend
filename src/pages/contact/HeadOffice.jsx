@@ -6,11 +6,7 @@ import Reveal from "../../components/Reveal";
 const HeadOffice = () => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(contactInfo.address);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+
 
   return (
     <section id="office" className="px-4 py-16 sm:px-8 lg:px-16 lg:py-20">
@@ -54,13 +50,7 @@ const HeadOffice = () => {
               </ul>
 
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="flex items-center justify-center gap-2 rounded-sm bg-oat py-3.5 text-sm font-medium text-ink transition-colors hover:bg-mist"
-                >
-                  <Copy size={15} /> {copied ? "Address Copied" : "Copy Full Address"}
-                </button>
+               
                 <a 
                   href={contactInfo.mapsLink}
                   target="_blank"

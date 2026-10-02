@@ -1,8 +1,12 @@
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { aboutImages } from "../../data/aboutData";
 import Reveal from "../../components/Reveal";
+import { useNavigate } from "react-router-dom";
+const Hero = () => {
+  
+   const navigate = useNavigate()
+  return (
 
-const Hero = () => (
   <section className="relative flex min-h-[520px] items-center overflow-hidden bg-darkBlue sm:min-h-[600px] lg:min-h-[697px]">
     <img src={aboutImages.hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
     <div className="absolute inset-0 bg-gradient-to-r from-darkBlue via-darkBlue/80 to-darkBlue/40" />
@@ -20,22 +24,17 @@ const Hero = () => (
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-           <a
-            href="#services"
-            className="flex items-center justify-center gap-2.5 rounded-sm bg-brown px-7 py-4 text-xs font-medium uppercase tracking-[0.12em] text-white transition-all hover:bg-[#8b6538] hover:shadow-lg"
-          >
-            Explore Our Services <ArrowDown size={15} />
-          </a>
-          <a
-            href="#contact"
+          
+          <button
+             onClick={() => navigate("/contact")}
             className="flex items-center justify-center gap-2.5 rounded-sm bg-white/15 px-7 py-4 text-xs font-medium uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/25"
           >
             Contact Us <ArrowRight size={15} />
-          </a>
+          </button>
         </div>
       </Reveal>
     </div>
   </section>
 );
-
+}
 export default Hero;

@@ -480,7 +480,7 @@ const GlobalVisaCatalog = () => {
 
           <div>
 
-            <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-navy-400">
+           {/*} <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-navy-400">
 
               <span>Operations</span>
 
@@ -494,17 +494,17 @@ const GlobalVisaCatalog = () => {
                 Visas List
               </span>
 
-            </div>
+            </div>*/}
 
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-500/10">
+              {/*<div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-ember-500/10">
                 <FiGlobe
                   size={21}
                   className="text-ember-500"
                 />
-              </div>
+              </div>*/}
 
 
               <div>

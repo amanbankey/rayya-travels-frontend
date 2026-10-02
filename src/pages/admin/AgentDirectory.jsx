@@ -176,10 +176,10 @@ const AgentDirectory = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-[#EEF3F7] overflow-y-auto hide-scrollbar w-full min-h-screen">
+    <div className="p-4 sm:p-6 lg:pl-2 bg-[#EEF3F7] overflow-y-auto hide-scrollbar w-full min-h-screen">
 
       {/* ================= HEADER ================= */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
 
         <div>
           {/*<p className="text-xs text-navy-500 mb-1">
@@ -193,20 +193,28 @@ const AgentDirectory = () => {
             </span>
           </p>*/}
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-4">
 
-            <div className="flex items-center gap-4"><span className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ember-400 to-ember-600 text-white flex items-center justify-center shadow-lg shadow-ember-500/30 flex-shrink-0"><PageIcon size={24} /></span><h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Agent Directory</h1></div>
-
-            <span className="bg-navy-50 text-navy-600 text-xs font-semibold px-2.5 py-1 rounded-full">
-              {agents.length} Registered Partners
+            <span className="w-14 h-14 rounded-2xl bg-ember-500 text-white flex items-center justify-center flex-shrink-0">
+              <PageIcon size={26} />
             </span>
 
-          </div>
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl font-extrabold text-navy-900 leading-tight">Agent Directory</h1>
 
-          <p className="text-sm text-navy-500 mt-1">
-            Manage commercial terms, credit lines, agent verification,
-            and daily communication.
-          </p>
+                <span className="bg-white border border-navy-100 text-navy-600 text-xs font-semibold px-3 py-1 rounded-full">
+                  {agents.length} Registered Partners
+                </span>
+              </div>
+
+              <p className="text-navy-400 mt-0.5">
+                Manage commercial terms, credit lines, agent verification,
+                and daily communication.
+              </p>
+            </div>
+
+          </div>
         </div>
 
         {/*<button
@@ -221,27 +229,27 @@ const AgentDirectory = () => {
 
       {/* ================= ERROR ================= */}
       {error && (
-        <div className="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-2xl">
+        <div className="mb-5 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-2xl">
           {error}
         </div>
       )}
 
       {/* ================= STATS ================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
 
-        <div className="bg-white rounded-3xl border border-navy-100 p-4 shadow-card">
+        <div className="bg-white rounded-3xl border border-navy-100 p-5">
 
-          <p className="text-sm text-navy-500 mb-2">
-            Total Agent Partners
+          <p className="text-[11px] font-semibold tracking-[0.18em] text-navy-500 mb-2">
+            TOTAL AGENT PARTNERS
           </p>
 
           <div className="flex items-center gap-3">
 
-            <span className="text-2xl font-bold text-navy-900">
+            <span className="text-3xl font-extrabold text-navy-900 leading-none">
               {agents.length}
             </span>
 
-            <span className="bg-ember-50 text-ember-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+            <span className="bg-ember-50 text-ember-700 text-[10px] font-bold px-2.5 py-1 rounded-full">
               Registered
             </span>
 
@@ -254,19 +262,19 @@ const AgentDirectory = () => {
       {/* ================= FILTER ================= */}
       <form
         onSubmit={handleApplyFilters}
-        className="bg-white rounded-3xl border border-navy-100 p-4 mb-4 shadow-card"
+        className="bg-white rounded-3xl border border-navy-100 p-6 mb-5"
       >
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
 
           {/* COMPANY NAME */}
           <div>
 
-            <label className="text-xs font-medium text-navy-600 mb-1 block">
+            <label className="text-xs font-semibold text-navy-600 mb-1.5 block">
               Company Name
             </label>
 
-            <div className="flex items-center gap-2 border border-navy-100 rounded-xl px-3 py-2.5">
+            <div className="flex items-center gap-2.5 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-4 py-3 focus-within:border-ember-400 focus-within:bg-white">
 
               <FiHome
                 className="text-navy-400 flex-shrink-0"
@@ -279,7 +287,7 @@ const AgentDirectory = () => {
                 value={filters.companyName}
                 onChange={handleChange}
                 placeholder="Search by name"
-                className="w-full text-sm text-navy-700 focus:outline-none"
+                className="w-full bg-transparent text-sm text-navy-700 placeholder:text-navy-300 focus:outline-none"
               />
 
             </div>
@@ -289,11 +297,11 @@ const AgentDirectory = () => {
           {/* MOBILE */}
           <div>
 
-            <label className="text-xs font-medium text-navy-600 mb-1 block">
+            <label className="text-xs font-semibold text-navy-600 mb-1.5 block">
               Mobile Number
             </label>
 
-            <div className="flex items-center gap-2 border border-navy-100 rounded-xl px-3 py-2.5">
+            <div className="flex items-center gap-2.5 border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-4 py-3 focus-within:border-ember-400 focus-within:bg-white">
 
               <FiPhone
                 className="text-navy-400 flex-shrink-0"
@@ -306,7 +314,7 @@ const AgentDirectory = () => {
                 value={filters.mobileNumber}
                 onChange={handleChange}
                 placeholder="Search by number"
-                className="w-full text-sm text-navy-700 focus:outline-none"
+                className="w-full bg-transparent text-sm text-navy-700 placeholder:text-navy-300 focus:outline-none"
               />
 
             </div>
@@ -316,7 +324,7 @@ const AgentDirectory = () => {
           {/* OWNERSHIP */}
           <div>
 
-            <label className="text-xs font-medium text-navy-600 mb-1 block">
+            <label className="text-xs font-semibold text-navy-600 mb-1.5 block">
               Ownership Type
             </label>
 
@@ -324,7 +332,7 @@ const AgentDirectory = () => {
               name="ownershipType"
               value={filters.ownershipType}
               onChange={handleChange}
-              className="w-full border border-navy-100 rounded-xl px-3 py-2.5 text-sm text-navy-700 focus:outline-none"
+              className="w-full border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-4 py-3 text-sm text-navy-700 focus:outline-none focus:border-ember-400 focus:bg-white"
             >
 
               <option value="">All Types</option>
@@ -340,7 +348,7 @@ const AgentDirectory = () => {
           {/* STATUS */}
           <div>
 
-            <label className="text-xs font-medium text-navy-600 mb-1 block">
+            <label className="text-xs font-semibold text-navy-600 mb-1.5 block">
               Status
             </label>
 
@@ -348,7 +356,7 @@ const AgentDirectory = () => {
               name="status"
               value={filters.status}
               onChange={handleChange}
-              className="w-full border border-navy-100 rounded-xl px-3 py-2.5 text-sm text-navy-700 focus:outline-none"
+              className="w-full border border-navy-100 bg-[#EEF3F7]/60 rounded-full px-4 py-3 text-sm text-navy-700 focus:outline-none focus:border-ember-400 focus:bg-white"
             >
 
               <option value="">All Status</option>
@@ -365,7 +373,7 @@ const AgentDirectory = () => {
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 hover:brightness-110 text-white text-sm font-semibold px-6 py-2.5 rounded-xl"
+            className="bg-ember-500 hover:bg-ember-600 text-white text-sm font-bold px-7 py-3 rounded-full transition-colors"
           >
             Apply Filters
           </button>
@@ -373,7 +381,7 @@ const AgentDirectory = () => {
           <button
             type="button"
             onClick={handleReset}
-            className="border border-navy-100 text-navy-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-ember-50"
+            className="border border-navy-100 text-navy-700 text-sm font-semibold px-6 py-3 rounded-full hover:bg-ember-50 transition-colors"
           >
             Reset
           </button>
@@ -383,59 +391,59 @@ const AgentDirectory = () => {
       </form>
 
       {/* ================= TABLE ================= */}
-      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden shadow-card">
+      <div className="bg-white rounded-3xl border border-navy-100 overflow-hidden">
 
         <div className="overflow-x-auto">
 
           <table className="w-full min-w-[1100px]">
 
-            <thead className="bg-gradient-to-r from-navy-900 to-navy-800 text-navy-100">
+            <thead className="bg-navy-900">
 
-              <tr className="border-b border-navy-100">
+              <tr className="border-b border-white/10">
 
                 <th
                   colSpan={3}
-                  className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-2"
+                  className="text-left text-[11px] font-bold tracking-widest text-navy-300 px-6 py-3"
                 >
                   AGENT INFO
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-ember-600 px-4 py-2 border-l border-navy-50">
+                <th className="text-left text-[11px] font-bold tracking-widest text-ember-300 px-6 py-3 border-l border-white/10">
                   COMMISSIONS &amp; RESTRICTIONS
                 </th>
 
                 <th
                   colSpan={2}
-                  className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-2"
+                  className="text-left text-[11px] font-bold tracking-widest text-navy-300 px-6 py-3 border-l border-white/10"
                 >
                   MANAGEMENT
                 </th>
 
               </tr>
 
-              <tr className=" border-b border-navy-100">
+              <tr>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4">
                   ENTERPRISE
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4">
                   CONTACT
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4">
                   COMPLIANCE
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3 border-l border-navy-50">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4 border-l border-white/10">
                   COMMERCIALS
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4 border-l border-white/10">
                   STATUS
                 </th>
 
-                <th className="text-left text-[11px] font-bold tracking-widest text-navy-100 px-4 py-3">
+                <th className="text-left text-xs font-bold tracking-widest text-white px-6 py-4">
                   ACTIONS
                 </th>
 
@@ -451,7 +459,7 @@ const AgentDirectory = () => {
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-4 py-10 text-center text-sm text-navy-500"
+                    className="px-6 py-12 text-center text-sm text-navy-500"
                   >
                     Loading agents...
                   </td>
@@ -462,7 +470,7 @@ const AgentDirectory = () => {
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-4 py-10 text-center text-sm text-navy-500"
+                    className="px-6 py-12 text-center text-sm text-navy-500"
                   >
                     No agents found.
                   </td>
@@ -474,15 +482,15 @@ const AgentDirectory = () => {
 
                   <tr
                     key={agent._id}
-                    className="border-b border-navy-50 last:border-0 align-top"
+                    className="border-t border-navy-50 hover:bg-[#f7f9fb] transition-colors align-top"
                   >
 
                     {/* ENTERPRISE */}
-                    <td className="px-4 py-4">
+                    <td className="px-6 py-4">
 
                       <div className="flex items-start gap-3">
 
-                        <span className="w-9 h-9 rounded-full bg-ember-50 text-ember-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                        <span className="w-11 h-11 rounded-xl bg-navy-900 text-ember-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
                           {getInitials(
                             agent.companyName || agent.fullName
                           )}
@@ -490,20 +498,20 @@ const AgentDirectory = () => {
 
                         <div>
 
-                          <p className="text-sm font-semibold text-navy-900">
+                          <p className="text-sm font-bold text-navy-900">
                             {agent.companyName ||
                               agent.fullName ||
                               "N/A"}
                           </p>
 
                           {agent.companyName && (
-                            <p className="text-xs text-navy-500 mb-1">
+                            <p className="text-xs text-navy-400 mb-1">
                               {agent.fullName || "N/A"}
                             </p>
                           )}
 
                           {agent.havingGST && (
-                            <span className="bg-navy-50 text-navy-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                            <span className="bg-ember-50 text-ember-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
                               GST
                             </span>
                           )}
@@ -515,31 +523,29 @@ const AgentDirectory = () => {
                     </td>
 
                     {/* CONTACT */}
-                    <td className="px-4 py-4">
+                    <td className="px-6 py-4">
 
-                      <div className="flex items-center gap-1.5 text-xs text-navy-600 mb-1.5">
+                      <div className="flex items-center gap-2.5 text-xs text-navy-700 mb-2">
 
-                        <FiMail
-                          size={12}
-                          className="text-navy-400"
-                        />
+                        <span className="w-7 h-7 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0">
+                          <FiMail size={13} />
+                        </span>
 
                         {agent.email || "N/A"}
 
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-xs text-navy-600">
+                      <div className="flex items-center gap-2.5 text-xs text-navy-700">
 
-                        <FiPhone
-                          size={12}
-                          className="text-navy-400"
-                        />
+                        <span className="w-7 h-7 rounded-lg bg-ember-50 text-ember-600 flex items-center justify-center flex-shrink-0">
+                          <FiPhone size={13} />
+                        </span>
 
                         {agent.mobileNumber || "N/A"}
 
                         <FiMessageSquare
-                          size={13}
-                          className="text-emerald-500 ml-1"
+                          size={14}
+                          className="text-emerald-500"
                         />
 
                       </div>
@@ -547,17 +553,17 @@ const AgentDirectory = () => {
                     </td>
 
                     {/* COMPLIANCE */}
-                    <td className="px-4 py-4">
+                    <td className="px-6 py-4">
 
                       {agent.identityProof?.proofType && (
-                        <div className="bg-[#EEF3F7] border border-navy-100 rounded-md px-2 py-1 text-xs text-navy-600 mb-2 w-fit">
+                        <div className="bg-[#EEF3F7] border border-navy-100 rounded-lg px-2.5 py-1 text-xs text-navy-600 mb-2 w-fit">
                           {agent.identityProof.proofType}
                         </div>
                       )}
 
-                      <div className="flex items-center gap-1.5 text-xs font-medium w-fit px-2 py-1 rounded-full bg-emerald-50 text-emerald-600">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold w-fit px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">
 
-                        <FiCheckCircle size={11} />
+                        <FiCheckCircle size={12} />
 
                         Verified
 
@@ -566,7 +572,7 @@ const AgentDirectory = () => {
                     </td>
 
                     {/* COMMERCIALS */}
-                    <td className="px-4 py-4 border-l border-navy-50 bg-ember-50/20">
+                    <td className="px-6 py-4 border-l border-navy-50">
 
                       <div className="flex flex-col gap-1.5">
 
@@ -574,13 +580,13 @@ const AgentDirectory = () => {
 
                           <>
                             {agent.gstName && (
-                              <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-ember-50 text-ember-600 border-ember-200">
+                              <span className="w-fit text-xs font-medium px-2.5 py-1 rounded-lg bg-ember-50 text-ember-700">
                                 GST: {agent.gstName}
                               </span>
                             )}
 
                             {agent.companyName && (
-                              <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-[#EEF3F7] text-navy-600 border-navy-100">
+                              <span className="w-fit text-xs font-medium px-2.5 py-1 rounded-lg bg-[#EEF3F7] text-navy-600">
                                 {agent.companyName}
                               </span>
                             )}
@@ -588,7 +594,7 @@ const AgentDirectory = () => {
 
                         ) : (
 
-                          <span className="w-fit text-xs font-medium px-2 py-1 rounded border bg-[#EEF3F7] text-navy-600 border-navy-100">
+                          <span className="w-fit text-xs font-medium px-2.5 py-1 rounded-lg bg-[#EEF3F7] text-navy-600">
                             No GST
                           </span>
 
@@ -601,9 +607,9 @@ const AgentDirectory = () => {
                             setSelectedAgent(null);
                             setVisaAgent(agent);
                           }}
-                          className="text-ember-600 hover:text-ember-600 mt-1 w-fit"
+                          className="w-8 h-8 mt-1 flex items-center justify-center rounded-full text-ember-600 hover:bg-ember-50 transition-colors"
                         >
-                          <FiEye size={14} />
+                          <FiEye size={15} />
                         </button>
 
                       </div>
@@ -611,7 +617,7 @@ const AgentDirectory = () => {
                     </td>
 
                     {/* STATUS */}
-                    <td className="px-4 py-4">
+                    <td className="px-6 py-4 border-l border-navy-50">
 
                       <span className="relative w-11 h-6 rounded-full bg-emerald-100 flex items-center">
 
@@ -626,9 +632,9 @@ const AgentDirectory = () => {
                     </td>
 
                     {/* ACTIONS */}
-                    <td className="px-4 py-4">
+                    <td className="px-6 py-4">
 
-                      <div className="flex items-center gap-3 text-navy-500">
+                      <div className="flex items-center gap-1 text-navy-500">
 
                         {/* VIEW */}
                         <button
@@ -638,7 +644,7 @@ const AgentDirectory = () => {
                             setVisaAgent(null);
                             setViewAgent(agent);
                           }}
-                          className="hover:text-ember-600"
+                          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-ember-50 hover:text-ember-600 transition-colors"
                           title="View Agent"
                         >
                           <FiEye size={16} />
@@ -652,7 +658,7 @@ const AgentDirectory = () => {
                             setVisaAgent(null);
                             setSelectedAgent(agent);
                           }}
-                          className="hover:text-ember-600"
+                          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-ember-50 hover:text-ember-600 transition-colors"
                           title="Agent Profile"
                         >
                           <FiEdit2 size={16} />
@@ -662,7 +668,7 @@ const AgentDirectory = () => {
                         <button
                           type="button"
                           onClick={() => handleDelete(agent._id)}
-                          className="hover:text-red-600"
+                          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-red-50 hover:text-red-600 transition-colors"
                           title="Delete Agent"
                         >
                           <FiTrash2 size={16} />
@@ -685,25 +691,25 @@ const AgentDirectory = () => {
         </div>
 
         {/* FOOTER */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-navy-50">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-6 py-4 border-t border-navy-50">
 
           <p className="text-sm text-navy-500">
             Showing {agents.length} Agents
           </p>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
 
             <button
               type="button"
               disabled
-              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-400 rounded-xl cursor-not-allowed"
+              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-300 rounded-full cursor-not-allowed"
             >
               ‹
             </button>
 
             <button
               type="button"
-              className="w-8 h-8 text-xs font-semibold rounded-xl bg-gradient-to-r from-ember-600 to-ember-400 shadow-lg shadow-ember-500/30 text-white"
+              className="w-8 h-8 text-xs font-semibold rounded-full bg-ember-500 text-white"
             >
               1
             </button>
@@ -711,7 +717,7 @@ const AgentDirectory = () => {
             <button
               type="button"
               disabled
-              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-400 rounded-xl cursor-not-allowed"
+              className="w-8 h-8 flex items-center justify-center border border-navy-100 text-navy-300 rounded-full cursor-not-allowed"
             >
               ›
             </button>
