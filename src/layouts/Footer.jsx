@@ -13,7 +13,11 @@ const footerLinks = {
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ],
-  Legal: ["Privacy Policy", "Terms of Service", "Cookie Policy"],
+  Legal: [
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms of Service", path: "/terms-of-service" },
+    { name: "Cookie Policy", path: "/cookies-policy" },
+  ],
   
 };
 

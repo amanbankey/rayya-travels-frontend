@@ -24,6 +24,10 @@ import AdminSignup from './pages/admin/AdminSignup'
 import AdminRoute from './components/auth/AdminRoute'
 import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
+import NotFound from './pages/NotFound'
+import TermsService from "./pages/TermsService"
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import CookiePolicy from "./pages/CookiePolicy"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -81,17 +85,28 @@ function App() {
             <Route path="package" element={<AppliedPackages />} />
           </Route>
 
-        {/*    <Route
-            path="traveler-details"
-            element={<TravelerDetails />}
-          />
- 
           <Route
-            path="user-dashboard"
-            element={<MyBookings />}
+            path="*"
+            element={<NotFound />}
+          />
+     
+          <Route
+            path="terms-of-service"
+            element={<TermsService />}
           >
  
-          </Route> */}
+          </Route>
+              <Route
+            path="cookies-policy"
+            element={<CookiePolicy />}
+          >
+          </Route>
+              <Route
+            path="privacy-policy"
+            element={<PrivacyPolicy />}
+          >
+ 
+          </Route>
         </Route>
       </Routes>
     </>
