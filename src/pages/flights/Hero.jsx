@@ -106,7 +106,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
       </div>
 
       <section className="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-8 sm:pb-14 sm:pt-14 lg:px-12 lg:pb-16 lg:pt-16">
-        <h1 className="mx-auto max-w-xl text-center font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mx-auto max-w-xl text-center  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           Discover your flight under  {" "} 
           <span className="inline italic text-brown">
             60 {" "}

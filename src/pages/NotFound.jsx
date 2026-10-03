@@ -29,11 +29,11 @@ const NotFound = () => (
             <Plane size={24} className="-rotate-45" />
           </span>
 
-          <p className="mt-6 font-serif text-[88px] font-medium leading-none text-white sm:text-[130px] lg:text-[160px]">
+          <p className="mt-6  text-[88px] font-medium leading-none text-white sm:text-[130px] lg:text-[160px]">
             4<span className="text-aviationBrown">0</span>4
           </p>
 
-          <h1 className="mt-4 font-serif text-2xl font-medium text-white sm:text-4xl">
+          <h1 className="mt-4  text-2xl font-medium text-white sm:text-4xl">
             This flight has gone off-route
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
@@ -64,7 +64,7 @@ const NotFound = () => (
         <p className="text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-aviationBrown">
           Popular destinations on our site
         </p>
-        <h2 className="mt-2 text-center font-serif text-2xl font-medium text-darkBlue sm:text-3xl">
+        <h2 className="mt-2 text-center  text-2xl font-medium text-darkBlue sm:text-3xl">
           Where would you like to go?
         </h2>
       </Reveal>

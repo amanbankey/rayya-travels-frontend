@@ -5,7 +5,7 @@ import { legalLinks, legalMeta } from "../../data/legalData";
 
 const Section = ({ section, index }) => (
   <section id={section.id} className="scroll-mt-28 border-b border-darkBlue/10 pb-8 last:border-b-0 last:pb-0">
-    <h2 className="flex items-baseline gap-3 font-serif text-xl font-medium text-darkBlue sm:text-2xl">
+    <h2 className="flex items-baseline gap-3  text-xl font-medium text-darkBlue sm:text-2xl">
       <span className="text-sm font-semibold text-aviationBrown">{String(index + 1).padStart(2, "0")}</span>
       {section.title}
     </h2>
@@ -85,7 +85,7 @@ const LegalLayout = ({ page }) => {
             <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.25em] text-aviationBrown">
               {page.eyebrow}
             </p>
-            <h1 className="mt-3 max-w-3xl font-serif text-4xl font-medium leading-tight text-white sm:text-5xl">
+            <h1 className="mt-3 max-w-3xl  text-4xl font-medium leading-tight text-white sm:text-5xl">
               {page.title}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">{page.intro}</p>
@@ -150,7 +150,7 @@ const LegalLayout = ({ page }) => {
           <Reveal delay={100}>
             <div className="flex flex-col gap-5 rounded-2xl bg-darkBlue p-6 text-white sm:p-8 md:flex-row md:items-center md:justify-between">
               <div>
-                <h3 className="font-serif text-xl font-medium sm:text-2xl">Have a question?</h3>
+                <h3 className=" text-xl font-medium sm:text-2xl">Have a question?</h3>
                 <p className="mt-1.5 max-w-md text-sm text-white/70">
                   Our team at {legalMeta.company} is happy to help with any question about this page.
                 </p>
