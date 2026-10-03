@@ -106,7 +106,7 @@ const Hero = ({ onSearch, setShowData, showData}) => {
       </div>
 
       <section className="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-8 sm:pb-14 sm:pt-14 lg:px-12 lg:pb-16 lg:pt-16">
-        <h1 className="mx-auto max-w-xl text-center font-serif text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mx-auto max-w-xl text-center  text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           Discover your flight under  {" "} 
           <span className="inline italic text-brown">
             60 {" "}
@@ -125,13 +125,13 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                     key={type}
                     type="button"
                     onClick={() => setTripType(type)}
-                    className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
+                    className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
                       tripType === type
-                        ? "bg-darkBlue text-white shadow-md shadow-darkBlue/20"
+                        ? "glow-btn bg-darkBlue text-white shadow-md shadow-darkBlue/20"
                         : "text-darkBlue/60 hover:bg-lightBrown/10 hover:text-darkBlue"
                     }`}
                   >
-                    {type === "One way" ? <TbPlaneDeparture size={12} /> : null}
+                    {type === "One way" ? <TbPlaneDeparture size={16} /> : null}
                     {type}
                   </button>
                 ))}

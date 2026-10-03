@@ -25,7 +25,7 @@ const PassportFolios = () => (
         const Icon = icons[folio.icon];
         return (
           <Reveal key={folio.id} delay={index * 120}>
-            <article className="relative h-full rounded-2xl border border-line bg-paper p-5">
+            <article className="relative h-full rounded-2xl border border-line bg-paper p-5 transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
                
 
               <div className="flex items-start gap-3 pr-14">

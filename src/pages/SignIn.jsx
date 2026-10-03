@@ -46,10 +46,7 @@ const AuthSidePanel = () => (
         </div>
 
         <div className="hidden rounded-xl border border-white/10 bg-authBlue/60 p-4 backdrop-blur-md md:block">
-          <p className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.15em] text-authCream">
-            Concierge Direct
-            <span className="h-1.5 w-1.5 rounded-full bg-authLightBrown" />
-          </p>
+           
 
           <p className="mt-1.5 flex items-center gap-2 text-sm font-medium text-white">
             <Phone size={13} className="text-authLightBrown" />
@@ -306,7 +303,7 @@ const SignInModal = () => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-2.5 text-sm font-medium text-white transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
+              className="glow-btn flex w-full items-center justify-center gap-2 rounded-lg bg-authDarkBlue py-2.5 text-sm font-medium text-white transition-all hover:bg-authLightBrown hover:shadow-lg disabled:opacity-60"
             >
               {status === "loading"
                 ? "Signing In..."

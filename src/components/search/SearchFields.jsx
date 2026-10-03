@@ -428,4 +428,4 @@ export const searchInputClass =
 export const searchCellClass =
   "relative rounded-xl border border-dustyRose bg-white px-4 py-2.5 transition-colors duration-300 hover:bg-cream/60 focus-within:border-darkBlue";
 export const searchButtonClass =
-  "flex items-center justify-center gap-2 rounded-xl bg-darkBlue px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl sm:col-span-2 lg:col-span-1";
+  "glow-btn flex items-center justify-center gap-2 rounded-xl bg-darkBlue px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl sm:col-span-2 lg:col-span-1";

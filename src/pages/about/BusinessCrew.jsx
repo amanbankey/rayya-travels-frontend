@@ -30,7 +30,7 @@ const BusinessCrew = () => (
           const Icon = card.icon;
           return (
             <Reveal key={card.title} delay={150 + index * 120}>
-              <article className="rounded-sm bg-oat p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <article className="rounded-sm bg-oat p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 sm:p-8 hover:ring-1 hover:ring-darkBlue">
                 <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-white text-brown shadow-sm">
                   <Icon size={22} />
                 </span>

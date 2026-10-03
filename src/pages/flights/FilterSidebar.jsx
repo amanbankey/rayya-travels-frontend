@@ -89,7 +89,7 @@ const FilterSidebar = ({ filters, open, onChange, onReset, onSubmit, onClose }) 
                 type="button"
                 key={slot.key}
                 onClick={() => onChange("slots", toggleItem(filters.slots, slot.key))}
-                className={`rounded-xl p-3 text-left transition-colors ${active ? "bg-darkBlue text-white" : "bg-panel text-ink hover:bg-tier"}`}
+                className={`rounded-xl p-3 text-left transition-colors ${active ? "glow-btn bg-darkBlue text-white" : "bg-panel text-ink hover:bg-tier"}`}
               >
                 <Icon size={18} className={slot.iconClass} />
                 <span className="mt-3 block text-sm font-medium">{slot.label}</span>

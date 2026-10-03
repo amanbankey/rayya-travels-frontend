@@ -99,7 +99,7 @@ const Destinations = () => (
         {destinations.map((dest, index) => (
           <article
             key={dest.city}
-            className="overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            className="overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-1 hover:ring-darkBlue"
           >
             <div className="relative h-44 overflow-hidden bg-mist">
               <img src={dest.image} alt={dest.city} className="h-full w-full object-cover" />

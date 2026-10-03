@@ -30,10 +30,10 @@ const ArchitecturalPortals = () => {
         </SectionHeader>
       </Reveal>
 
-      <div ref={trackRef} className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
+      <div ref={trackRef} className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 px-2">
         {portals.map((item, index) => (
           <Reveal key={item.id} delay={index * 100} className="w-[72%] shrink-0 snap-start sm:w-[42%] lg:w-[calc(25%-12px)]">
-            <article className="group h-full overflow-hidden rounded-t-[140px] rounded-b-2xl border border-line bg-paper">
+            <article className="group h-full overflow-hidden rounded-t-[140px] rounded-b-2xl border border-line bg-paper transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
               <div className="relative h-64 overflow-hidden bg-soft">
                 <img
                   src={item.image}

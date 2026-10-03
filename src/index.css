@@ -16,6 +16,69 @@ input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
+/* Dark-blue buttons / active tabs: a short thin orange light runs smoothly around the edge.
+   offset-path keeps the speed constant along the whole outline (no jerk at corners). */
+@keyframes glow-run {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.glow-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --glow-r: 10px;
+  --glow-dur: 3.5s;
+}
+
+.glow-btn.rounded-full { --glow-r: 9999px; }
+.glow-btn.rounded-2xl { --glow-r: 16px; }
+.glow-btn.rounded-xl { --glow-r: 12px; }
+.glow-btn.rounded-lg { --glow-r: 8px; }
+.glow-btn.rounded-md { --glow-r: 6px; }
+.glow-btn.rounded-sm { --glow-r: 2px; }
+/* wide buttons have a longer outline, so give them more time per round */
+.glow-btn.w-full { --glow-dur: 7s; }
+
+.glow-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 53px;
+  height: 7px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0), #f97316 55%, #ffedd5);
+  box-shadow: 0 0 10px 2px rgba(249, 115, 22, 0.65);
+  offset-path: inset(0 round var(--glow-r));
+  offset-rotate: auto;
+  offset-anchor: 50% 50%;
+  animation: glow-run var(--glow-dur) linear infinite;
+}
+
+.glow-btn > *:not([class~="absolute"]) {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not (offset-path: inset(0)) {
+  .glow-btn::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-btn::before {
+    display: none;
+  }
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }

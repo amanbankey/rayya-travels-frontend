@@ -1943,8 +1943,7 @@ export default function TravelerDetails(props) {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  disabled={submitting}
-                  className="w-full bg-darkBlue hover:bg-darkBlue/90 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
+                  className="group w-full bg-darkBlue hover:bg-darkBlue/90 text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
                 >
                   {submitting
                     ? "Submitting Application..."

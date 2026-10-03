@@ -16,7 +16,7 @@ const CtaBanner = () => (
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button className="rounded-lg bg-dark px-6 py-3.5 text-[9px] font-medium uppercase tracking-[0.2em] text-paper transition-colors hover:bg-ink">
+          <button className="glow-btn rounded-lg bg-dark px-6 py-3.5 text-[9px] font-medium uppercase tracking-[0.2em] text-paper transition-colors hover:bg-ink">
             Inquire Now
           </button>
           {/* <button className="rounded-lg border border-line bg-paper px-6 py-3.5 text-[9px] font-medium uppercase tracking-[0.2em] text-ink transition-colors hover:border-ink">

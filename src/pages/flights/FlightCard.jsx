@@ -36,7 +36,7 @@ const FlightCard = ({ flight, onSelect }) => {
 
   return (
     <Reveal>
-      <article className="overflow-hidden rounded-2xl bg-white shadow-card">
+      <article className="overflow-hidden rounded-2xl bg-white shadow-card transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
         <div className="flex w-full flex-col md:flex-row">
             {/* Left: ticket section */}
             <div className="min-w-0 flex-1 p-4 sm:p-5 lg:p-6">
@@ -113,7 +113,7 @@ const FlightCard = ({ flight, onSelect }) => {
 
               <button
                 type="submit"
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-darkBlue py-3.5 text-base font-medium text-white transition-colors "
+                className="glow-btn mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-darkBlue py-3.5 text-base font-medium text-white transition-colors "
               >
                 Select Passage <ArrowRight size={16} />
               </button>

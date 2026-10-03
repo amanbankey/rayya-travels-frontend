@@ -20,8 +20,8 @@ const Dispatches = () => (
     <div id="essays" className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {essays.map((essay, index) => (
         <Reveal key={essay.id} delay={index * 120}>
-          <article className="group cursor-pointer">
-            <div className="h-48 overflow-hidden rounded-xl bg-soft">
+          <article className="group cursor-pointer" hover:border-2 hover:border-darkBlue>
+            <div className="h-48 overflow-hidden rounded-xl bg-soft transition-shadow duration-300 group-hover:ring-1 group-hover:ring-darkBlue">
               <img
                 src={essay.image}
                 alt={essay.title}

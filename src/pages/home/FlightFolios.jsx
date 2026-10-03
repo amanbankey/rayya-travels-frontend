@@ -8,7 +8,7 @@ const icons = { Bed, Utensils, Briefcase, Wifi, Crown, Sparkles };
 const Airport = ({ data, align, label }) => (
   <div className={`min-w-0 ${align === "right" ? "text-right" : "text-left"}`}>
     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-aviationBrown">{label}</p>
-    <p className="mt-1 font-serif text-3xl font-semibold leading-none text-darkBlue sm:text-4xl lg:text-5xl">
+    <p className="mt-1  text-3xl font-semibold leading-none text-darkBlue sm:text-4xl lg:text-5xl">
       {data.code}
     </p>
     <p className="mt-2 truncate text-xs font-semibold text-darkBlue sm:text-sm">{data.city}</p>
@@ -31,7 +31,7 @@ const FlightFolios = () => (
     <div className="mt-8 space-y-5">
       {flights.map((flight, index) => (
         <Reveal key={flight.id} delay={index * 120}>
-          <article className="group flex flex-col overflow-hidden rounded-2xl border border-darkBlue/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-darkBlue/15 md:flex-row">
+          <article className="group flex flex-col overflow-hidden rounded-2xl border border-darkBlue/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 md:flex-row hover:ring-1 hover:ring-darkBlue">
             {/* Main boarding-pass section */}
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-darkBlue px-5 py-3 sm:px-6">
@@ -91,7 +91,7 @@ const FlightFolios = () => (
             <div className="flex w-full shrink-0 flex-col justify-between gap-4 bg-darkBlue/[0.03] p-5 sm:p-6 md:w-64 lg:w-72">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-darkBlue/50">Boarding Pass</p>
-                <p className="mt-1 font-serif text-2xl font-semibold text-darkBlue">{flight.manifest}</p>
+                <p className="mt-1  text-2xl font-semibold text-darkBlue">{flight.manifest}</p>
                 <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-aviationBrown px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
                   <ShieldCheck size={13} /> {flight.status}
                 </span>

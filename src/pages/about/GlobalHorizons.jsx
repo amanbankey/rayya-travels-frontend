@@ -17,7 +17,7 @@ const GlobalHorizons = () => (
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {destinations.map((place, index) => (
           <Reveal key={place.id} delay={(index % 4) * 100} className={place.wide ? "sm:col-span-2" : ""}>
-            <article className="group h-full overflow-hidden rounded-sm bg-white shadow-sm">
+            <article className="group h-full overflow-hidden rounded-sm bg-white shadow-sm transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
               <div className="h-52 overflow-hidden bg-mist sm:h-56 lg:h-52">
                 <img
                   src={place.image}

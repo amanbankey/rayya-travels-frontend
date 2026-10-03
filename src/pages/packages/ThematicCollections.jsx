@@ -20,7 +20,7 @@ const ThematicCollections = () => (
           const Icon = collection.icon;
           return (
             <Reveal key={collection.title} delay={index * 120}>
-              <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-1 hover:ring-darkBlue">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-peach text-brown">
                   <Icon size={20} />
                 </span>

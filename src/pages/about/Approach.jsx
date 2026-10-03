@@ -19,7 +19,7 @@ const Approach = () => (
           const Icon = card.icon;
           return (
             <Reveal key={card.number} delay={index * 120}>
-              <article className="rounded-sm bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <article className="rounded-sm bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-1 hover:ring-darkBlue">
                 <div className="flex items-start justify-between gap-3">
                   <span className=" text-4xl text-[#cdbfac]">{card.number}</span>
                   <Icon size={24} className="text-brown" />
