@@ -14,7 +14,7 @@ const ConnectChannels = () => (
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {channels.map((channel, index) => (
           <Reveal key={channel.title} delay={index * 120}>
-            <article className="flex h-full flex-col rounded-md bg-oat p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <article className="flex h-full flex-col rounded-md bg-oat p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-1 hover:ring-darkBlue">
               <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-brown">{channel.tag}</p>
               <h3 className="mt-4  text-2xl font-medium text-ink">{channel.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/70">{channel.text}</p>

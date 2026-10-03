@@ -8,7 +8,7 @@ const VisionMission = () => (
   <section className="bg-ivory px-4 py-16 sm:px-8 lg:px-16 lg:py-24">
     <div className="mx-auto grid max-w-[1300px] items-stretch gap-6 lg:grid-cols-2">
       <Reveal className="h-full">
-        <article className="flex h-full flex-col rounded-md bg-oat p-7 shadow-sm sm:p-10 lg:p-12">
+        <article className="flex h-full flex-col rounded-md bg-oat p-7 shadow-sm sm:p-10 lg:p-12 transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-brown">
             <span className="h-2.5 w-2.5 rounded-full bg-brown" /> Our Vision
           </p>
@@ -32,7 +32,7 @@ const VisionMission = () => (
       </Reveal>
 
       <Reveal delay={150} className="h-full">
-        <article className="flex h-full flex-col rounded-md bg-mist p-7 shadow-sm sm:p-10 lg:p-12">
+        <article className="flex h-full flex-col rounded-md bg-mist p-7 shadow-sm sm:p-10 lg:p-12 transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
           <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-brown">
             <span className="h-2.5 w-2.5 rounded-full bg-brown" /> Our Mission
           </p>

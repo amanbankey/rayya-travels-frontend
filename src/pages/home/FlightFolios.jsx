@@ -31,7 +31,7 @@ const FlightFolios = () => (
     <div className="mt-8 space-y-5">
       {flights.map((flight, index) => (
         <Reveal key={flight.id} delay={index * 120}>
-          <article className="group flex flex-col overflow-hidden rounded-2xl border border-darkBlue/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-darkBlue/15 md:flex-row">
+          <article className="group flex flex-col overflow-hidden rounded-2xl border border-darkBlue/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 md:flex-row hover:ring-1 hover:ring-darkBlue">
             {/* Main boarding-pass section */}
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-darkBlue px-5 py-3 sm:px-6">

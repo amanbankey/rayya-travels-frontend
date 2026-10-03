@@ -46,7 +46,7 @@ const TrendingGetaways = () => {
               delay={index * 100}
               className="w-[75%] shrink-0 snap-start sm:w-[45%] lg:w-[calc(25%-15px)]"
             >
-              <article className="group relative h-72 overflow-hidden rounded-xl bg-mist shadow-sm sm:h-80">
+              <article className="group relative h-72 overflow-hidden rounded-xl bg-mist shadow-sm sm:h-80 transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
                 <img
                   src={place.image}
                   alt={place.city}

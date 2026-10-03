@@ -9,7 +9,7 @@ const ContactCards = () => (
         const Icon = card.icon;
         return (
           <Reveal key={card.label} delay={index * 120}>
-            <article className="flex h-full flex-col rounded-md bg-white p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 sm:p-8">
+            <article className="flex h-full flex-col rounded-md bg-white p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 sm:p-8 hover:ring-1 hover:ring-darkBlue">
               <span className="flex h-11 w-11 items-center justify-center rounded-sm bg-oat text-brown">
                 <Icon size={20} />
               </span>

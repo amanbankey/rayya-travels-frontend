@@ -23,7 +23,7 @@ const TravelTrunks = () => (
     <div id="trunks" className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {trunks.map((item, index) => (
         <Reveal key={item.id} delay={index * 120}>
-          <article className="group h-full overflow-hidden rounded-2xl border border-line bg-paper">
+          <article className="group h-full overflow-hidden rounded-2xl border border-line bg-paper transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
             <div className="relative h-48 overflow-hidden bg-soft sm:h-52">
               <img
                 src={item.image}

@@ -12,9 +12,9 @@ const PackageCard = ({ pkg, viewMode }) => {
 
   return (
     <article
-      className={`overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+      className={`overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 ${
         viewMode === "list" ? "sm:flex" : ""
-      }`}
+      } hover:ring-1 hover:ring-darkBlue`}
     >
       <div className={`relative h-52 overflow-hidden bg-mist ${viewMode === "list" ? "sm:h-auto sm:w-64 sm:shrink-0" : ""}`}>
         <img src={pkg.image} alt={pkg.title} className="h-full w-full object-cover" />

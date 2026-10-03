@@ -85,6 +85,9 @@ slate: "#1e2738",
       // SignIn / SignUp popup colors (brown upar override ho raha h, isliye alag)
       boxShadow: {
         card: "0 2px 24px rgba(120, 90, 50, 0.07)",
+        // hover shadow for every card on the public site (darkBlue #1E2229)
+        cardHover:
+          "#1E2229",
       },
        animation: {
         "fade-in-up": "fadeInUp 0.55s ease-out both",

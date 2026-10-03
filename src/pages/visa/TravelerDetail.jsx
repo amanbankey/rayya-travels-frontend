@@ -542,7 +542,7 @@ export default function TravelerDetails() {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="group w-full bg-darkBlue hover:bg-darkBlue/90 text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
+                  className="glow-btn group w-full bg-darkBlue hover:bg-darkBlue/90 text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
                 >
                   Continue to payment
                   <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />

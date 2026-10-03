@@ -40,7 +40,7 @@ const SignatureShowcase = () => (
                 </p>
                 <p className="text-xs text-white/50">per person on twin sharing</p>
               </div>
-              <button className="flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-3.5 text-sm font-medium text-white transition-all   hover:shadow-lg">
+              <button className="glow-btn flex items-center justify-center gap-2 rounded-lg bg-darkBlue px-6 py-3.5 text-sm font-medium text-white transition-all   hover:shadow-lg">
                 Explore Luxury Package <ArrowRight size={15} />
               </button>
             </div> */}

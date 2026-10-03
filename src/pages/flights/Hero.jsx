@@ -125,13 +125,13 @@ const Hero = ({ onSearch, setShowData, showData}) => {
                     key={type}
                     type="button"
                     onClick={() => setTripType(type)}
-                    className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
+                    className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
                       tripType === type
-                        ? "bg-darkBlue text-white shadow-md shadow-darkBlue/20"
+                        ? "glow-btn bg-darkBlue text-white shadow-md shadow-darkBlue/20"
                         : "text-darkBlue/60 hover:bg-lightBrown/10 hover:text-darkBlue"
                     }`}
                   >
-                    {type === "One way" ? <TbPlaneDeparture size={12} /> : null}
+                    {type === "One way" ? <TbPlaneDeparture size={16} /> : null}
                     {type}
                   </button>
                 ))}

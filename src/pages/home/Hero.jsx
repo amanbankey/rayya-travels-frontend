@@ -242,7 +242,7 @@ months={2}
           <button
             type="button"
             onClick={handleSearch}
-            className="flex items-center justify-center gap-2 rounded-xl bg-darkBlue px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl sm:col-span-2 lg:col-span-1"
+            className="glow-btn flex items-center justify-center gap-2 rounded-xl bg-darkBlue px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:bg-blue hover:shadow-xl sm:col-span-2 lg:col-span-1"
           >
             Search Flight
             <TbPlaneDeparture size={17} className="text-brown" />
@@ -408,7 +408,7 @@ const Hero = () => {
                 transition-all duration-300 ease-out
                 ${
                   values.tab === key
-                    ? "bg-darkBlue text-white shadow-md shadow-darkBlue/20"
+                    ? "glow-btn bg-darkBlue text-white shadow-md shadow-darkBlue/20"
                     : "text-darkBlue/60 hover:-translate-y-0.5 hover:bg-lightBrown/10 hover:text-darkBlue"
                 }
               `}
@@ -424,9 +424,9 @@ const Hero = () => {
               />
 
               <Icon
-                size={11}
+                size={14}
                 className={`
-                  relative z-10 transition-all duration-300
+                  relative z-10 transition-all duration-300 
                   ${
                     values.tab === key
                       ? "scale-110"
@@ -435,7 +435,7 @@ const Hero = () => {
                 `}
               />
 
-              <span className="relative z-10" > {label}</span>
+              <span className="relative z-10 text-base" > {label}</span>
 
              
               {values.tab === key && (

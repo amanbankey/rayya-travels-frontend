@@ -18,7 +18,7 @@ const HeadOffice = () => {
 
         <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
-            <article className="h-full rounded-md bg-white p-6 shadow-lg sm:p-8">
+            <article className="h-full rounded-md bg-white p-6 shadow-lg sm:p-8 transition-shadow duration-300 hover:ring-1 hover:ring-darkBlue">
               <div className="flex items-center gap-4 border-b border-line pb-6">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-oat text-brown">
                   <Building2 size={20} />

@@ -184,13 +184,14 @@ const Navbar = () => {
           )}
 
           {/* Admin button (unchanged behaviour) */}
+          {/* Admin: an orange light travels around the inside edge of the button */}
           <button
             type="button"
             onClick={() => goTo("/admin")}
-            className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-[#102030] bg-[#102030] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:border-[#AE4000] hover:bg-[#AE4000] sm:flex"
+            className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-white/15 bg-[#102030] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#AE4000] sm:flex"
           >
             <ShieldCheck size={16} />
-            Admin
+            <span>Admin</span>
           </button>
 
           {/* Account — shown only after login */}
@@ -336,10 +337,10 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => goTo("/admin")}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#102030] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#AE4000]"
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-[#102030] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#AE4000]"
             >
               <ShieldCheck size={16} />
-              Admin Dashboard
+              <span>Admin Dashboard</span>
             </button>
 
             {isLoggedIn ? (
