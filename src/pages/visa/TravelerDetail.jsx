@@ -176,12 +176,13 @@ const steps = [
 
 function FlightRoute({ from, to }) {
   return (
-    <div className="flex items-center gap-3 text-sm font-medium text-darkBlue">
+    <div className="flex flex-col justify-start items-start gap-1 text-sm font-medium text-darkBlue">
+      <div> 
       <span className="shrink-0">
         {from || "—"}
       </span>
-
-      <div className="relative flex-1 h-5 overflow-hidden">
+     </div>
+      {/* <div className="relative flex-1 h-5 overflow-hidden border-2 border-black">
         <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-200 -translate-y-1/2" />
 
         <Cloud
@@ -200,11 +201,12 @@ function FlightRoute({ from, to }) {
           size={16}
           className="absolute top-1/2 -translate-y-1/2 text-brown rotate-90 animate-fly"
         />
-      </div>
-
+      </div> */}
+        <div> 
       <span className="shrink-0 text-right">
         {to || "—"}
       </span>
+       </div>
     </div>
   );
 }
