@@ -27,9 +27,9 @@ const Visa = () =>  {
   <main className="bg-ivory">
     <VisaHero  show={show} setShow={handleShow}/>
    
-    <div ref={resultsRef} className="scroll-mt-24">
+    {/* <div ref={resultsRef} className="scroll-mt-24">
       {show && (<TravelerDetails />)}
-    </div>
+    </div> */}
   
    <Destinations />
   </main>
