@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { ArrowRight, Briefcase, Calendar, CheckCircle2, MapPin, Plane, ShieldCheck, Users, Zap } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, CheckCircle2, Clock, FileText, MapPin, Plane, ShieldCheck, Users, Zap } from "lucide-react";
 import { submitForm } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { FiCalendar, FiRepeat, FiSearch, FiUsers } from "react-icons/fi";
@@ -418,6 +418,11 @@ const FlightSearchFields = ({
     </div>
   );
 };
+
+/* =========================================================
+   VISA CARD
+========================================================= */
+
 const VisaCard = ({
   visa,
   countryConfig,
@@ -429,6 +434,9 @@ const VisaCard = ({
 }) => {
   const [showAllDocuments, setShowAllDocuments] = useState(false);
 
+  const from = visa?.going_from || goingFrom || "";
+  const to = visa?.going_to || goingTo || "";
+
   const entry = visa?.entry || "—";
   const validity = visa?.validity || "—";
   const duration = visa?.duration || "—";
@@ -436,14 +444,11 @@ const VisaCard = ({
 
   const amount = visa?.amount || "—";
   const childAmount = visa?.child_amount || "—";
-
   const abscondingFees = visa?.absconding_fees || "—";
-
   const description = visa?.description || "";
 
   const cardTitle =
-    visa?.about ||
-    `${goingTo} Visa ${duration} ${entry}`;
+    visa?.about || `${to} Visa ${duration} ${entry}`;
 
   const documents = visa?.documents
     ? String(visa.documents)
@@ -456,326 +461,197 @@ const VisaCard = ({
     ? documents
     : documents.slice(0, 2);
 
-  const remainingDocuments = Math.max(
-    documents.length - 2,
-    0
-  );
+  const remainingDocuments = Math.max(documents.length - 2, 0);
 
   const handleApply = () => {
     onApply?.({
       visa,
       countryConfig,
-      goingFrom:
-        goingFrom ||
-        visa?.going_from ||
-        "",
-      goingTo:
-        goingTo ||
-        visa?.going_to ||
-        "",
+      goingFrom: from,
+      goingTo: to,
       travelDate: travelDate || "",
       returnDate: returnDate || "",
     });
   };
 
+  const stats = [
+    { label: "Entry", value: entry, icon: ShieldCheck },
+    { label: "Validity", value: validity, icon: Calendar },
+    { label: "Duration", value: duration, icon: Calendar },
+    { label: "Processing", value: processingTime, icon: Clock },
+  ];
+
   return (
-    <div className="w-full">
+    <div className="group w-full">
       <div
         className="
-          relative
-          h-full
-          overflow-hidden
-          rounded-[28px]
-          border
-          border-slate-200
-          border-t-[4px]
-          border-t-[#5665d6]
-          bg-white
-          p-8
-          shadow-[0_12px_40px_rgba(15,23,42,0.07)]
-          transition-all
-          duration-300
-          hover:-translate-y-1
-          hover:shadow-[0_18px_45px_rgba(15,23,42,0.10)]
+          relative flex h-full flex-col overflow-hidden
+          rounded-2xl border border-lightBrown/25 bg-white
+          shadow-[0_6px_24px_rgba(15,23,42,0.06)]
+          transition-all duration-300 ease-out
+          hover:-translate-y-1.5 hover:border-brown/50
+          hover:shadow-[0_20px_44px_rgba(15,23,42,0.14)]
         "
       >
-        {/* TOP BADGES */}
+        {/* ================= HEADER ================= */}
 
-        <div className="flex items-center gap-3">
-          <span
-            className="
-              rounded-full
-              bg-[#5665d6]/10
-              px-4
-              py-2
-              text-[11px]
-              font-bold
-              uppercase
-              tracking-[0.15em]
-              text-[#5665d6]
-            "
-          >
-            VISA
-          </span>
+        <div className="relative overflow-hidden bg-gradient-to-br from-darkBlue via-darkBlue to-darkBlue/90 px-5 pb-4 pt-4">
+          {/* soft glow */}
+          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-peach/20 blur-2xl transition-all duration-500 group-hover:scale-125" />
 
-          <span
-            className="
-              flex
-              items-center
-              gap-2
-              rounded-full
-              bg-emerald-50
-              px-4
-              py-2
-              text-[11px]
-              font-bold
-              text-emerald-600
-            "
-          >
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            Active
-          </span>
-        </div>
+          <div className="relative flex items-center justify-between">
+            <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-peach ring-1 ring-white/15">
+              Visa
+            </span>
 
-        {/* ROUTE */}
-
-        <div className="mt-7 flex items-center gap-3">
-          <div
-            className="
-              flex
-              h-11
-              w-11
-              shrink-0
-              items-center
-              justify-center
-              rounded-xl
-              bg-slate-100
-              text-slate-600
-            "
-          >
-            <Plane size={20} />
+            <span className="flex items-center gap-1.5 rounded-full bg-emerald-400/15 px-3 py-1 text-[10px] font-semibold text-emerald-300 ring-1 ring-emerald-300/20">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+              Active
+            </span>
           </div>
 
-          <div className="text-[14px] font-bold uppercase tracking-[0.12em] text-slate-400">
-            <span className="text-slate-500">
-              {visa?.going_from || goingFrom}
+          {/* ROUTE */}
+
+          <div className="relative mt-4 flex items-center gap-3 text-white">
+            <span className="max-w-[40%] truncate text-sm font-semibold uppercase tracking-wide">
+              {from}
             </span>
 
-            <span className="mx-2 text-[#5665d6]">
-              →
-            </span>
+            <div className="relative h-5 flex-1">
+              <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-white/30" />
+              <Plane
+                size={16}
+                className="absolute top-1/2 -translate-y-1/2 rotate-90 text-peach transition-all duration-700 ease-out left-[42%] group-hover:left-[85%]"
+              />
+            </div>
 
-            <span className="text-slate-500">
-              {visa?.going_to || goingTo}
+            <span className="max-w-[40%] truncate text-right text-sm font-semibold uppercase tracking-wide">
+              {to}
             </span>
           </div>
         </div>
 
-        {/* TITLE */}
+        {/* ================= BODY ================= */}
 
-        <h2
-          className="
-            mt-7
-            text-2xl
-            font-bold
-            leading-tight
-            text-slate-900
-            sm:text-[28px]
-          "
-        >
-          {cardTitle}
-        </h2>
+        <div className="flex flex-1 flex-col p-5">
+          <h2 className="line-clamp-2 text-[17px] font-bold leading-snug text-ink transition-colors duration-300 group-hover:text-brown">
+            {cardTitle}
+          </h2>
 
-        {description && (
-          <p
-            className="
-              mt-3
-              line-clamp-2
-              text-sm
-              leading-6
-              text-slate-500
-            "
-          >
-            {description}
-          </p>
-        )}
-
-        {/* MAIN DETAILS */}
-
-        <div
-          className="
-            mt-7
-            grid
-            grid-cols-3
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-100
-            bg-slate-50
-          "
-        >
-          <div className="border-r border-slate-200 p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Entry
+          {description && (
+            <p className="mt-1.5 line-clamp-1 text-[13px] text-slate-500">
+              {description}
             </p>
+          )}
 
-            <p className="mt-2 text-sm font-bold text-slate-800">
-              {entry}
-            </p>
+          {/* STATS */}
+
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {stats.map(({ label, value, icon: Icon }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2.5 rounded-xl bg-darkBlue50 px-3 py-2.5 transition-colors duration-300 group-hover:bg-brown/5"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-brown shadow-sm">
+                  <Icon size={15} />
+                </span>
+
+                <div className="min-w-0">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    {label}
+                  </p>
+                  <p className="truncate text-[13px] font-semibold text-ink">
+                    {value}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <div className="border-r border-slate-200 p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Validity
-            </p>
+          {/* PRICE */}
 
-            <p className="mt-2 text-sm font-bold text-slate-800">
-              {validity}
-            </p>
+          <div className="mt-4 flex items-end justify-between rounded-xl border border-lightBrown/25 bg-gradient-to-r from-peach/20 via-white to-white px-4 py-3">
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                Adult
+              </p>
+              <p className="text-2xl font-bold leading-none text-brown">
+                ₹{amount}
+              </p>
+            </div>
+
+            <div className="text-right">
+              <p className="text-[11px] text-slate-500">
+                Child{" "}
+                <span className="font-semibold text-ink">
+                  ₹{childAmount}
+                </span>
+              </p>
+              <p className="mt-0.5 text-[11px] text-slate-500">
+                Absconding{" "}
+                <span className="font-semibold text-ink">
+                  {abscondingFees}
+                </span>
+              </p>
+            </div>
           </div>
 
-          <div className="p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Adult
-            </p>
+          {/* DOCUMENTS */}
 
-            <p className="mt-2 text-lg font-bold text-[#5665d6]">
-              ₹{amount}
-            </p>
-          </div>
-        </div>
+          {documents.length > 0 && (
+            <div className="mt-4">
+              <p className="mb-2 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <FileText size={11} />
+                Required documents
+              </p>
 
-        {/* SECONDARY DETAILS */}
-
-        <div className="mt-7 grid grid-cols-2 gap-x-8 gap-y-6 border-b border-t border-slate-100 py-6">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Duration
-            </p>
-
-            <p className="mt-2 text-sm font-semibold text-slate-800">
-              {duration}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Processing Time
-            </p>
-
-            <p className="mt-2 text-sm font-semibold text-slate-800">
-              {processingTime}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Child Amount
-            </p>
-
-            <p className="mt-2 text-sm font-semibold text-slate-800">
-              ₹{childAmount}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Absconding Fees
-            </p>
-
-            <p className="mt-2 text-sm font-semibold text-slate-800">
-              {abscondingFees}
-            </p>
-          </div>
-        </div>
-
-        {/* DOCUMENTS */}
-
-        {documents.length > 0 && (
-          <div className="pt-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Required Documents
-            </p>
-
-            <div className="mt-3 flex flex-wrap gap-2">
-              {visibleDocuments.map(
-                (document, index) => (
+              <div className="flex flex-wrap gap-1.5">
+                {visibleDocuments.map((document, index) => (
                   <span
                     key={`${document}-${index}`}
-                    className="
-                      rounded-xl
-                      border
-                      border-slate-200
-                      bg-white
-                      px-3
-                      py-2
-                      text-xs
-                      font-semibold
-                      text-slate-600
-                    "
+                    className="rounded-lg border border-lightBrown/30 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600"
                   >
                     {document}
                   </span>
-                )
-              )}
+                ))}
 
-              {!showAllDocuments &&
-                remainingDocuments > 0 && (
+                {!showAllDocuments && remainingDocuments > 0 && (
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowAllDocuments(true)
-                    }
-                    className="
-                      rounded-xl
-                      border
-                      border-[#5665d6]/20
-                      bg-[#5665d6]/5
-                      px-3
-                      py-2
-                      text-xs
-                      font-bold
-                      text-[#5665d6]
-                    "
+                    onClick={() => setShowAllDocuments(true)}
+                    className="rounded-lg border border-brown/25 bg-brown/5 px-2.5 py-1 text-[11px] font-semibold text-brown transition hover:bg-brown hover:text-white"
                   >
-                    +{remainingDocuments} More
+                    +{remainingDocuments} more
                   </button>
                 )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* APPLY */}
+          {/* APPLY */}
 
-        <button
-          type="button"
-          onClick={handleApply}
-          className="
-            mt-7
-            flex
-            w-full
-            items-center
-            justify-center
-            gap-3
-            rounded-2xl
-            bg-[#111827]
-            px-5
-            py-4
-            text-sm
-            font-bold
-            text-white
-            transition-all
-            duration-200
-            hover:bg-[#1f2937]
-          "
-        >
-          Apply Now
-          <ArrowRight size={18} />
-        </button>
+          <button
+            type="button"
+            onClick={handleApply}
+            className="
+              mt-5 flex w-full items-center justify-center gap-2
+              rounded-xl bg-darkBlue px-5 py-3 text-sm font-semibold text-white
+              transition-all duration-300
+              hover:bg-brown hover:shadow-lg active:scale-[0.98]
+            "
+          >
+            Apply Now
+            <ArrowRight
+              size={17}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </button>
+        </div>
       </div>
     </div>
   );
 };
+
 const VisaHero = ({ setShow, show }) => {
   const [values, setValues] =
     useState(initialValues);
@@ -799,6 +675,23 @@ const VisaHero = ({ setShow, show }) => {
     useState(null);
 
   const travelerDetailsRef = useRef(null);
+  const resultsRef = useRef(null);
+
+  // Har search ke baad badhta hai, isse results par scroll trigger hota hai
+  const [searchCount, setSearchCount] = useState(0);
+
+  useEffect(() => {
+    if (searchCount === 0) return;
+
+    const timer = setTimeout(() => {
+      resultsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [searchCount]);
 
   const handleSearchComplete = ({
     visas,
@@ -820,6 +713,9 @@ const VisaHero = ({ setShow, show }) => {
 
     // New search hone par previous traveler form hide
     setSelectedVisa(null);
+
+    // Search ke baad seedha results/cards par scroll
+    setSearchCount((prev) => prev + 1);
   };
 
   const handleApplyVisa = ({
@@ -918,13 +814,16 @@ const VisaHero = ({ setShow, show }) => {
       ================================================= */}
 
       {show && (
-        <section className="bg-[#f7f8fb] px-4 py-12 sm:px-8 sm:py-16">
+        <section
+          ref={resultsRef}
+          className="scroll-mt-4 bg-[#f7f8fb] px-4 py-12 sm:px-8 sm:py-16"
+        >
           <div className="mx-auto max-w-[1150px]">
 
             {/* RESULT HEADING */}
 
             <div className="mb-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5665d6]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brown">
                 Available Visas
               </p>
 
@@ -936,7 +835,7 @@ const VisaHero = ({ setShow, show }) => {
                 searchInfo.goingTo && (
                   <p className="mt-2 text-sm text-slate-500">
                     {searchInfo.goingFrom}{" "}
-                    <span className="px-1 text-[#5665d6]">
+                    <span className="px-1 text-brown">
                       →
                     </span>{" "}
                     {searchInfo.goingTo}
@@ -947,7 +846,7 @@ const VisaHero = ({ setShow, show }) => {
             {/* RESULTS */}
 
             {visaResults.length > 0 ? (
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {visaResults.map((visa) => (
                   <VisaCard
                     key={visa._id}
@@ -1000,10 +899,10 @@ const VisaHero = ({ setShow, show }) => {
                 ref={travelerDetailsRef}
                 className="mt-12 scroll-mt-8"
               >
-                <div className="mb-6 rounded-3xl border border-[#5665d6]/20 bg-white p-5 sm:p-6">
+                <div className="mb-6 rounded-3xl border border-brown/20 bg-white p-5 sm:p-6">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5665d6]">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brown">
                         Visa Application
                       </p>
 
@@ -1013,7 +912,7 @@ const VisaHero = ({ setShow, show }) => {
 
                       <p className="mt-1 text-sm text-slate-500">
                         {selectedVisa.goingFrom}{" "}
-                        <span className="px-1 text-[#5665d6]">
+                        <span className="px-1 text-brown">
                           →
                         </span>{" "}
                         {selectedVisa.goingTo}

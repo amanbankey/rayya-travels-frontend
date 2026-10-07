@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -5,7 +6,6 @@ import {
   BookOpen,
   Camera,
   FileText,
-  LogOut,
   Package,
   ShieldCheck,
   Sparkles,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { getMe } from "../../api/authApi";
+import api from "../../api/axios";
 
 const tabs = [
   {
@@ -160,7 +161,6 @@ const DashboardLayout = () => {
   const fileRef = useRef(null);
 
   const [profile, setProfile] = useState(defaults);
-  
 
   // ==========================================
   // GET LOGGED-IN USER FROM BACKEND
@@ -177,27 +177,7 @@ const DashboardLayout = () => {
       }
 
       try {
-        
         const response = await getMe();
-
-        /*
-         * Backend response:
-         *
-         * {
-         *   success: true,
-         *   message: "User profile fetched",
-         *   data: {
-         *     user: {
-         *       id,
-         *       fullName,
-         *       email,
-         *       phoneNumber,
-         *       country,
-         *       role
-         *     }
-         *   }
-         * }
-         */
 
         const backendUser =
           response?.data?.user ||
@@ -210,13 +190,10 @@ const DashboardLayout = () => {
 
         const userProfile = {
           ...defaults,
-
           fullName: backendUser.fullName || "",
           email: backendUser.email || "",
           phoneNumber: backendUser.phoneNumber || "",
           country: backendUser.country || "India",
-
-          // These fields may not be returned by current /me
           dob: backendUser.dob || "",
           gender: backendUser.gender || "Female",
           address: backendUser.address || "",
@@ -225,7 +202,6 @@ const DashboardLayout = () => {
 
         setProfile(userProfile);
 
-        // Keep latest user data in localStorage
         localStorage.setItem(
           "user",
           JSON.stringify(backendUser)
@@ -248,8 +224,6 @@ const DashboardLayout = () => {
           error?.response?.data?.message ||
             "Unable to load user profile"
         );
-      } finally {
-        
       }
     };
 
@@ -257,35 +231,80 @@ const DashboardLayout = () => {
   }, [navigate]);
 
   // ==========================================
-  // UPDATE PROFILE STATE
+  // UPDATE PROFILE - BACKEND + LOCAL STATE
   // ==========================================
 
-  const updateProfile = (next) => {
-    setProfile(next);
-
-    /*
-     * Keep localStorage in sync.
-     *
-     * This does NOT update MongoDB.
-     * Backend currently has no profile update API.
-     */
-    const currentUser =
-      JSON.parse(localStorage.getItem("user")) || {};
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        ...currentUser,
+  const updateProfile = async (next) => {
+    try {
+      const payload = {
         fullName: next.fullName,
         email: next.email,
-        phoneNumber: next.phoneNumber,
-        country: next.country,
+        mobile: next.phoneNumber,
+        nationality: next.country,
         dob: next.dob,
         gender: next.gender,
         address: next.address,
-        profilePhoto: next.profilePhoto,
-      })
-    );
+      };
+
+      const response = await api.put(
+        "/user/profile/personal",
+        payload
+      );
+
+      const updatedUser =
+        response?.data?.user ||
+        response?.user ||
+        null;
+
+      const finalProfile = {
+        ...next,
+        ...(updatedUser
+          ? {
+              fullName: updatedUser.fullName || "",
+              email: updatedUser.email || "",
+              phoneNumber: updatedUser.phoneNumber || "",
+              country: updatedUser.country || "India",
+              dob: updatedUser.dob || "",
+              gender: updatedUser.gender || "Female",
+              address: updatedUser.address || "",
+              profilePhoto:
+                updatedUser.profilePhoto ||
+                next.profilePhoto ||
+                "",
+            }
+          : {}),
+      };
+
+      setProfile(finalProfile);
+
+      const currentUser =
+        JSON.parse(localStorage.getItem("user")) || {};
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...currentUser,
+          ...(updatedUser || {}),
+          fullName: finalProfile.fullName,
+          email: finalProfile.email,
+          phoneNumber: finalProfile.phoneNumber,
+          country: finalProfile.country,
+          dob: finalProfile.dob,
+          gender: finalProfile.gender,
+          address: finalProfile.address,
+          profilePhoto: finalProfile.profilePhoto,
+        })
+      );
+
+      return {
+        success: true,
+        user: finalProfile,
+      };
+    } catch (error) {
+      console.error("Update profile error:", error);
+
+      throw error;
+    }
   };
 
   // ==========================================
@@ -306,10 +325,23 @@ const DashboardLayout = () => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      updateProfile({
+      const nextProfile = {
         ...profile,
         profilePhoto: reader.result,
-      });
+      };
+
+      setProfile(nextProfile);
+
+      const currentUser =
+        JSON.parse(localStorage.getItem("user")) || {};
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...currentUser,
+          profilePhoto: reader.result,
+        })
+      );
 
       toast.success("Photo updated");
     };
@@ -318,10 +350,23 @@ const DashboardLayout = () => {
   };
 
   const handleRemovePhoto = () => {
-    updateProfile({
+    const nextProfile = {
       ...profile,
       profilePhoto: "",
-    });
+    };
+
+    setProfile(nextProfile);
+
+    const currentUser =
+      JSON.parse(localStorage.getItem("user")) || {};
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...currentUser,
+        profilePhoto: "",
+      })
+    );
 
     if (fileRef.current) {
       fileRef.current.value = "";
@@ -330,39 +375,7 @@ const DashboardLayout = () => {
     toast.success("Profile photo removed");
   };
 
-  // ==========================================
-  // LOGOUT
-  // ==========================================
-
-  {/*const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("raaya_profile");
-
-    toast.success("Logout successfully");
-
-    navigate("/");
-  };*/}
-
   const name = profile.fullName || "Traveller";
-
-  // ==========================================
-  // LOADING
-  // ==========================================
-
- {/* if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-oat via-white to-oat">
-        <div className="text-center">
-          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-ember-200 border-t-ember-600" />
-
-          <p className="mt-4 text-sm font-medium text-navy-400">
-            Loading your profile...
-          </p>
-        </div>
-      </main>
-    );
-  }*/}
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-oat via-white to-oat pb-16">
@@ -404,18 +417,7 @@ const DashboardLayout = () => {
 
           <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-ember-600 via-ember-400 to-transparent" />
 
-          {/* Sign Out 
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:border-transparent hover:bg-gradient-to-r hover:from-ember-600 hover:to-ember-400"
-          >
-            <LogOut size={13} />
-            Sign Out
-          </button>*/}
-
-          <div className="relative flex flex-col items-center gap-5 px-5 pb-8 pt-16 text-center sm:flex-row sm:gap-7 sm:px-10 sm:pt-12 sm:text-left">
+          <div className="relative flex flex-col items-center gap-5 px-5 pb-8 pt-12 text-center sm:flex-row sm:gap-7 sm:px-10 sm:pt-12 sm:text-left">
 
             {/* Avatar */}
 
@@ -425,7 +427,7 @@ const DashboardLayout = () => {
 
               <div className="absolute -inset-[2px] rounded-[30px] bg-navy" />
 
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-ember-600 to-ember-400  text-5xl text-white">
+              <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-ember-600 to-ember-400 text-5xl text-white">
 
                 {profile.profilePhoto ? (
                   <img
@@ -472,7 +474,7 @@ const DashboardLayout = () => {
                 Member Dashboard
               </p>
 
-              <h1 className="dash-up mt-1 truncate  text-3xl font-medium text-white sm:text-5xl [animation-delay:250ms]">
+              <h1 className="dash-up mt-1 truncate text-3xl font-medium text-white sm:text-5xl [animation-delay:250ms]">
                 {name}
               </h1>
 
@@ -484,9 +486,7 @@ const DashboardLayout = () => {
 
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[11px] font-medium text-navy-100 backdrop-blur">
                   <span className="dash-live h-2 w-2 rounded-full bg-emerald-400" />
-
                   <ShieldCheck size={13} />
-
                   Secure session
                 </span>
 
@@ -552,3 +552,4 @@ const DashboardLayout = () => {
 };
 
 export default DashboardLayout;
+
